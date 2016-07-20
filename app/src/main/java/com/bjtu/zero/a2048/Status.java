@@ -4,13 +4,15 @@ public class Status {
 
     private int score;
     private Board board;
-    
-    public Status() {
-        // TODO: 2016/7/20  
+
+    public Status(int boardSize) {
+        score = 0;
+        board = new Board(boardSize);
     }
-    
-    public Status(Board board, int score) {
-        // TODO: 2016/7/20  
+
+    public Status(int score, Board board) {
+        this.board = board;
+        this.score = score;
     }
 
     public int getScore() {
