@@ -1,0 +1,70 @@
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision fb1bbc7472b28ea46f547fd2c2605f6b35746c24)
++++ app/src/main/res/layout/activity_main.xml	(revision )
+@@ -9,8 +9,11 @@
+     android:paddingTop="@dimen/activity_vertical_margin"
+     tools:context="com.bjtu.zero.a2048.MainActivity">
+ 
+-    <TextView
++    <GridView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:text="Hello World!" />
++        android:numColumns="4"
++        android:id="@+id/gridView"
++        android:layout_centerVertical="true"
++        android:layout_centerHorizontal="true" />
+ </RelativeLayout>
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(revision fb1bbc7472b28ea46f547fd2c2605f6b35746c24)
++++ .idea/gradle.xml	(revision )
+@@ -5,7 +5,7 @@
+       <GradleProjectSettings>
+         <option name="distributionType" value="LOCAL" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.10" />
++        <option name="gradleHome" value="D:\androidstudio\AS\gradle\gradle-2.10" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+\ No newline at end of file
+Index: app/src/main/java/com/bjtu/zero/a2048/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/bjtu/zero/a2048/MainActivity.java	(revision fb1bbc7472b28ea46f547fd2c2605f6b35746c24)
++++ app/src/main/java/com/bjtu/zero/a2048/MainActivity.java	(revision )
+@@ -2,12 +2,24 @@
+ 
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.widget.ArrayAdapter;
++import android.widget.GridView;
+ 
+ public class MainActivity extends AppCompatActivity {
+ 
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
++
++        //GridView示例
++        GridView gridview= (GridView) findViewById(R.id.gridView);
++        gridview.setNumColumns(4);
++        String [][] test ={{"1","2","3"},{"4","5","6"},{"7","8","9"}};
++        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
++        gridview.setAdapter(adapter);
++        gridview.showContextMenu();
++        //GridView示例
+     }
+ }
