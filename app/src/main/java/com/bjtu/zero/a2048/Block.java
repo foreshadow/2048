@@ -12,6 +12,10 @@ public class Block {
         this.rank = rank;
     }
 
+    public boolean isempty() {
+        return this.getRank() == 0;
+    }
+
     public boolean isSameRank(Block b) {
         return this.rank == b.rank;
     }
