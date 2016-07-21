@@ -17,6 +17,6 @@ public class Block {
     }
 
     public boolean isSameRank(Block b) {
-        return this.rank == b.rank;
+        return  this.rank == b.rank;
     }
 }
