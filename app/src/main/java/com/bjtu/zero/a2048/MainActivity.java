@@ -2,7 +2,9 @@ package com.bjtu.zero.a2048;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -10,9 +12,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ArrayList<String> test=new ArrayList<>() ;
-        ArrayAdapter<String> adapter =new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,test);
+//        setContentView(R.layout.activity_main);
+
+        LinearLayout ll = new LinearLayout(this);
+        ll.setLayoutParams(new FrameLayout.LayoutParams(500, 500));
+        ll.addView(new GameLayout(ll.getContext()));
+        setContentView(ll);
     }
 
     public void update(ArrayList<Block> blocks) { //直接刷新
