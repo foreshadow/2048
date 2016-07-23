@@ -1,5 +1,7 @@
 package com.bjtu.zero.a2048;
 
+import android.graphics.Point;
+
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -7,23 +9,25 @@ import java.util.Random;
 
 public class Game {
 
-    private MainActivity activity;
+    private GameLayout layout;
     private int size;
     private Deque<Status> history;
-    private int[][] increment;
+    private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    public Game(MainActivity activity) {
-        this(activity, 4);
+    public Game(GameLayout layout) {
+        this(layout, Settings.DEFAULT_SIZE);
     }
 
-    public Game(MainActivity activity, int size) {
-        this.activity = activity;
+    public Game(GameLayout layout, int size) {
+        this.layout = layout;
         this.size = size;
-        this.increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};//上0下1左2右3
-        this.history = new LinkedList<>();
-        this.history.add(new Status(size));
-        this.spawnBlock();
-        this.spawnBlock();
+        history = new LinkedList<>();
+        history.add(new Status(size));
+        layout.setBoard(history.getLast().getBoard());
+        layout.refresh();
+        spawnBlock();
+        spawnBlock();
+        layout.refresh();
     }
 
     private boolean canMove(int direction) {
@@ -55,7 +59,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i][j + 1])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORELIST[block.getRank()]);
+                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i][j + 1].setRank(0);
                     }
                 }
@@ -81,7 +85,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i][j - 1])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORELIST[block.getRank()]);
+                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i][j - 1].setRank(0);
                     }
                 }
@@ -107,7 +111,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i + 1][j])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORELIST[block.getRank()]);
+                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i + 1][j].setRank(0);
                     }
                 }
@@ -133,7 +137,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i - 1][j])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORELIST[block.getRank()]);
+                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i - 1][j].setRank(0);
                     }
                 }
@@ -151,7 +155,7 @@ public class Game {
 
     private void newStatus(Status status) {
         history.add(status);
-        while (history.size() > Settings.HISTORTYSIZE) {
+        while (history.size() > Settings.HISTORTY_SIZE) {
             history.removeFirst();
         }
     }
@@ -161,19 +165,20 @@ public class Game {
             throw new AssertionError();
         }
         int rank = 1;
-        if (Math.random() < Settings.RANK2PROBABILITY) {
+        if (Math.random() < Settings.RANK_2_PROBABILITY) {
             rank = 2;
         }
-        ArrayList<Block> emptyBlocks = history.getLast().getBoard().emptyBlocks();
-        Block block = emptyBlocks.get((new Random()).nextInt(emptyBlocks.size()));
-        block.setRank(rank);
-        activity.spawn(block);
+        ArrayList<Point> emptyBlocks = history.getLast().getBoard().emptyBlocks();
+        Point p = emptyBlocks.get((new Random()).nextInt(emptyBlocks.size()));
+        history.getLast().getBoard().getData()[p.x][p.y] = new Block(rank);
+        layout.playSpawn(p.x, p.y, history.getLast().getBoard().getData()[p.x][p.y]);
     }
 
     public void undo() {
         if (history.size() > 1) {
             history.removeLast();
-            activity.update(history.getLast().getBoard().blockLine());
+            layout.setBoard(history.getLast().getBoard());
+            layout.refresh();
         }
     }
 
@@ -183,7 +188,7 @@ public class Game {
 
     private void gameOverJudge() {
         if (isGameOver()) {
-            activity.gameOver();
+            // TODO: 2016/7/24  
         }
     }
 }

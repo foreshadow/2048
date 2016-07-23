@@ -8,6 +8,7 @@ public class Status implements Cloneable {
     public Status(int boardSize) {
         score = 0;
         board = new Board(boardSize);
+        board.initialize();
     }
 
     public Status(int score, Board board) {

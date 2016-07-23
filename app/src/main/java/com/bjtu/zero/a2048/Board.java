@@ -1,7 +1,8 @@
 package com.bjtu.zero.a2048;
 
+import android.graphics.Point;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Board implements Cloneable {
 
@@ -9,11 +10,14 @@ public class Board implements Cloneable {
     private Block[][] data;
 
     public Board(int size) {
-        this.size = size;
+        this.setSize(size);
         data = new Block[size][size];
-        for (int i = 0; i < size; i++) {
-            data[i] = new Block[size];
-            for (int j = 0; j < size; j++) {
+    }
+
+    public void initialize() {
+        for (int i = 0; i < getSize(); i++) {
+            data[i] = new Block[getSize()];
+            for (int j = 0; j < getSize(); j++) {
                 data[i][j] = new Block();
             }
         }
@@ -23,7 +27,7 @@ public class Board implements Cloneable {
         Board clone = null;
         try {
             clone = (Board) super.clone();
-            clone.size = this.size;
+            clone.setSize(this.getSize());
             clone.data = this.data.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -31,13 +35,13 @@ public class Board implements Cloneable {
         return clone;
     }
 
-    public ArrayList<Block> blockLine() {
-        ArrayList<Block> list = new ArrayList<>();
-        for (Block[] line : data) {
-            Collections.addAll(list, line);
-        }
-        return list;
-    }
+//    public ArrayList<Block> blockLine() {
+//        ArrayList<Block> list = new ArrayList<>();
+//        for (Block[] line : data) {
+//            Collections.addAll(list, line);
+//        }
+//        return list;
+//    }
 
     public Block[][] getData() {
         return data;
@@ -51,8 +55,8 @@ public class Board implements Cloneable {
         if (emptyBlocks().size() > 0) {
             return false;
         }
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size - 1; j++) {
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize() - 1; j++) {
                 if (data[i][j].isSameRank(data[i][j + 1])) {
                     return false;
                 }
@@ -64,14 +68,22 @@ public class Board implements Cloneable {
         return true;
     }
 
-    ArrayList<Block> emptyBlocks() {
-        ArrayList<Block> array = new ArrayList<>();
-        for (Block[] blockLine : data) {
-            for (Block block : blockLine) {
-                if (block.isEmpty())
-                    array.add(block);
+    ArrayList<Point> emptyBlocks() {
+        ArrayList<Point> array = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (getData()[i][j].isEmpty())
+                    array.add(new Point(i, j));
             }
         }
         return array;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }
