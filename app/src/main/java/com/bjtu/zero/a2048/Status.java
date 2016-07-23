@@ -1,6 +1,6 @@
 package com.bjtu.zero.a2048;
 
-public class Status {
+public class Status implements Cloneable {
 
     private int score;
     private Board board;
@@ -15,9 +15,16 @@ public class Status {
         this.score = score;
     }
 
-    public Status(Status status){
-        this.score=status.score;
-        this.board=new Board(status.board);
+    public Status clone() {
+        Status clone = null;
+        try {
+            clone = (Status) super.clone();
+            clone.score = this.score;
+            clone.board = this.board.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 
     public int getScore() {
@@ -28,8 +35,8 @@ public class Status {
         this.score = score;
     }
 
-    public void addScore(int score){
-        this.score+=score;
+    public void addScore(int score) {
+        this.score += score;
     }
 
     public Board getBoard() {
