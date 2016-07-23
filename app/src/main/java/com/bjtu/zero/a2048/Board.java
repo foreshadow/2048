@@ -11,6 +11,22 @@ public class Board {
     public Board(int size) {
         this.size = size;
         data = new Block[size][size];
+        for(int i=0;i<size;i++){
+            data [i] =new Block[size];
+            for(int j=0;j<size;j++){
+                data[i][j]=new Block();
+            }
+        }
+    }
+
+    public Board(Board board){
+        this.size=board.size;
+        for(int i=0;i<size;i++){
+            data [i] =new Block[size];
+            for(int j=0;j<size;j++){
+                data[i][j]=new Block(board.getData()[i][j]);
+            }
+        }
     }
 
     public ArrayList<Block> blockLine() {

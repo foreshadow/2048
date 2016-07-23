@@ -15,12 +15,21 @@ public class Status {
         this.score = score;
     }
 
+    public Status(Status status){
+        this.score=status.score;
+        this.board=new Board(status.board);
+    }
+
     public int getScore() {
         return score;
     }
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void addScore(int score){
+        this.score+=score;
     }
 
     public Board getBoard() {
