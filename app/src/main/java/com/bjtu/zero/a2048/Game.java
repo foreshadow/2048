@@ -52,104 +52,152 @@ public class Game {
     public void slideLeft() {
         if (!canMove(2)) return;
         Status nextStatus = history.getLast().clone();
-        Board nextBoard = nextStatus.getBoard();
+        Block [][] nextBlock = nextStatus.getBoard().getData();
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                Block block = nextBoard.getData()[i][j];
-                if (!block.isEmpty()) {
-                    if (block.isSameRank(nextBoard.getData()[i][j + 1])) {
-                        block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
-                        nextBoard.getData()[i][j + 1].setRank(0);
+            for (int j = 1; j < size ; j++) {
+                if (!nextBlock[i][j].isEmpty()) {
+                    if (nextBlock[i][j].isSameRank(nextBlock[i][j - 1])) {
+                        nextBlock[i][j - 1].setRank(0);
+                        nextBlock[i][j].increase();
+                        nextStatus.addScore(Settings.SCORE_LIST[nextBlock[i][j].getRank()]);
                     }
                 }
             }
         }
-        for (int i = 0; i < size; i++) {
-            for (int j = 1; j < size; j++) {
-                if (!nextBoard.getData()[i][j].isEmpty() && nextBoard.getData()[i][j - 1].isEmpty()) {
-                    nextBoard.getData()[i][j].swapRank(nextBoard.getData()[i][j - 1]);
+        BlockChangeList changeList=new BlockChangeList();
+        Block [][]  preBlock = history.getLast().getBoard().getData();
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                if(!nextBlock[i][j].isEmpty()){
+                    int toX=i,toY=j-1;
+                    while(toY>=0&&nextBlock[toX][toY].isEmpty()){
+                        nextBlock[toX][toY].swapRank(nextBlock[toX][toY+1]);
+                        toY--;
+                    }
+                    if(nextBlock[i][toY+1].isSameRank(preBlock[i][j]))
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX,toY+1,BlockChangeListItem.NextStatus.MAINTAIN));
+                    else{
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX,toY+1,BlockChangeListItem.NextStatus.INCREASE));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j-1],toX,toY+1,BlockChangeListItem.NextStatus.DESTROY));
+                    }
                 }
             }
         }
+        //layout.playTransition(changeList);
         newStatus(nextStatus);
     }
 
     public void slideRight() {
         if (!canMove(3)) return;
         Status nextStatus = history.getLast().clone();
-        Board nextBoard = nextStatus.getBoard();
+        Block [][] nextBlock = nextStatus.getBoard().getData();
         for (int i = 0; i < size; i++) {
-            for (int j = size - 1; j > 0; j--) {
-                Block block = nextBoard.getData()[i][j];
-                if (!block.isEmpty()) {
-                    if (block.isSameRank(nextBoard.getData()[i][j - 1])) {
-                        block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
-                        nextBoard.getData()[i][j - 1].setRank(0);
+            for (int j = size-2; j >=0 ; j--) {
+                if (!nextBlock[i][j].isEmpty()) {
+                    if (nextBlock[i][j].isSameRank(nextBlock[i][j + 1])) {
+                        nextBlock[i][j + 1].setRank(0);
+                        nextBlock[i][j].increase();
+                        nextStatus.addScore(Settings.SCORE_LIST[nextBlock[i][j].getRank()]);
                     }
                 }
             }
         }
-        for (int i = 0; i < size; i++) {
-            for (int j = size - 2; j >= 0; j--) {
-                if (!nextBoard.getData()[i][j].isEmpty() && nextBoard.getData()[i][j + 1].isEmpty()) {
-                    nextBoard.getData()[i][j].swapRank(nextBoard.getData()[i][j + 1]);
+        BlockChangeList changeList=new BlockChangeList();
+        Block [][]  preBlock = history.getLast().getBoard().getData();
+        for(int i=0;i<size;i++){
+            for(int j=size-1;j>=0;j--){
+                if(!nextBlock[i][j].isEmpty()){
+                    int toX=i,toY=j+1;
+                    while(toY<size && nextBlock[toX][toY].isEmpty()){
+                        nextBlock[toX][toY].swapRank(nextBlock[toX][toY-1]);
+                        toY++;
+                    }
+                    if(nextBlock[i][toY-1].isSameRank(preBlock[i][j]))
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX,toY-1,BlockChangeListItem.NextStatus.MAINTAIN));
+                    else{
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX,toY-1,BlockChangeListItem.NextStatus.INCREASE));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j+1],toX,toY-1,BlockChangeListItem.NextStatus.DESTROY));
+                    }
                 }
             }
         }
+       // layout.playTransition(changeList);
         newStatus(nextStatus);
     }
 
     public void slideUp() {
         if (!canMove(0)) return;
         Status nextStatus = history.getLast().clone();
-        Board nextBoard = nextStatus.getBoard();
+        Block [][] nextBlock = nextStatus.getBoard().getData();
         for (int j = 0; j < size; j++) {
-            for (int i = 0; i < size - 1; i++) {
-                Block block = nextBoard.getData()[i][j];
-                if (!block.isEmpty()) {
-                    if (block.isSameRank(nextBoard.getData()[i + 1][j])) {
-                        block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
-                        nextBoard.getData()[i + 1][j].setRank(0);
+            for (int i = 1; i<size ; i++) {
+                if (!nextBlock[i][j].isEmpty()) {
+                    if (nextBlock[i][j].isSameRank(nextBlock[i-1][j])) {
+                        nextBlock[i-1][j ].setRank(0);
+                        nextBlock[i][j].increase();
+                        nextStatus.addScore(Settings.SCORE_LIST[nextBlock[i][j].getRank()]);
                     }
                 }
             }
         }
-        for (int j = 0; j < size; j++) {
-            for (int i = 1; i < size; i++) {
-                if (!nextBoard.getData()[i][j].isEmpty() && nextBoard.getData()[i - 1][j].isEmpty()) {
-                    nextBoard.getData()[i][j].swapRank(nextBoard.getData()[i - 1][j]);
+        BlockChangeList changeList=new BlockChangeList();
+        Block [][]  preBlock = history.getLast().getBoard().getData();
+        for(int  j =0;j <size;j++){
+            for(int i=0;i<size;i++){
+                if(!nextBlock[i][j].isEmpty()){
+                    int toX=i-1,toY=j;
+                    while(toX>=0 && nextBlock[toX][toY].isEmpty()){
+                        nextBlock[toX][toY].swapRank(nextBlock[toX-1][toY]);
+                        toX--;
+                    }
+                    if(nextBlock[toX+1][toY].isSameRank(preBlock[i][j]))
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX+1,toY,BlockChangeListItem.NextStatus.MAINTAIN));
+                    else{
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX+1,toY,BlockChangeListItem.NextStatus.INCREASE));
+                        changeList.add(new BlockChangeListItem(preBlock[i-1][j],toX+1,toY,BlockChangeListItem.NextStatus.DESTROY));
+                    }
                 }
             }
         }
+        //layout.playTransition(changeList);
         newStatus(nextStatus);
     }
 
     public void slideDown() {
         if (!canMove(1)) return;
         Status nextStatus = history.getLast().clone();
-        Board nextBoard = nextStatus.getBoard();
+        Block [][] nextBlock = nextStatus.getBoard().getData();
         for (int j = 0; j < size; j++) {
-            for (int i = size - 1; i > 0; i--) {
-                Block block = nextBoard.getData()[i][j];
-                if (!block.isEmpty()) {
-                    if (block.isSameRank(nextBoard.getData()[i - 1][j])) {
-                        block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
-                        nextBoard.getData()[i - 1][j].setRank(0);
+            for (int i = size-2; i>=0 ; i--) {
+                if (!nextBlock[i][j].isEmpty()) {
+                    if (nextBlock[i][j].isSameRank(nextBlock[i+1][j])) {
+                        nextBlock[i+1][j ].setRank(0);
+                        nextBlock[i][j].increase();
+                        nextStatus.addScore(Settings.SCORE_LIST[nextBlock[i][j].getRank()]);
                     }
                 }
             }
         }
-        for (int j = 0; j < size; j++) {
-            for (int i = size - 2; i >= 0; i--) {
-                if (!nextBoard.getData()[i][j].isEmpty() && nextBoard.getData()[i + 1][j].isEmpty()) {
-                    nextBoard.getData()[i][j].swapRank(nextBoard.getData()[i + 1][j]);
+        BlockChangeList changeList=new BlockChangeList();
+        Block [][]  preBlock = history.getLast().getBoard().getData();
+        for(int  j =0;j <size;j++){
+            for(int i=size-1;i>=0;i -- ){
+                if(!nextBlock[i][j].isEmpty()){
+                    int toX=i+1,toY=j;
+                    while(toX<size && nextBlock[toX][toY].isEmpty()){
+                        nextBlock[toX][toY].swapRank(nextBlock[toX+1][toY]);
+                        toX++;
+                    }
+                    if(nextBlock[toX-1][toY].isSameRank(preBlock[i][j]))
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX-1,toY,BlockChangeListItem.NextStatus.MAINTAIN));
+                    else{
+                        changeList.add(new BlockChangeListItem(preBlock[i][j],toX-1,toY,BlockChangeListItem.NextStatus.INCREASE));
+                        changeList.add(new BlockChangeListItem(preBlock[i+1][j],toX-1,toY,BlockChangeListItem.NextStatus.DESTROY));
+                    }
                 }
             }
         }
+        //layout.playTransition(changeList);
         newStatus(nextStatus);
     }
 
@@ -159,7 +207,7 @@ public class Game {
             history.removeFirst();
         }
         spawnBlock();
-        layout.setBoard(history.getLast().getBoard());
+        //layout.setBoard(history.getLast().getBoard());
         layout.refresh();
     }
 
