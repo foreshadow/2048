@@ -8,7 +8,7 @@ public class BlockChangeList extends ArrayList<BlockChangeListItem> {
         int score = 0;
         for (BlockChangeListItem item : this) {
             if (item.nextStatus == BlockChangeListItem.NextStatus.INCREASE) {
-                score += Settings.SCORE_LIST[item.block.getRank()];
+                score += Settings.UI.SCORE_LIST[item.block.getRank()];
             }
         }
         return score;

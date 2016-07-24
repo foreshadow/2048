@@ -35,14 +35,6 @@ public class Board implements Cloneable {
         return clone;
     }
 
-//    public ArrayList<Block> blockLine() {
-//        ArrayList<Block> list = new ArrayList<>();
-//        for (Block[] line : data) {
-//            Collections.addAll(list, line);
-//        }
-//        return list;
-//    }
-
     public Block[][] getData() {
         return data;
     }

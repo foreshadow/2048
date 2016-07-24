@@ -2,7 +2,6 @@ package com.bjtu.zero.a2048;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -17,15 +16,15 @@ public class BlockView extends View {
 
     public BlockView(Context context, Block block, int centerX, int centerY, int width, int height) {
         super(context);
-        this.setBlock(block);
+        this.block = block;
         painter.setTextSize(75);
         painter.setTextAlign(Paint.Align.CENTER);
         setGeometry(centerX, centerY, width, height);
     }
 
     void setGeometry(int centerX, int centerY, int width, int height) {
-        width = (int) (width * Settings.INNER_BLOCK_PERCENT);
-        height = (int) (height * Settings.INNER_BLOCK_PERCENT);
+        width = (int) (width * Settings.UI.INNER_BLOCK_PERCENT);
+        height = (int) (height * Settings.UI.INNER_BLOCK_PERCENT);
         boundingRect.set(centerY - width / 2, centerX - height / 2,
                 centerY + width / 2, centerX + height / 2);
     }
@@ -41,21 +40,17 @@ public class BlockView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        painter.setColor(Color.GRAY);
+        painter.setColor(Settings.UI.BACKGROUND[block.getRank()]);
         canvas.drawRoundRect(toRectF(boundingRect), 20, 20, painter);
-        painter.setColor(Color.DKGRAY);
+        painter.setColor(Settings.UI.FOREGROUND[block.getRank()]);
         Paint.FontMetricsInt fontMetrics = painter.getFontMetricsInt();
         int baseline = (boundingRect.bottom + boundingRect.top
                 - fontMetrics.bottom - fontMetrics.top) / 2;
-        canvas.drawText(Settings.STRING_LIST[getBlock().getRank()],
+        canvas.drawText(Settings.UI.STRING_LIST[block.getRank()],
                 boundingRect.centerX(), baseline, painter);
     }
 
     public Block getBlock() {
         return block;
-    }
-
-    public void setBlock(Block block) {
-        this.block = block;
     }
 }

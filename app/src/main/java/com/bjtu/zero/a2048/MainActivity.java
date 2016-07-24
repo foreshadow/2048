@@ -3,7 +3,6 @@ package com.bjtu.zero.a2048;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
                 double dx = motionEvent1.getX() - motionEvent.getX();
                 double dy = motionEvent1.getY() - motionEvent.getY();
-                Log.e("onfling", "dx" + dx + "dy" + dy);
-                if (Math.sqrt(dx * dx + dy * dy) > Settings.MINIMUM_MOVING_DISTANCE) {
+                if (Math.sqrt(dx * dx + dy * dy) > Settings.UI.MINIMUM_MOVING_DISTANCE) {
                     if (dx > dy && dx > -dy) {
                         game.slideRight();
                     } else if (dx < dy && dx < -dy) {
@@ -75,12 +73,10 @@ public class MainActivity extends AppCompatActivity {
         gl.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e("ontouch", "");
                 return gd.onTouchEvent(motionEvent);
             }
         });
         gl.setLongClickable(true);
-        Log.e("oncreate", "");
     }
 
     public void gameOver() {
