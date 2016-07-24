@@ -16,7 +16,7 @@ public class GameLayout extends FrameLayout {
     int[][] centerY;
 
     public GameLayout(Context context, int width) {
-        this(context, width, Settings.DEFAULT_SIZE);
+        this(context, width, Settings.Game.DEFAULT_SIZE);
     }
 
     public GameLayout(Context context, int width, int size) {
@@ -24,7 +24,7 @@ public class GameLayout extends FrameLayout {
         this.size = size;
         viewGrid = new BlockView[size][size];
         setLayoutParams(new LayoutParams(width, width));
-        int boarder = (int) (width * Settings.BOARD_BOARDER_PERCENT);
+        int boarder = (int) (width * Settings.UI.BOARD_BOARDER_PERCENT);
         int boardWidth = width - boarder * 2;
         blockWidth = boardWidth / size;
         centerX = new int[size][size];

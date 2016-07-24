@@ -15,7 +15,7 @@ public class Game {
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     public Game(GameLayout layout) {
-        this(layout, Settings.DEFAULT_SIZE);
+        this(layout, Settings.Game.DEFAULT_SIZE);
     }
 
     public Game(GameLayout layout, int size) {
@@ -59,7 +59,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i][j + 1])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
+                        nextStatus.addScore(Settings.UI.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i][j + 1].setRank(0);
                     }
                 }
@@ -85,7 +85,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i][j - 1])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
+                        nextStatus.addScore(Settings.UI.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i][j - 1].setRank(0);
                     }
                 }
@@ -111,7 +111,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i + 1][j])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
+                        nextStatus.addScore(Settings.UI.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i + 1][j].setRank(0);
                     }
                 }
@@ -137,7 +137,7 @@ public class Game {
                 if (!block.isEmpty()) {
                     if (block.isSameRank(nextBoard.getData()[i - 1][j])) {
                         block.increase();
-                        nextStatus.addScore(Settings.SCORE_LIST[block.getRank()]);
+                        nextStatus.addScore(Settings.UI.SCORE_LIST[block.getRank()]);
                         nextBoard.getData()[i - 1][j].setRank(0);
                     }
                 }
@@ -155,7 +155,7 @@ public class Game {
 
     private void newStatus(Status status) {
         history.add(status);
-        while (history.size() > Settings.HISTORTY_SIZE) {
+        while (history.size() > Settings.Game.HISTORY_SIZE) {
             history.removeFirst();
         }
         spawnBlock();
@@ -168,7 +168,7 @@ public class Game {
             throw new AssertionError();
         }
         int rank = 1;
-        if (Math.random() < Settings.RANK_2_PROBABILITY) {
+        if (Math.random() < Settings.Game.RANK_2_PROBABILITY) {
             rank = 2;
         }
         ArrayList<Point> emptyBlocks = history.getLast().getBoard().emptyBlocks();
