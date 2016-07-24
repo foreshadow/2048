@@ -49,7 +49,7 @@ public class Game {
         return false;
     }
 
-    public void leftSlide() {
+    public void slideLeft() {
         if (!canMove(2)) return;
         Status nextStatus = history.getLast().clone();
         Board nextBoard = nextStatus.getBoard();
@@ -75,7 +75,7 @@ public class Game {
         newStatus(nextStatus);
     }
 
-    public void rightSlide() {
+    public void slideRight() {
         if (!canMove(3)) return;
         Status nextStatus = history.getLast().clone();
         Board nextBoard = nextStatus.getBoard();
@@ -101,7 +101,7 @@ public class Game {
         newStatus(nextStatus);
     }
 
-    public void upSlide() {
+    public void slideUp() {
         if (!canMove(0)) return;
         Status nextStatus = history.getLast().clone();
         Board nextBoard = nextStatus.getBoard();
@@ -127,7 +127,7 @@ public class Game {
         newStatus(nextStatus);
     }
 
-    public void downSlide() {
+    public void slideDown() {
         if (!canMove(1)) return;
         Status nextStatus = history.getLast().clone();
         Board nextBoard = nextStatus.getBoard();
@@ -158,6 +158,9 @@ public class Game {
         while (history.size() > Settings.HISTORTY_SIZE) {
             history.removeFirst();
         }
+        spawnBlock();
+        layout.setBoard(history.getLast().getBoard());
+        layout.refresh();
     }
 
     private void spawnBlock() {
