@@ -28,7 +28,9 @@ public class Board implements Cloneable {
         try {
             clone = (Board) super.clone();
             clone.setSize(this.getSize());
-            clone.data = this.data.clone();
+            for (int i = 0; i < size; i++) {
+                clone.data[i] = this.getData()[i].clone();
+            }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

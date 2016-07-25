@@ -2,6 +2,8 @@ package com.bjtu.zero.a2048;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -16,7 +18,7 @@ public class GameLayout extends FrameLayout {
     int[][] centerY;
 
     public GameLayout(Context context, int width) {
-        this(context, width, Settings.Game.DEFAULT_SIZE);
+        this(context, width, Setting.Game.DEFAULT_SIZE);
     }
 
     public GameLayout(Context context, int width, int size) {
@@ -24,7 +26,7 @@ public class GameLayout extends FrameLayout {
         this.size = size;
         viewGrid = new BlockView[size][size];
         setLayoutParams(new LayoutParams(width, width));
-        int boarder = (int) (width * Settings.UI.BOARD_BOARDER_PERCENT);
+        int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
         int boardWidth = width - boarder * 2;
         blockWidth = boardWidth / size;
         centerX = new int[size][size];
@@ -37,12 +39,15 @@ public class GameLayout extends FrameLayout {
         }
     }
 
-    public void setBlock(int i, int j, Block block) {
+    public void setBlock(int i, int j, Block block, boolean visible) {
         if (viewGrid[i][j] != null) {
             removeView(viewGrid[i][j]);
         }
         viewGrid[i][j] = new BlockView(getContext(), block,
                 centerX[i][j], centerY[i][j], blockWidth, blockWidth);
+        if (!visible) {
+            viewGrid[i][j].setVisible(false);
+        }
         addView(viewGrid[i][j]);
     }
 
@@ -52,7 +57,7 @@ public class GameLayout extends FrameLayout {
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                setBlock(i, j, board.getData()[i][j]);
+                setBlock(i, j, board.getData()[i][j], true);
             }
         }
     }
@@ -61,7 +66,7 @@ public class GameLayout extends FrameLayout {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j].getBlock() == block)
-                    return new Point(i, j);
+                    return new Point(j, i); // deliberately transformation
             }
         }
         return null;
@@ -78,20 +83,37 @@ public class GameLayout extends FrameLayout {
     }
 
     public void playTransition(BlockChangeList list) {
-        AnimationSet set = new AnimationSet(true);
+        AnimationSet animationSet = new AnimationSet(true);
         for (BlockChangeListItem item : list) {
             Point fromPos = findCoordinate(item.block);
-            int fromX = centerX[fromPos.x][fromPos.y];
-            int fromY = centerY[fromPos.x][fromPos.y];
-            int toX = centerX[item.toX][item.toY];
-            int toY = centerY[item.toX][item.toY];
-            set.addAnimation(new TranslateAnimation(fromX, toX, fromY, toY));
+            int toX = centerX[item.toY][item.toX] - centerX[fromPos.x][fromPos.y];
+            int toY = centerY[item.toY][item.toX] - centerY[fromPos.x][fromPos.y];
+            Point p = findCoordinate(item.block);
+            Animation animation = new TranslateAnimation(0, toX, 0, toY);
+            animation.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+            viewGrid[p.y][p.x].setAnimation(animation);
+            animationSet.addAnimation(animation);
+            Log.e("ANIMATION",
+                    "Block rank = " + item.block.getRank()
+                            + ", from lPos (" + fromPos.y + ", " + fromPos.x + "), "
+                            + "to lPos (" + item.toX + ", " + item.toY + "), "
+                            + "flag = " + item.nextStatus.toString()
+            );
         }
-        startAnimation(set);
+        animationSet.start();
     }
 
     public void playSpawn(int i, int j, Block block) {
-        setBlock(i, j, block);
-        viewGrid[i][j].animate(new ScaleAnimation(blockWidth / 2, blockWidth / 2, blockWidth, blockWidth));
+        setBlock(i, j, block, false);
+        Point p = findCoordinate(block);
+        Animation animation = new ScaleAnimation(
+                Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
+                Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
+                Animation.ABSOLUTE, centerX[p.x][p.y],
+                Animation.ABSOLUTE, centerY[p.x][p.y]
+        );
+        animation.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+        viewGrid[i][j].startAnimation(animation);
+        viewGrid[i][j].setVisible();
     }
 }

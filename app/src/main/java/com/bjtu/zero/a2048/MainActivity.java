@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
                 double dx = motionEvent1.getX() - motionEvent.getX();
                 double dy = motionEvent1.getY() - motionEvent.getY();
-                if (Math.sqrt(dx * dx + dy * dy) > Settings.UI.MINIMUM_MOVING_DISTANCE) {
+                if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING) {
                     if (dx > dy && dx > -dy) {
                         game.slideRight();
                     } else if (dx < dy && dx < -dy) {

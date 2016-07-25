@@ -2,7 +2,7 @@ package com.bjtu.zero.a2048;
 
 import android.graphics.Color;
 
-public class Settings {
+public class Setting {
 
     static class UI {
 
@@ -31,9 +31,13 @@ public class Settings {
                 Color.WHITE, Color.WHITE,
                 Color.WHITE, Color.WHITE,
         };
-        public static final double BOARD_BOARDER_PERCENT = 0.1;
+        public static final double BOARD_BOARDER_PERCENT = 0.08;
         public static final double INNER_BLOCK_PERCENT = 0.9;
-        public static final double MINIMUM_MOVING_DISTANCE = 50;
+        public static final double MINIMUM_MOVING_DISTANCE_ON_FLING = 50;
+        public static final int ANIMATION_DURATION_MILLISECONDS = 500;
+        public static final float BLOCK_SPAWN_SCALE_FROM_PERCENT = 0.5f;
+        public static final int BLOCK_ROUND_RAD = 20;
+        public static final int BLOCK_FONT_SIZE = 75;
     }
 
     static class Game {
