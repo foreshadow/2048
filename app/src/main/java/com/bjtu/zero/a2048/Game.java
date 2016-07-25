@@ -74,6 +74,7 @@ public class Game {
                             changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY, BlockChangeListItem.NextStatus.DESTROY));
                             break;
                         }
+                        else if(!nextBlock[i][k].isEmpty()) break ;
                     }
                     if (nextBlock[i][j].isSameRank(preBlock[i][j])) {
                         int toY = j - 1;
@@ -118,6 +119,7 @@ public class Game {
                             changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY, BlockChangeListItem.NextStatus.DESTROY));
                             break;
                         }
+                        else if(!nextBlock[i][k].isEmpty()) break ;
                     }
                     if (nextBlock[i][j].isSameRank(preBlock[i][j])) {
                         int toY = j + 1;
@@ -162,6 +164,7 @@ public class Game {
                             changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j, BlockChangeListItem.NextStatus.DESTROY));
                             break;
                         }
+                        else if(!nextBlock[k][j].isEmpty()) break ;
                     }
                     if (nextBlock[i][j].isSameRank(preBlock[i][j])) {
                         int toX = i - 1;
@@ -206,6 +209,7 @@ public class Game {
                             changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j, BlockChangeListItem.NextStatus.DESTROY));
                             break;
                         }
+                        else if(!nextBlock[k][j].isEmpty()) break ;
                     }
                     if (nextBlock[i][j].isSameRank(preBlock[i][j])) {
                         int toX = i + 1;
