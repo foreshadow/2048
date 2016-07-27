@@ -21,10 +21,11 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout ll = new LinearLayout(this);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        gl = new GameLayout(ll.getContext(), windowSize.x);
+        game = new Game();
+        gl = new GameLayout(ll.getContext(), windowSize.x, game);
         ll.addView(gl);
         setContentView(ll);
-        game = new Game(gl);
+        game.setLayout(gl);
         gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {
             @Override
             public boolean onDown(MotionEvent motionEvent) {
@@ -77,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         gl.setLongClickable(true);
-    }
-
-    public void gameOver() {
-        // TODO: 2016/7/21  
+        game.start();
     }
 }

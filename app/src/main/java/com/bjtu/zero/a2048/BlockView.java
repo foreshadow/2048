@@ -37,7 +37,7 @@ public class BlockView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (visible) {
+        if (visible && !block.isEmpty()) {
             painter.setColor(Setting.UI.BACKGROUND[block.getRank()]);
             canvas.drawRoundRect(
                     toRectF(boundingRect),

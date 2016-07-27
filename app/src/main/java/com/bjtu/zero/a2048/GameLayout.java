@@ -12,18 +12,20 @@ import android.widget.FrameLayout;
 public class GameLayout extends FrameLayout {
 
     int size;
+    Game game;
     BlockView[][] viewGrid;
     int blockWidth;
     int[][] centerX;
     int[][] centerY;
 
-    public GameLayout(Context context, int width) {
-        this(context, width, Setting.Game.DEFAULT_SIZE);
+    public GameLayout(Context context, int width, Game game) {
+        this(context, width, game, Setting.Game.DEFAULT_SIZE);
     }
 
-    public GameLayout(Context context, int width, int size) {
+    public GameLayout(Context context, int width, Game game, int size) {
         super(context);
         this.size = size;
+        this.game = game;
         viewGrid = new BlockView[size][size];
         setLayoutParams(new LayoutParams(width, width));
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
@@ -51,6 +53,26 @@ public class GameLayout extends FrameLayout {
         addView(viewGrid[i][j]);
     }
 
+    public void setBlock2(int i, int j) {
+        if (viewGrid[i][j] != null) {
+            Block block = viewGrid[i][j].getBlock();
+            removeView(viewGrid[i][j]);
+            viewGrid[i][j] = new BlockView(getContext(), block,
+                    centerX[i][j], centerY[i][j], blockWidth, blockWidth);
+            addView(viewGrid[i][j]);
+        }
+    }
+
+    public void clearBoard() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (viewGrid[i][j] != null) {
+                    removeView(viewGrid[i][j]);
+                }
+            }
+        }
+    }
+
     public void setBoard(Board board) {
         if (size != board.getSize()) {
             throw new AssertionError();
@@ -58,6 +80,14 @@ public class GameLayout extends FrameLayout {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 setBlock(i, j, board.getData()[i][j], true);
+            }
+        }
+    }
+
+    public void setBoard2() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                setBlock2(i, j);
             }
         }
     }
@@ -82,8 +112,9 @@ public class GameLayout extends FrameLayout {
         }
     }
 
-    public void playTransition(BlockChangeList list) {
+    public void playTransition(BlockChangeList list, Animation.AnimationListener animationListener) {
         AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point fromPos = findCoordinate(item.block);
             int toX = centerX[item.toY][item.toX] - centerX[fromPos.x][fromPos.y];
@@ -91,6 +122,10 @@ public class GameLayout extends FrameLayout {
             Point p = findCoordinate(item.block);
             Animation animation = new TranslateAnimation(0, toX, 0, toY);
             animation.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+            if (animationListener != null) {
+                animation.setAnimationListener(animationListener);
+                animationListener = null;
+            }
             viewGrid[p.y][p.x].setAnimation(animation);
             animationSet.addAnimation(animation);
             Log.e("ANIMATION",
