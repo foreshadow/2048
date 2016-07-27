@@ -3,6 +3,7 @@ package com.bjtu.zero.a2048;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,15 +11,26 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    private UndoButton btn_undo;
     private GameLayout gl;
     private Game game;
-
     private GestureDetector gd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        btn_undo = new UndoButton(ll.getContext());
+        btn_undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                game.undo();
+                btn_undo.update(game.getHistory().size());
+            }
+        });
+        ll.addView(btn_undo);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         game = new Game();
@@ -66,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (dy < dx && dy < -dx) {
                         game.slideUp();
                     }
+                    btn_undo.update(game.getHistory().size());
                     return true;
                 }
                 return false;

@@ -42,7 +42,7 @@ public class Setting {
 
     static class Game {
 
-        public static final int HISTORY_SIZE = 1; //可撤销的步数
+        public static final int HISTORY_SIZE = 21;
         public static final double RANK_2_PROBABILITY = 0.1; //RANK2出现的概率
         public static final int DEFAULT_SIZE = 4;
     }

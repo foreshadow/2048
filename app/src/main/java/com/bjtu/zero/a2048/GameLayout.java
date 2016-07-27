@@ -129,10 +129,10 @@ public class GameLayout extends FrameLayout {
             viewGrid[p.y][p.x].setAnimation(animation);
             animationSet.addAnimation(animation);
             Log.e("ANIMATION",
-                    "Block rank = " + item.block.getRank()
-                            + ", from lPos (" + fromPos.y + ", " + fromPos.x + "), "
-                            + "to lPos (" + item.toX + ", " + item.toY + "), "
-                            + "flag = " + item.nextStatus.toString()
+                    "Block r=" + item.block.getRank()
+                            + ", lPos (" + fromPos.y + ", " + fromPos.x + ")"
+                            + "->(" + item.toX + ", " + item.toY + "), "
+                            + "flag=" + item.nextStatus.toString()
             );
         }
         animationSet.start();
