@@ -9,6 +9,10 @@ public class Board implements Cloneable {
     private int size;
     private Block[][] data;
 
+    public Board() {
+        this(Setting.Game.DEFAULT_SIZE);
+    }
+
     public Board(int size) {
         this.setSize(size);
         data = new Block[size][size];

@@ -27,7 +27,10 @@ public class Game {
 
     public void reset() {
         getHistory().clear();
-        // clear board
+        if (layout != null) {
+            layout.setBoard(new Board());
+            start();
+        }
     }
 
     public void start() {
@@ -41,6 +44,9 @@ public class Game {
 
     public void setLayout(GameLayout layout) {
         this.layout = layout;
+        if (layout != null) {
+            layout.refresh();
+        }
     }
 
     private boolean canMove(int direction) {
@@ -247,15 +253,15 @@ public class Game {
                 }
             });
         }
-
         getHistory().add(status);
         while (getHistory().size() > Setting.Game.HISTORY_SIZE) {
             getHistory().removeFirst();
         }
-
-        // animation.onEnd()
-//        layout.refresh();
-        layout.setBoard2();
+        if (layout != null) {
+            layout.setBoard2(); // critical !
+        } else {
+            spawnBlock();
+        }
     }
 
     public void spawnBlock() {
@@ -270,7 +276,9 @@ public class Game {
         final Point p = emptyBlocks.get((new Random()).nextInt(emptyBlocks.size()));
         getHistory().getLast().getBoard().getData()[p.x][p.y] = new Block(rank);
 
-        layout.playSpawn(p.x, p.y, getHistory().getLast().getBoard().getData()[p.x][p.y]);
+        if (layout != null) {
+            layout.playSpawn(p.x, p.y, getHistory().getLast().getBoard().getData()[p.x][p.y]);
+        }
     }
 
     public void undo() {
@@ -286,9 +294,7 @@ public class Game {
     }
 
     private void gameOverJudge() {
-        if (isGameOver()) {
-            // TODO: 2016/7/24
-        }
+
     }
 
     public Deque<Status> getHistory() {
