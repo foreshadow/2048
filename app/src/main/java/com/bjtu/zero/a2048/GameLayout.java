@@ -114,14 +114,14 @@ public class GameLayout extends FrameLayout {
 
     public void playTransition(BlockChangeList list, Animation.AnimationListener animationListener) {
         AnimationSet animationSet = new AnimationSet(true);
-        animationSet.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+        animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point fromPos = findCoordinate(item.block);
             int toX = centerX[item.toY][item.toX] - centerX[fromPos.x][fromPos.y];
             int toY = centerY[item.toY][item.toX] - centerY[fromPos.x][fromPos.y];
             Point p = findCoordinate(item.block);
             Animation animation = new TranslateAnimation(0, toX, 0, toY);
-            animation.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+            animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
             if (animationListener != null) {
                 animation.setAnimationListener(animationListener);
                 animationListener = null;
@@ -147,7 +147,7 @@ public class GameLayout extends FrameLayout {
                 Animation.ABSOLUTE, centerX[p.x][p.y],
                 Animation.ABSOLUTE, centerY[p.x][p.y]
         );
-        animation.setDuration(Setting.UI.ANIMATION_DURATION_MILLISECONDS);
+        animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         viewGrid[i][j].startAnimation(animation);
         viewGrid[i][j].setVisible();
     }

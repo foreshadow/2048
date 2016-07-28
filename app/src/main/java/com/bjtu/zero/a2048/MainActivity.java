@@ -7,11 +7,17 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     private UndoButton btn_undo;
+    private Button btn_restart;
+    private Button btn_auto_1;
+    private Button btn_auto_2;
     private GameLayout gl;
     private Game game;
     private GestureDetector gd;
@@ -19,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        btn_undo = new UndoButton(ll.getContext());
+        LinearLayout ll_v = new LinearLayout(this);
+        ll_v.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout ll_h = new LinearLayout(ll_v.getContext());
+        btn_undo = new UndoButton(ll_h.getContext());
         btn_undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -30,13 +37,108 @@ public class MainActivity extends AppCompatActivity {
                 btn_undo.update(game.getHistory().size());
             }
         });
-        ll.addView(btn_undo);
+        btn_restart = new Button(ll_h.getContext());
+        btn_restart.setText("Restart");
+        btn_restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.reset();
+                btn_undo.update(game.getHistory().size());
+            }
+        });
+        btn_auto_1 = new Button(ll_h.getContext());
+        btn_auto_1.setText("Auto 5");
+        btn_auto_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
+                game.setLayout(null);
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 5; i++) {
+                            switch ((new Random()).nextInt(4)) {
+                                case 0:
+                                    game.slideLeft();
+                                    break;
+                                case 1:
+                                    game.slideUp();
+                                    break;
+                                case 2:
+                                    game.slideRight();
+                                    break;
+                                case 3:
+                                    game.slideDown();
+                                    break;
+                            }
+                        }
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                game.setLayout(gl);
+                gl.setBoard(game.getHistory().getLast().getBoard());
+                Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
+                        Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
+                btn_undo.update(game.getHistory().size());
+            }
+        });
+        btn_auto_2 = new Button(ll_h.getContext());
+        btn_auto_2.setText("Auto 30");
+        btn_auto_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
+                game.setLayout(null);
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 30; i++) {
+                            switch ((new Random()).nextInt(4)) {
+                                case 0:
+                                    game.slideLeft();
+                                    break;
+                                case 1:
+                                    game.slideUp();
+                                    break;
+                                case 2:
+                                    game.slideRight();
+                                    break;
+                                case 3:
+                                    game.slideDown();
+                                    break;
+                            }
+                        }
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                game.setLayout(gl);
+                gl.setBoard(game.getHistory().getLast().getBoard());
+                Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
+                        Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
+                btn_undo.update(game.getHistory().size());
+            }
+        });
+        ll_h.addView(btn_undo);
+        ll_h.addView(btn_restart);
+        ll_h.addView(btn_auto_1);
+        ll_h.addView(btn_auto_2);
+        ll_v.addView(ll_h);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         game = new Game();
-        gl = new GameLayout(ll.getContext(), windowSize.x, game);
-        ll.addView(gl);
-        setContentView(ll);
+        gl = new GameLayout(ll_v.getContext(), windowSize.x, game);
+        ll_v.addView(gl);
+        setContentView(ll_v);
         game.setLayout(gl);
         game.loadSound(this);
         gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {

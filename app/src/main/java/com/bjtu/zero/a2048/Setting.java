@@ -7,10 +7,15 @@ public class Setting {
     static class UI {
 
         public static final String[] STRING_LIST = new String[]{
-                "", "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048",
+                "",
+                "2", "4", "8", "16",
+                "32", "64", "128", "256",
+                "512", "1024", "2048", "4096",
+                "8192", "16384", "32768", "65536",
         };
         public static final int[] SCORE_LIST = new int[]{
-                0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048,
+                0, 2, 4, 8, 16, 32, 64, 128, 256,
+                512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,
         };
         public static final int[] BACKGROUND = new int[]{
                 Color.parseColor("#bfbfbf"),
@@ -21,6 +26,7 @@ public class Setting {
                 Color.rgb(255, 93, 46), Color.rgb(255, 74, 37),
                 Color.rgb(255, 56, 28), Color.rgb(255, 37, 19),
                 Color.rgb(255, 19, 9), Color.rgb(255, 0, 0),
+                Color.rgb(127, 255, 127), Color.rgb(0, 255, 0),
         };
         public static final int[] FOREGROUND = new int[]{
                 Color.TRANSPARENT,
@@ -30,11 +36,13 @@ public class Setting {
                 Color.WHITE, Color.WHITE,
                 Color.WHITE, Color.WHITE,
                 Color.WHITE, Color.WHITE,
+                Color.WHITE, Color.WHITE,
+                Color.WHITE, Color.WHITE,
         };
         public static final double BOARD_BOARDER_PERCENT = 0.08;
         public static final double INNER_BLOCK_PERCENT = 0.9;
         public static final double MINIMUM_MOVING_DISTANCE_ON_FLING = 50;
-        public static final int ANIMATION_DURATION_MILLISECONDS = 100;
+        public static final int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 100;
         public static final float BLOCK_SPAWN_SCALE_FROM_PERCENT = 0.5f;
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
@@ -45,5 +53,10 @@ public class Setting {
         public static final int HISTORY_SIZE = 21;
         public static final double RANK_2_PROBABILITY = 0.1; //RANK2出现的概率
         public static final int DEFAULT_SIZE = 4;
+    }
+
+    static class Runtime {
+        public static int ANIMATION_DURATION_MILLISECONDS =
+                UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
     }
 }
