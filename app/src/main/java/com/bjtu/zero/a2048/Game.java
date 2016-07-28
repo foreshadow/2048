@@ -15,14 +15,15 @@ public class Game {
     private int size;
     private Deque<Status> history;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
     public Game() {
         this(Setting.Game.DEFAULT_SIZE);
     }
+    protected Score s;
 
     public Game(int size) {
         this.size = size;
         history = new LinkedList<>();
+        s = new Score();
     }
 
     public void reset() {
@@ -31,6 +32,7 @@ public class Game {
             layout.setBoard(new Board());
             start();
         }
+        s.setScore(0);
     }
 
     public void start() {
@@ -82,6 +84,9 @@ public class Game {
                             nextBlock[i][j].increase();
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
+                            s.setScore(nextStatus.getScore());
+                            if(s.now > s.high)
+                                s.setHighScore(s.now);
                             int toY = j - 1;
                             while (toY >= 0 && nextBlock[i][toY].isEmpty()) {
                                 toY--;
@@ -123,6 +128,9 @@ public class Game {
                             nextBlock[i][j].increase();
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
+                            s.setScore(nextStatus.getScore());
+                            if(s.now > s.high)
+                                s.setHighScore(s.now);
                             int toY = j + 1;
                             while (toY < size && nextBlock[i][toY].isEmpty()) {
                                 toY++;
@@ -164,6 +172,9 @@ public class Game {
                             nextBlock[i][j].increase();
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
+                            s.setScore(nextStatus.getScore());
+                            if(s.now > s.high)
+                                s.setHighScore(s.now);
                             int toX = i - 1;
                             while (toX >= 0 && nextBlock[toX][j].isEmpty()) {
                                 toX--;
@@ -230,6 +241,9 @@ public class Game {
             }
         }
         newStatus(changeList, nextStatus);
+        s.setScore(nextStatus.getScore());
+        if(s.now > s.high)
+            s.setHighScore(s.now);
     }
 
     private void newStatus(BlockChangeList changeList, Status status) {

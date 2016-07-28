@@ -2,13 +2,16 @@ package com.bjtu.zero.a2048;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -25,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        game = new Game();
         LinearLayout ll_v = new LinearLayout(this);
         ll_v.setOrientation(LinearLayout.VERTICAL);
         LinearLayout ll_h = new LinearLayout(ll_v.getContext());
+        LinearLayout ll_h1 = new LinearLayout(ll_v.getContext());
         btn_undo = new UndoButton(ll_h.getContext());
         btn_undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,15 +133,22 @@ public class MainActivity extends AppCompatActivity {
                 btn_undo.update(game.getHistory().size());
             }
         });
+
+
         ll_h.addView(btn_undo);
         ll_h.addView(btn_restart);
         ll_h.addView(btn_auto_1);
         ll_h.addView(btn_auto_2);
+        //ll_h1.addView(game.s.t1);
+        //ll_h1.addView(game.s.score);
+        //ll_h1.addView(game.s.t2);
+        //ll_h1.addView(game.s.highScore);
         ll_v.addView(ll_h);
+        ll_v.addView(ll_h1);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         game = new Game();
-        gl = new GameLayout(ll_v.getContext(), windowSize.x, game);
+        gl = new GameLayout(ll_v.getContext(), windowSize.x, game,game.s);
         ll_v.addView(gl);
         setContentView(ll_v);
         game.setLayout(gl);

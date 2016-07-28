@@ -3,11 +3,14 @@ package com.bjtu.zero.a2048;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class GameLayout extends FrameLayout {
 
@@ -18,14 +21,40 @@ public class GameLayout extends FrameLayout {
     int[][] centerX;
     int[][] centerY;
 
-    public GameLayout(Context context, int width, Game game) {
-        this(context, width, game, Setting.Game.DEFAULT_SIZE);
+    public GameLayout(Context context, int width, Game game,Score s) {
+        this(context, width, game, Setting.Game.DEFAULT_SIZE,s);
     }
 
-    public GameLayout(Context context, int width, Game game, int size) {
+    public GameLayout(Context context, int width, Game game, int size,Score s) {
         super(context);
         this.size = size;
         this.game = game;
+        game.s = s;
+
+        LinearLayout ll_h1 = new LinearLayout(this.getContext());
+        game.s.t1 = new TextView(this.getContext());
+        game.s.t1.setText("分数");
+        game.s.t1.setWidth(200);
+        game.s.t1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        game.s.score = new TextView(this.getContext());
+        game.s.score.setText("0");
+        game.s.score.setWidth(300);
+        game.s.score.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        game.s.t2 = new TextView(this.getContext());
+        game.s.t2.setText("最高分");
+        game.s.t2.setWidth(300);
+        game.s.t2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        game.s.highScore = new TextView(this.getContext());
+        game.s.highScore.setText("0");
+        game.s.highScore.setWidth(300);
+        game.s.highScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        ll_h1.addView(game.s.t1);
+        ll_h1.addView(game.s.score);
+        ll_h1.addView(game.s.t2);
+        ll_h1.addView(game.s.highScore);
+        this.addView(ll_h1);
+
+
         viewGrid = new BlockView[size][size];
         setLayoutParams(new LayoutParams(width, width));
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
@@ -103,6 +132,7 @@ public class GameLayout extends FrameLayout {
     }
 
     public void refresh() {
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j] != null) {
