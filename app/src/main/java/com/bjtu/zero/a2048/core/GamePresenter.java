@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
+import com.bjtu.zero.a2048.ui.SoundManager;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,10 +16,10 @@ public class GamePresenter {
 
     private int size;
     private boolean animationInProgress;
-    private GameLayout layout;
-    private GameModel model;
+    private GameLayout gameLayout;
+    private GameModel gameModel;
+    private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    private Sound mSound ;
 
     public GamePresenter() {
         this(Setting.Game.DEFAULT_SIZE);
@@ -26,48 +27,47 @@ public class GamePresenter {
 
     public GamePresenter(int size) {
         this.size = size;
-        model = new GameModel(Setting.Game.HISTORY_SIZE);
         animationInProgress = false;
-        history = new LinkedList<>();
-        mSound =new Sound();
+        gameModel = new GameModel(Setting.Game.HISTORY_SIZE);
+        soundManager = new SoundManager();
     }
 
     public void reset() {
-        model.clear();
-        if (layout != null) {
-            layout.setBoard(new Board());
+        gameModel.clear();
+        if (gameLayout != null) {
+            gameLayout.setBoard(new Board());
             start();
         }
     }
 
     public void start() {
-        model.append(new Status(size));
-        if (layout != null) {
-            layout.setBoard(model.lastBoard());
+        gameModel.append(new Status(size));
+        if (gameLayout != null) {
+            gameLayout.setBoard(gameModel.lastBoard());
         }
         spawnBlock();
         spawnBlock();
     }
 
-    public void setLayout(GameLayout layout) {
-        this.layout = layout;
-        if (layout != null) {
-            layout.refresh();
+    public void setGameLayout(GameLayout gameLayout) {
+        this.gameLayout = gameLayout;
+        if (gameLayout != null) {
+            gameLayout.refresh();
         }
     }
 
     //设置是否播放音效
-    public void setSound(boolean haveSound){
-        mSound.setSound(haveSound);
+    public void setSound(boolean hasSound) {
+        soundManager.setSound(hasSound);
     }
 
-    public void loadSound(Context context){
-        mSound.load(context);
+    public void loadSound(Context context) {
+        soundManager.load(context);
     }
 
     private boolean canMove(int direction) {
         if (animationInProgress) return false;
-        Status nowStatus = model.lastStatus();
+        Status nowStatus = gameModel.lastStatus();
         //某个rank非0的block的next位置为rank==0的block
         //某个rank非0的block的next位置为rank相同的block
         for (int i = 0; i < size; i++) {
@@ -87,18 +87,18 @@ public class GamePresenter {
 
     public void slideLeft() {
         if (!canMove(2)) return;
-        Status nextStatus = model.lastStatus().clone();
+        Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
-        Block[][] preBlock = model.lastBlocks();
+        Block[][] preBlock = gameModel.lastBlocks();
         BlockChangeList changeList = new BlockChangeList();
-        int maxRank =1;
+        int maxRank = 1;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = j + 1; k < size; k++) {
                         if (nextBlock[i][j].isSameRank(nextBlock[i][k])) {
                             nextBlock[i][j].increase();
-                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
+                            maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toY = j - 1;
@@ -125,25 +125,25 @@ public class GamePresenter {
                 }
             }
         }
-        nextStatus.setAdds(nextStatus.getScore()- getHistory().getLast().getScore());
-        mSound.playProcess(maxRank);
+        nextStatus.setAdds(nextStatus.getScore() - getGameModel().lastStatus().getScore());
+        soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
     }
 
     public void slideRight() {
         if (!canMove(3)) return;
-        Status nextStatus = model.lastStatus().clone();
+        Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
-        Block[][] preBlock = model.lastBlocks();
+        Block[][] preBlock = gameModel.lastBlocks();
         BlockChangeList changeList = new BlockChangeList();
-        int maxRank =1;
+        int maxRank = 1;
         for (int i = 0; i < size; i++) {
             for (int j = size - 1; j >= 0; j--) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = j - 1; k >= 0; k--) {
                         if (nextBlock[i][j].isSameRank(nextBlock[i][k])) {
                             nextBlock[i][j].increase();
-                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
+                            maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toY = j + 1;
@@ -170,24 +170,24 @@ public class GamePresenter {
                 }
             }
         }
-        mSound.playProcess(maxRank);
+        soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
     }
 
     public void slideUp() {
         if (!canMove(0)) return;
-        Status nextStatus = model.lastStatus().clone();
+        Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
-        Block[][] preBlock = model.lastBlocks();
+        Block[][] preBlock = gameModel.lastBlocks();
         BlockChangeList changeList = new BlockChangeList();
-        int maxRank =1;
+        int maxRank = 1;
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < size; i++) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = i + 1; k < size; k++) {
                         if (nextBlock[i][j].isSameRank(nextBlock[k][j])) {
                             nextBlock[i][j].increase();
-                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
+                            maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toX = i - 1;
@@ -214,24 +214,24 @@ public class GamePresenter {
                 }
             }
         }
-        mSound.playProcess(maxRank);
+        soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
     }
 
     public void slideDown() {
         if (!canMove(1)) return;
-        Status nextStatus = model.lastStatus().clone();
+        Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
-        Block[][] preBlock = model.lastBlocks();
+        Block[][] preBlock = gameModel.lastBlocks();
         BlockChangeList changeList = new BlockChangeList();
-        int maxRank =1;
+        int maxRank = 1;
         for (int j = 0; j < size; j++) {
             for (int i = size - 1; i >= 0; i--) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = i - 1; k >= 0; k--) {
                         if (nextBlock[i][j].isSameRank(nextBlock[k][j])) {
                             nextBlock[i][j].increase();
-                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
+                            maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toX = i + 1;
@@ -258,23 +258,23 @@ public class GamePresenter {
                 }
             }
         }
-        mSound.playProcess(maxRank);
+        soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
     }
 
     private void validOperation(BlockChangeList changeList, Status status) {
-        if (layout != null) {
-            layout.playTranslation(changeList, new Animation.AnimationListener() {
+        if (gameLayout != null) {
+            gameLayout.playTranslation(changeList, new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
                     animationInProgress = true;
-                    layout.clearBoard();
+                    gameLayout.clearBoard();
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     Log.e("ANIMATION", "onEnd");
-                    layout.setBoard(model.lastBoard());
+                    gameLayout.setBoard(gameModel.lastBoard());
                     spawnBlock();
                     animationInProgress = false;
                 }
@@ -285,9 +285,9 @@ public class GamePresenter {
                 }
             });
         }
-        model.append(status);
-        if (layout != null) {
-            layout.setBoard2(); // critical !
+        gameModel.append(status);
+        if (gameLayout != null) {
+            gameLayout.setBoard2(); // critical !
         } else {
             spawnBlock();
         }
@@ -301,36 +301,36 @@ public class GamePresenter {
         if (Math.random() < Setting.Game.RANK_2_PROBABILITY) {
             rank = 2;
         }
-        ArrayList<Point> emptyBlocks = model.lastBoard().emptyBlocks();
-        final Point p = emptyBlocks.get((new Random()).nextInt(emptyBlocks.size()));
-        model.lastBlocks()[p.x][p.y] = new Block(rank);
+        ArrayList<Point> emptyBlocks = gameModel.lastBoard().emptyBlocks();
+        final Point p = emptyBlocks.get(new Random().nextInt(emptyBlocks.size()));
+        gameModel.lastBlocks()[p.x][p.y] = new Block(rank);
 
-        if (layout != null) {
-            layout.playSpawn(p.x, p.y, model.lastBlocks()[p.x][p.y]);
+        if (gameLayout != null) {
+            gameLayout.playSpawn(p.x, p.y, gameModel.lastBlocks()[p.x][p.y]);
         }
     }
 
     public void undo() {
-        if (model.size() > 1) {
-            model.popBack();
-            layout.setBoard(model.lastBoard());
-            layout.refresh();
+        if (gameModel.size() > 1) {
+            gameModel.popBack();
+            gameLayout.setBoard(gameModel.lastBoard());
+            gameLayout.refresh();
         }
     }
 
     private boolean isGameOver() {
-        return model.lastBoard().isStalemate();
+        return gameModel.lastBoard().isStalemate();
     }
 
     private void gameOverJudge() {
         if (isGameOver()) {
             // TODO: 2016/7/24
-            //mSound.playGameOver();
+            //soundManager.playGameOver();
         }
 
     }
 
-    public GameModel getModel() {
-        return model;
+    public GameModel getGameModel() {
+        return gameModel;
     }
 }
