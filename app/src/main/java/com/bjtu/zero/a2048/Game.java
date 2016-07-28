@@ -1,5 +1,6 @@
 package com.bjtu.zero.a2048;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -15,6 +16,7 @@ public class Game {
     private int size;
     private Deque<Status> history;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    private Sound mSound ;
 
     public Game() {
         this(Setting.Game.DEFAULT_SIZE);
@@ -23,6 +25,7 @@ public class Game {
     public Game(int size) {
         this.size = size;
         history = new LinkedList<>();
+        mSound =new Sound();
     }
 
     public void reset() {
@@ -41,6 +44,15 @@ public class Game {
 
     public void setLayout(GameLayout layout) {
         this.layout = layout;
+    }
+
+    //设置是否播放音效
+    public void setSound(boolean haveSound){
+        mSound.setSound(haveSound);
+    }
+
+    public void loadSound(Context context){
+        mSound.load(context);
     }
 
     private boolean canMove(int direction) {
@@ -68,12 +80,14 @@ public class Game {
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = getHistory().getLast().getBoard().getData();
         BlockChangeList changeList = new BlockChangeList();
+        int maxRank =1;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = j + 1; k < size; k++) {
                         if (nextBlock[i][j].isSameRank(nextBlock[i][k])) {
                             nextBlock[i][j].increase();
+                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toY = j - 1;
@@ -100,6 +114,8 @@ public class Game {
                 }
             }
         }
+        nextStatus.setAdds(nextStatus.getScore()- getHistory().getLast().getScore());
+        mSound.playProcess(maxRank);
         newStatus(changeList, nextStatus);
     }
 
@@ -109,12 +125,14 @@ public class Game {
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = getHistory().getLast().getBoard().getData();
         BlockChangeList changeList = new BlockChangeList();
+        int maxRank =1;
         for (int i = 0; i < size; i++) {
             for (int j = size - 1; j >= 0; j--) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = j - 1; k >= 0; k--) {
                         if (nextBlock[i][j].isSameRank(nextBlock[i][k])) {
                             nextBlock[i][j].increase();
+                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toY = j + 1;
@@ -141,6 +159,7 @@ public class Game {
                 }
             }
         }
+        mSound.playProcess(maxRank);
         newStatus(changeList, nextStatus);
     }
 
@@ -150,12 +169,14 @@ public class Game {
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = getHistory().getLast().getBoard().getData();
         BlockChangeList changeList = new BlockChangeList();
+        int maxRank =1;
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < size; i++) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = i + 1; k < size; k++) {
                         if (nextBlock[i][j].isSameRank(nextBlock[k][j])) {
                             nextBlock[i][j].increase();
+                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toX = i - 1;
@@ -182,6 +203,7 @@ public class Game {
                 }
             }
         }
+        mSound.playProcess(maxRank);
         newStatus(changeList, nextStatus);
     }
 
@@ -191,12 +213,14 @@ public class Game {
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = getHistory().getLast().getBoard().getData();
         BlockChangeList changeList = new BlockChangeList();
+        int maxRank =1;
         for (int j = 0; j < size; j++) {
             for (int i = size - 1; i >= 0; i--) {
                 if (!nextBlock[i][j].isEmpty()) {
                     for (int k = i - 1; k >= 0; k--) {
                         if (nextBlock[i][j].isSameRank(nextBlock[k][j])) {
                             nextBlock[i][j].increase();
+                            maxRank = Math.max(maxRank,nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
                             int toX = i + 1;
@@ -223,6 +247,7 @@ public class Game {
                 }
             }
         }
+        mSound.playProcess(maxRank);
         newStatus(changeList, nextStatus);
     }
 
@@ -288,6 +313,7 @@ public class Game {
     private void gameOverJudge() {
         if (isGameOver()) {
             // TODO: 2016/7/24
+            //mSound.playGameOver();
         }
     }
 

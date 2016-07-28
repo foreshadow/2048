@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(gl);
         setContentView(ll);
         game.setLayout(gl);
+        game.loadSound(this);
         gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {
             @Override
             public boolean onDown(MotionEvent motionEvent) {
