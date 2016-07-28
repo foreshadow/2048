@@ -1,6 +1,8 @@
-package com.bjtu.zero.a2048;
+package com.bjtu.zero.a2048.core;
 
 import android.graphics.Point;
+
+import com.bjtu.zero.a2048.Setting;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,9 @@ public class Board implements Cloneable {
             clone.data = new Block[size][size];
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    clone.data[i][j] = this.getData()[i][j].clone();
+                    if (getData()[i][j] != null) {
+                        clone.data[i][j] = this.getData()[i][j].clone();
+                    }
                 }
             }
         } catch (CloneNotSupportedException e) {

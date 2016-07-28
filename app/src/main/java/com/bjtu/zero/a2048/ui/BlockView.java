@@ -1,4 +1,4 @@
-package com.bjtu.zero.a2048;
+package com.bjtu.zero.a2048.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
+
+import com.bjtu.zero.a2048.Setting;
+import com.bjtu.zero.a2048.core.Block;
 
 public class BlockView extends View {
 
@@ -37,7 +40,7 @@ public class BlockView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (visible && !block.isEmpty()) {
+        if (visible && block != null) {
             painter.setColor(Setting.UI.BACKGROUND[block.getRank()]);
             canvas.drawRoundRect(
                     toRectF(boundingRect),

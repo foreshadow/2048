@@ -1,4 +1,4 @@
-package com.bjtu.zero.a2048;
+package com.bjtu.zero.a2048.ui;
 
 import android.content.Context;
 import android.widget.Button;
@@ -9,8 +9,7 @@ public class UndoButton extends Button {
     private int size = 0;
 
     public UndoButton(Context context) {
-        super(context);
-        update();
+        this(context, null);
     }
 
     public UndoButton(Context context, OnClickListener listener) {

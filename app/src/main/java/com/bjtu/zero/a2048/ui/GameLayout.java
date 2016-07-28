@@ -1,4 +1,4 @@
-package com.bjtu.zero.a2048;
+package com.bjtu.zero.a2048.ui;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -12,23 +12,30 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bjtu.zero.a2048.Setting;
+import com.bjtu.zero.a2048.core.Block;
+import com.bjtu.zero.a2048.core.BlockChangeList;
+import com.bjtu.zero.a2048.core.BlockChangeListItem;
+import com.bjtu.zero.a2048.core.Board;
+import com.bjtu.zero.a2048.core.GamePresenter;
+
 public class GameLayout extends FrameLayout {
 
     int size;
-    Game game;
+    GamePresenter gamePresenter;
     BlockView[][] viewGrid;
     int blockWidth;
     int[][] centerX;
     int[][] centerY;
 
-    public GameLayout(Context context, int width, Game game,Score s) {
-        this(context, width, game, Setting.Game.DEFAULT_SIZE,s);
+    public GameLayout(Context context, int width, GamePresenter gamePresenter,Score s) {
+        this(context, width, gamePresenter, Setting.Game.DEFAULT_SIZE,s);
     }
 
-    public GameLayout(Context context, int width, Game game, int size,Score s) {
+    public GameLayout(Context context, int width, GamePresenter gamePresenter, int size,Score s) {
         super(context);
         this.size = size;
-        this.game = game;
+        this.gamePresenter = gamePresenter;
         game.s = s;
 
         LinearLayout ll_h1 = new LinearLayout(this.getContext());
@@ -66,6 +73,12 @@ public class GameLayout extends FrameLayout {
             for (int j = 0; j < size; j++) {
                 centerX[i][j] = boarder + blockWidth * i + blockWidth / 2;
                 centerY[i][j] = boarder + blockWidth * j + blockWidth / 2;
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                addView(new BlockView(getContext(), new Block(),
+                        centerX[i][j], centerY[i][j], blockWidth, blockWidth));
             }
         }
     }
@@ -124,8 +137,9 @@ public class GameLayout extends FrameLayout {
     public Point findCoordinate(Block block) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (viewGrid[i][j].getBlock() == block)
+                if (viewGrid[i][j] != null && viewGrid[i][j].getBlock() == block) {
                     return new Point(j, i); // deliberately transformation
+                }
             }
         }
         return null;
@@ -142,14 +156,13 @@ public class GameLayout extends FrameLayout {
         }
     }
 
-    public void playTransition(BlockChangeList list, Animation.AnimationListener animationListener) {
+    public void playTranslation(BlockChangeList list, Animation.AnimationListener animationListener) {
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
-            Point fromPos = findCoordinate(item.block);
-            int toX = centerX[item.toY][item.toX] - centerX[fromPos.x][fromPos.y];
-            int toY = centerY[item.toY][item.toX] - centerY[fromPos.x][fromPos.y];
             Point p = findCoordinate(item.block);
+            int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
+            int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
             Animation animation = new TranslateAnimation(0, toX, 0, toY);
             animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
             if (animationListener != null) {
@@ -160,7 +173,7 @@ public class GameLayout extends FrameLayout {
             animationSet.addAnimation(animation);
             Log.e("ANIMATION",
                     "Block r=" + item.block.getRank()
-                            + ", lPos (" + fromPos.y + ", " + fromPos.x + ")"
+                            + ", lPos (" + p.y + ", " + p.x + ")"
                             + "->(" + item.toX + ", " + item.toY + "), "
                             + "flag=" + item.nextStatus.toString()
             );

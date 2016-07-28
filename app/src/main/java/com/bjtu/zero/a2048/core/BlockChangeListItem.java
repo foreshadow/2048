@@ -1,4 +1,4 @@
-package com.bjtu.zero.a2048;
+package com.bjtu.zero.a2048.core;
 
 public class BlockChangeListItem {
 

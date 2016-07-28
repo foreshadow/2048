@@ -13,67 +13,66 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bjtu.zero.a2048.core.GamePresenter;
+import com.bjtu.zero.a2048.ui.GameLayout;
+import com.bjtu.zero.a2048.ui.UndoButton;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UndoButton btn_undo;
-    private Button btn_restart;
-    private Button btn_auto_1;
-    private Button btn_auto_2;
-    private GameLayout gl;
-    private Game game;
-    private GestureDetector gd;
+    private UndoButton undoButton;
+    private GameLayout gameLayout;
+    private GamePresenter gamePresenter;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        game = new Game();
-        LinearLayout ll_v = new LinearLayout(this);
-        ll_v.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout ll_h = new LinearLayout(ll_v.getContext());
-        LinearLayout ll_h1 = new LinearLayout(ll_v.getContext());
-        btn_undo = new UndoButton(ll_h.getContext());
-        btn_undo.setOnClickListener(new View.OnClickListener() {
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
+        undoButton = new UndoButton(topButtonLayout.getContext());
+        undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                game.undo();
-                btn_undo.update(game.getHistory().size());
+                gamePresenter.undo();
+                undoButton.update(gamePresenter.getGameModel().size());
             }
         });
-        btn_restart = new Button(ll_h.getContext());
-        btn_restart.setText("Restart");
-        btn_restart.setOnClickListener(new View.OnClickListener() {
+        Button restartButton = new Button(topButtonLayout.getContext());
+        restartButton.setText("Restart");
+        restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game.reset();
-                btn_undo.update(game.getHistory().size());
+                gamePresenter.reset();
+                undoButton.update(gamePresenter.getGameModel().size());
             }
         });
-        btn_auto_1 = new Button(ll_h.getContext());
-        btn_auto_1.setText("Auto 5");
-        btn_auto_1.setOnClickListener(new View.OnClickListener() {
+        Button autoButton1 = new Button(topButtonLayout.getContext());
+        autoButton1.setText("Auto 50");
+        autoButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
-                game.setLayout(null);
+                gamePresenter.setGameLayout(null);
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 5; i++) {
-                            switch ((new Random()).nextInt(4)) {
+                        for (int i = 0; i < 50; i++) {
+                            switch (new Random().nextInt(4)) {
                                 case 0:
-                                    game.slideLeft();
+                                    gamePresenter.slideLeft();
                                     break;
                                 case 1:
-                                    game.slideUp();
+                                    gamePresenter.slideUp();
                                     break;
                                 case 2:
-                                    game.slideRight();
+                                    gamePresenter.slideRight();
                                     break;
                                 case 3:
-                                    game.slideDown();
+                                    gamePresenter.slideDown();
                                     break;
                             }
                         }
@@ -85,36 +84,36 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                game.setLayout(gl);
-                gl.setBoard(game.getHistory().getLast().getBoard());
+                gamePresenter.setGameLayout(gameLayout);
+                gameLayout.setBoard(gamePresenter.getGameModel().lastBoard());
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
-                btn_undo.update(game.getHistory().size());
+                undoButton.update(gamePresenter.getGameModel().size());
             }
         });
-        btn_auto_2 = new Button(ll_h.getContext());
-        btn_auto_2.setText("Auto 30");
-        btn_auto_2.setOnClickListener(new View.OnClickListener() {
+        Button autoButton2 = new Button(topButtonLayout.getContext());
+        autoButton2.setText("Auto 500");
+        autoButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
-                game.setLayout(null);
+                gamePresenter.setGameLayout(null);
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 30; i++) {
-                            switch ((new Random()).nextInt(4)) {
+                        for (int i = 0; i < 500; i++) {
+                            switch (new Random().nextInt(4)) {
                                 case 0:
-                                    game.slideLeft();
+                                    gamePresenter.slideLeft();
                                     break;
                                 case 1:
-                                    game.slideUp();
+                                    gamePresenter.slideUp();
                                     break;
                                 case 2:
-                                    game.slideRight();
+                                    gamePresenter.slideRight();
                                     break;
                                 case 3:
-                                    game.slideDown();
+                                    gamePresenter.slideDown();
                                     break;
                             }
                         }
@@ -126,33 +125,26 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                game.setLayout(gl);
-                gl.setBoard(game.getHistory().getLast().getBoard());
+                gamePresenter.setGameLayout(gameLayout);
+                gameLayout.setBoard(gamePresenter.getGameModel().lastBoard());
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
-                btn_undo.update(game.getHistory().size());
+                undoButton.update(gamePresenter.getGameModel().size());
             }
         });
-
-
-        ll_h.addView(btn_undo);
-        ll_h.addView(btn_restart);
-        ll_h.addView(btn_auto_1);
-        ll_h.addView(btn_auto_2);
-        //ll_h1.addView(game.s.t1);
-        //ll_h1.addView(game.s.score);
-        //ll_h1.addView(game.s.t2);
-        //ll_h1.addView(game.s.highScore);
-        ll_v.addView(ll_h);
-        ll_v.addView(ll_h1);
+        topButtonLayout.addView(undoButton);
+        topButtonLayout.addView(restartButton);
+        topButtonLayout.addView(autoButton1);
+        topButtonLayout.addView(autoButton2);
+        linearLayout.addView(topButtonLayout);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        game = new Game();
-        gl = new GameLayout(ll_v.getContext(), windowSize.x, game,game.s);
-        ll_v.addView(gl);
-        setContentView(ll_v);
-        game.setLayout(gl);
-        gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {
+        gamePresenter = new GamePresenter();
+        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, gamePresenter);
+        linearLayout.addView(gameLayout);
+        setContentView(linearLayout);
+        gamePresenter.setGameLayout(gameLayout);
+        gestureDetector = new GestureDetector(gameLayout.getContext(), new GestureDetector.OnGestureListener() {
             @Override
             public boolean onDown(MotionEvent motionEvent) {
                 return false;
@@ -184,27 +176,28 @@ public class MainActivity extends AppCompatActivity {
                 double dy = motionEvent1.getY() - motionEvent.getY();
                 if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING) {
                     if (dx > dy && dx > -dy) {
-                        game.slideRight();
+                        gamePresenter.slideRight();
                     } else if (dx < dy && dx < -dy) {
-                        game.slideLeft();
+                        gamePresenter.slideLeft();
                     } else if (dy > dx && dy > -dx) {
-                        game.slideDown();
+                        gamePresenter.slideDown();
                     } else if (dy < dx && dy < -dx) {
-                        game.slideUp();
+                        gamePresenter.slideUp();
                     }
-                    btn_undo.update(game.getHistory().size());
+                    undoButton.update(gamePresenter.getGameModel().size());
                     return true;
                 }
                 return false;
             }
         });
-        gl.setOnTouchListener(new View.OnTouchListener() {
+        gameLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                return gd.onTouchEvent(motionEvent);
+                return gestureDetector.onTouchEvent(motionEvent);
             }
         });
-        gl.setLongClickable(true);
-        game.start();
+        gameLayout.setLongClickable(true);
+        gamePresenter.loadSound(this);
+        gamePresenter.start();
     }
 }
