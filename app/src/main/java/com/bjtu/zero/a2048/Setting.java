@@ -42,6 +42,7 @@ public class Setting {
         public static final double BOARD_BOARDER_PERCENT = 0.08;
         public static final double INNER_BLOCK_PERCENT = 0.9;
         public static final double MINIMUM_MOVING_DISTANCE_ON_FLING = 50;
+        public static final double MINIMUM_MOVING_VELOCITY_ON_FLING = 1000;
         public static final int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 100;
         public static final float BLOCK_SPAWN_SCALE_FROM_PERCENT = 0.5f;
         public static final int BLOCK_ROUND_RAD = 20;

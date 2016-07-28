@@ -2,16 +2,13 @@ package com.bjtu.zero.a2048;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
 import com.bjtu.zero.a2048.ui.GameLayout;
@@ -171,10 +168,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float vx, float vy) {
                 double dx = motionEvent1.getX() - motionEvent.getX();
                 double dy = motionEvent1.getY() - motionEvent.getY();
-                if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING) {
+                Log.e("UIOPERATION", String.format("FLING d=(%f, %f) v=(%f, %f)", dx, dy, vx, vy));
+                if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
+                        && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
                     if (dx > dy && dx > -dy) {
                         gamePresenter.slideRight();
                     } else if (dx < dy && dx < -dy) {

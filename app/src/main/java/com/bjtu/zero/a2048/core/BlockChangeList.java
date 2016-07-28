@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class BlockChangeList extends ArrayList<BlockChangeListItem> {
 
-    public int scoreIncreasement() {
+    public int scoreIncrement() {
         int score = 0;
         for (BlockChangeListItem item : this) {
             if (item.nextStatus == BlockChangeListItem.NextStatus.INCREASE) {

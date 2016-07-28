@@ -14,17 +14,16 @@ import java.util.Random;
 
 public class GamePresenter {
 
+    protected Score s;
     private int size;
     private boolean animationInProgress;
     private GameLayout gameLayout;
     private GameModel gameModel;
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
     public GamePresenter() {
         this(Setting.Game.DEFAULT_SIZE);
     }
-    protected Score s;
 
     public GamePresenter(int size) {
         this.size = size;
@@ -68,7 +67,7 @@ public class GamePresenter {
         soundManager.load(context);
     }
 
-    private boolean canMove(int direction) {
+    private boolean isAbleToMove(int direction) {
         if (animationInProgress) return false;
         Status nowStatus = gameModel.lastStatus();
         //某个rank非0的block的next位置为rank==0的block
@@ -89,7 +88,7 @@ public class GamePresenter {
     }
 
     public void slideLeft() {
-        if (!canMove(2)) return;
+        if (!isAbleToMove(2)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -137,7 +136,7 @@ public class GamePresenter {
     }
 
     public void slideRight() {
-        if (!canMove(3)) return;
+        if (!isAbleToMove(3)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -184,7 +183,7 @@ public class GamePresenter {
     }
 
     public void slideUp() {
-        if (!canMove(0)) return;
+        if (!isAbleToMove(0)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -231,7 +230,7 @@ public class GamePresenter {
     }
 
     public void slideDown() {
-        if (!canMove(1)) return;
+        if (!isAbleToMove(1)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
