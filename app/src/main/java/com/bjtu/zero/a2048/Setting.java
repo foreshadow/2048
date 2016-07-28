@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 public class Setting {
 
-    static class UI {
+    public static class UI {
 
         public static final String[] STRING_LIST = new String[]{
                 "",
@@ -48,14 +48,14 @@ public class Setting {
         public static final int BLOCK_FONT_SIZE = 75;
     }
 
-    static class Game {
+    public static class Game {
 
         public static final int HISTORY_SIZE = 21;
         public static final double RANK_2_PROBABILITY = 0.1; //RANK2出现的概率
         public static final int DEFAULT_SIZE = 4;
     }
 
-    static class Runtime {
+    public static class Runtime {
         public static int ANIMATION_DURATION_MILLISECONDS =
                 UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
     }

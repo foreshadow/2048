@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.bjtu.zero.a2048.core.GamePresenter;
+import com.bjtu.zero.a2048.ui.GameLayout;
+import com.bjtu.zero.a2048.ui.UndoButton;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_auto_1;
     private Button btn_auto_2;
     private GameLayout gl;
-    private Game game;
+    private GamePresenter gamePresenter;
     private GestureDetector gd;
 
     @Override
@@ -33,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                game.undo();
-                btn_undo.update(game.getHistory().size());
+                gamePresenter.undo();
+                btn_undo.update(gamePresenter.getModel().size());
             }
         });
         btn_restart = new Button(ll_h.getContext());
@@ -42,33 +46,33 @@ public class MainActivity extends AppCompatActivity {
         btn_restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game.reset();
-                btn_undo.update(game.getHistory().size());
+                gamePresenter.reset();
+                btn_undo.update(gamePresenter.getModel().size());
             }
         });
         btn_auto_1 = new Button(ll_h.getContext());
-        btn_auto_1.setText("Auto 5");
+        btn_auto_1.setText("Auto 50");
         btn_auto_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
-                game.setLayout(null);
+                gamePresenter.setLayout(null);
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 5; i++) {
+                        for (int i = 0; i < 50; i++) {
                             switch ((new Random()).nextInt(4)) {
                                 case 0:
-                                    game.slideLeft();
+                                    gamePresenter.slideLeft();
                                     break;
                                 case 1:
-                                    game.slideUp();
+                                    gamePresenter.slideUp();
                                     break;
                                 case 2:
-                                    game.slideRight();
+                                    gamePresenter.slideRight();
                                     break;
                                 case 3:
-                                    game.slideDown();
+                                    gamePresenter.slideDown();
                                     break;
                             }
                         }
@@ -80,36 +84,36 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                game.setLayout(gl);
-                gl.setBoard(game.getHistory().getLast().getBoard());
+                gamePresenter.setLayout(gl);
+                gl.setBoard(gamePresenter.getModel().lastBoard());
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
-                btn_undo.update(game.getHistory().size());
+                btn_undo.update(gamePresenter.getModel().size());
             }
         });
         btn_auto_2 = new Button(ll_h.getContext());
-        btn_auto_2.setText("Auto 30");
+        btn_auto_2.setText("Auto 500");
         btn_auto_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS = 1;
-                game.setLayout(null);
+                gamePresenter.setLayout(null);
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 30; i++) {
+                        for (int i = 0; i < 500; i++) {
                             switch ((new Random()).nextInt(4)) {
                                 case 0:
-                                    game.slideLeft();
+                                    gamePresenter.slideLeft();
                                     break;
                                 case 1:
-                                    game.slideUp();
+                                    gamePresenter.slideUp();
                                     break;
                                 case 2:
-                                    game.slideRight();
+                                    gamePresenter.slideRight();
                                     break;
                                 case 3:
-                                    game.slideDown();
+                                    gamePresenter.slideDown();
                                     break;
                             }
                         }
@@ -121,11 +125,11 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                game.setLayout(gl);
-                gl.setBoard(game.getHistory().getLast().getBoard());
+                gamePresenter.setLayout(gl);
+                gl.setBoard(gamePresenter.getModel().lastBoard());
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
-                btn_undo.update(game.getHistory().size());
+                btn_undo.update(gamePresenter.getModel().size());
             }
         });
         ll_h.addView(btn_undo);
@@ -135,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
         ll_v.addView(ll_h);
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        game = new Game();
-        gl = new GameLayout(ll_v.getContext(), windowSize.x, game);
+        gamePresenter = new GamePresenter();
+        gl = new GameLayout(ll_v.getContext(), windowSize.x, gamePresenter);
         ll_v.addView(gl);
         setContentView(ll_v);
-        game.setLayout(gl);
+        gamePresenter.setLayout(gl);
         gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {
             @Override
             public boolean onDown(MotionEvent motionEvent) {
@@ -172,15 +176,15 @@ public class MainActivity extends AppCompatActivity {
                 double dy = motionEvent1.getY() - motionEvent.getY();
                 if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING) {
                     if (dx > dy && dx > -dy) {
-                        game.slideRight();
+                        gamePresenter.slideRight();
                     } else if (dx < dy && dx < -dy) {
-                        game.slideLeft();
+                        gamePresenter.slideLeft();
                     } else if (dy > dx && dy > -dx) {
-                        game.slideDown();
+                        gamePresenter.slideDown();
                     } else if (dy < dx && dy < -dx) {
-                        game.slideUp();
+                        gamePresenter.slideUp();
                     }
-                    btn_undo.update(game.getHistory().size());
+                    btn_undo.update(gamePresenter.getModel().size());
                     return true;
                 }
                 return false;
@@ -193,6 +197,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         gl.setLongClickable(true);
-        game.start();
+        gamePresenter.start();
     }
 }
