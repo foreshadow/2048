@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 gl.setBoard(gamePresenter.getModel().lastBoard());
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
-                btn_undo.update(gamePresenter.getModel().size());
+                btn_undo.update(game.getHistory().size());
             }
         });
         btn_auto_2 = new Button(ll_h.getContext());
@@ -143,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
         gl = new GameLayout(ll_v.getContext(), windowSize.x, gamePresenter);
         ll_v.addView(gl);
         setContentView(ll_v);
+        game.setLayout(gl);
+        game.loadSound(this);
         gamePresenter.setLayout(gl);
         gd = new GestureDetector(gl.getContext(), new GestureDetector.OnGestureListener() {
             @Override
