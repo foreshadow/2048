@@ -5,7 +5,7 @@ import android.widget.Button;
 
 public class UndoButton extends Button {
 
-    private String text = new String("Undo");
+    private static final String text = "Undo";
     private int size = 0;
 
     public UndoButton(Context context) {

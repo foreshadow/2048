@@ -4,7 +4,8 @@ import android.content.Context;
 import android.widget.Button;
 
 public class AutoButton extends Button {
-    private String text = new String("Auto");
+
+    private static final String text = new String("Auto");
     private int ops;
 
     public AutoButton(Context context, int times) {

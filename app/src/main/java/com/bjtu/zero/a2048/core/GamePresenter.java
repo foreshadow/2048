@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
+import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.SoundManager;
 
 import java.util.ArrayList;
@@ -14,13 +15,14 @@ import java.util.Random;
 
 public class GamePresenter {
 
-    protected Score s;
+    public ScoreBoardLayout scoreBoardLayout;
     private int size;
     private boolean animationInProgress;
     private GameLayout gameLayout;
     private GameModel gameModel;
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
     public GamePresenter() {
         this(Setting.Game.DEFAULT_SIZE);
     }
@@ -30,7 +32,6 @@ public class GamePresenter {
         animationInProgress = false;
         gameModel = new GameModel(Setting.Game.HISTORY_SIZE);
         soundManager = new SoundManager();
-        s = new Score();
     }
 
     public void reset() {
@@ -39,7 +40,7 @@ public class GamePresenter {
             gameLayout.setBoard(new Board());
             start();
         }
-        s.setScore(0);
+        scoreBoardLayout.setScore(0);
     }
 
     public void start() {
@@ -58,9 +59,13 @@ public class GamePresenter {
         }
     }
 
+    public void setScoreBoard(ScoreBoardLayout scoreBoardLayout) {
+        this.scoreBoardLayout = scoreBoardLayout;
+    }
+
     //设置是否播放音效
-    public void setSound(boolean hasSound) {
-        soundManager.setSound(hasSound);
+    public void setSound(boolean enable) {
+        soundManager.setEnabled(enable);
     }
 
     public void loadSound(Context context) {
@@ -103,9 +108,9 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            s.setScore(nextStatus.getScore());
-                            if(s.now > s.high)
-                                s.setHighScore(s.now);
+                            scoreBoardLayout.setScore(nextStatus.getScore());
+                            if (scoreBoardLayout.now > scoreBoardLayout.high)
+                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toY = j - 1;
                             while (toY >= 0 && nextBlock[i][toY].isEmpty()) {
                                 toY--;
@@ -151,9 +156,9 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            s.setScore(nextStatus.getScore());
-                            if(s.now > s.high)
-                                s.setHighScore(s.now);
+                            scoreBoardLayout.setScore(nextStatus.getScore());
+                            if (scoreBoardLayout.now > scoreBoardLayout.high)
+                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toY = j + 1;
                             while (toY < size && nextBlock[i][toY].isEmpty()) {
                                 toY++;
@@ -198,9 +203,9 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            s.setScore(nextStatus.getScore());
-                            if(s.now > s.high)
-                                s.setHighScore(s.now);
+                            scoreBoardLayout.setScore(nextStatus.getScore());
+                            if (scoreBoardLayout.now > scoreBoardLayout.high)
+                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toX = i - 1;
                             while (toX >= 0 && nextBlock[toX][j].isEmpty()) {
                                 toX--;
@@ -271,9 +276,9 @@ public class GamePresenter {
         }
         soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
-        s.setScore(nextStatus.getScore());
-        if(s.now > s.high)
-            s.setHighScore(s.now);
+        scoreBoardLayout.setScore(nextStatus.getScore());
+        if (scoreBoardLayout.now > scoreBoardLayout.high)
+            scoreBoardLayout.setHighScore(scoreBoardLayout.now);
     }
 
     private void validOperation(BlockChangeList changeList, Status status) {

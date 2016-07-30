@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class GameModel {
+
     private Deque<Status> history;
     private int capacity;
 

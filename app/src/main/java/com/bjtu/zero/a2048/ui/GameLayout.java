@@ -3,14 +3,11 @@ package com.bjtu.zero.a2048.ui;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.core.Block;
@@ -25,60 +22,42 @@ public class GameLayout extends FrameLayout {
     GamePresenter gamePresenter;
     BlockView[][] viewGrid;
     int blockWidth;
+    int blockHeight;
     int[][] centerX;
     int[][] centerY;
 
-    public GameLayout(Context context, int width, GamePresenter gamePresenter,Score s) {
-        this(context, width, gamePresenter, Setting.Game.DEFAULT_SIZE,s);
+    public GameLayout(Context context) throws NoSuchMethodException {
+        super(context);
+        throw new NoSuchMethodException();
     }
 
-    public GameLayout(Context context, int width, GamePresenter gamePresenter, int size,Score s) {
+    public GameLayout(Context context, int width, int height, GamePresenter gamePresenter) {
+        this(context, width, height, gamePresenter, 4);
+    }
+
+    public GameLayout(Context context, int width, int height, GamePresenter gamePresenter, int size) {
         super(context);
         this.size = size;
         this.gamePresenter = gamePresenter;
-        game.s = s;
-
-        LinearLayout ll_h1 = new LinearLayout(this.getContext());
-        game.s.t1 = new TextView(this.getContext());
-        game.s.t1.setText("分数");
-        game.s.t1.setWidth(200);
-        game.s.t1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-        game.s.score = new TextView(this.getContext());
-        game.s.score.setText("0");
-        game.s.score.setWidth(300);
-        game.s.score.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        game.s.t2 = new TextView(this.getContext());
-        game.s.t2.setText("最高分");
-        game.s.t2.setWidth(300);
-        game.s.t2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-        game.s.highScore = new TextView(this.getContext());
-        game.s.highScore.setText("0");
-        game.s.highScore.setWidth(300);
-        game.s.highScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        ll_h1.addView(game.s.t1);
-        ll_h1.addView(game.s.score);
-        ll_h1.addView(game.s.t2);
-        ll_h1.addView(game.s.highScore);
-        this.addView(ll_h1);
-
-
         viewGrid = new BlockView[size][size];
-        setLayoutParams(new LayoutParams(width, width));
+        setLayoutParams(new LayoutParams(width, height));
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
         int boardWidth = width - boarder * 2;
+        int boardHeight = height - boarder * 2;
         blockWidth = boardWidth / size;
+        blockHeight = boardHeight / size;
         centerX = new int[size][size];
         centerY = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 centerX[i][j] = boarder + blockWidth * i + blockWidth / 2;
-                centerY[i][j] = boarder + blockWidth * j + blockWidth / 2;
+                centerY[i][j] = boarder + blockHeight * j + blockHeight / 2;
             }
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 addView(new BlockView(getContext(), new Block(),
-                        centerX[i][j], centerY[i][j], blockWidth, blockWidth));
+                        centerX[i][j], centerY[i][j], blockWidth, blockHeight));
             }
         }
     }
@@ -88,7 +67,7 @@ public class GameLayout extends FrameLayout {
             removeView(viewGrid[i][j]);
         }
         viewGrid[i][j] = new BlockView(getContext(), block,
-                centerX[i][j], centerY[i][j], blockWidth, blockWidth);
+                centerX[i][j], centerY[i][j], blockWidth, blockHeight);
         if (!visible) {
             viewGrid[i][j].setVisible(false);
         }
@@ -100,7 +79,7 @@ public class GameLayout extends FrameLayout {
             Block block = viewGrid[i][j].getBlock();
             removeView(viewGrid[i][j]);
             viewGrid[i][j] = new BlockView(getContext(), block,
-                    centerX[i][j], centerY[i][j], blockWidth, blockWidth);
+                    centerX[i][j], centerY[i][j], blockWidth, blockHeight);
             addView(viewGrid[i][j]);
         }
     }
@@ -150,7 +129,7 @@ public class GameLayout extends FrameLayout {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j] != null) {
-                    viewGrid[i][j].setGeometry(centerX[i][j], centerY[i][j], blockWidth, blockWidth);
+                    viewGrid[i][j].setGeometry(centerX[i][j], centerY[i][j], blockWidth, blockHeight);
                 }
             }
         }

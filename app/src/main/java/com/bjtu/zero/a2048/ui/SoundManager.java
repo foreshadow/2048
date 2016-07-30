@@ -8,12 +8,12 @@ import com.bjtu.zero.a2048.R;
 
 public class SoundManager {
 
-    private boolean hasSound;
+    private boolean enabled;
     private SoundPool soundPool;
     private int move, merge, good, great, excellent, amazing, unbelievable;
 
     public SoundManager() {
-        hasSound = true;
+        enabled = true;
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
     }
 
@@ -27,12 +27,12 @@ public class SoundManager {
         unbelievable = soundPool.load(context, R.raw.unbelievable, 1);
     }
 
-    public void setSound(boolean hasSound) {
-        this.hasSound = hasSound;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void playProcess(int maxRank) {
-        if (hasSound) {
+        if (enabled) {
             switch (maxRank) {
                 case 1:
                     soundPool.play(move, 1, 1, 0, 0, 1);

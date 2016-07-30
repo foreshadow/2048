@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
 import com.bjtu.zero.a2048.ui.GameLayout;
+import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.util.Random;
@@ -28,7 +30,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
+        ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
+        linearLayout.addView(scoreBoardLayout);
+        Point windowSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(windowSize);
+        gamePresenter = new GamePresenter();
+        gamePresenter.setScoreBoard(scoreBoardLayout);
+        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
+        linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
+        topButtonLayout.setMinimumHeight(200);
+        topButtonLayout.setGravity(Gravity.CENTER);
         undoButton = new UndoButton(topButtonLayout.getContext());
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +146,6 @@ public class MainActivity extends AppCompatActivity {
         topButtonLayout.addView(autoButton1);
         topButtonLayout.addView(autoButton2);
         linearLayout.addView(topButtonLayout);
-        Point windowSize = new Point();
-        getWindowManager().getDefaultDisplay().getSize(windowSize);
-        gamePresenter = new GamePresenter();
-        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, gamePresenter);
-        linearLayout.addView(gameLayout);
         setContentView(linearLayout);
         gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), new GestureDetector.OnGestureListener() {
