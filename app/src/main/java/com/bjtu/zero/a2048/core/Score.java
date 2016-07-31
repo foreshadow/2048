@@ -41,7 +41,6 @@ public class Score {
     public Score(Context con){
         this.sp =  con.getSharedPreferences("test", Activity.MODE_PRIVATE);
         this.editor = sp.edit();
-
     }
 
     public void init(){
@@ -64,36 +63,9 @@ public class Score {
     public void setHighScore(int a){
         high = a;
         highScore.setText(String.valueOf(high));
-
-        //write(String.valueOf(high));
-        //sp =  getSharedPreferences("test", Activity.MODE_PRIVATE);
-        //editor = sp.edit();
-       //sp =  this.getSharedPreferences("test", Activity.MODE_PRIVATE);
-        //editor = sp.edit();
-        //Context ctx = this;
-        //sp =  ctx.getSharedPreferences("test", Activity.MODE_PRIVATE);
-        //editor = sp.edit();
         editor.putString(KEY, String.valueOf(high));
         editor.commit();
         Log.e("aaaaa","setHigh");
-    }
-
-    private class AnotherTask extends AsyncTask<String,Void,String>
-    {
-
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return params[0];
-        }
-        @Override
-        protected void onPostExecute(String result)
-        {
-            //更新UI的操作，这里面的内容是在UI线程里面执行的
-            //setScore(Integer.parseInt(result));
-            //if(now > high)
-                setHighScore(now);
-        }
     }
 
 }
