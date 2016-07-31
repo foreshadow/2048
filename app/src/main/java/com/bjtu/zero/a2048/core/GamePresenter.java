@@ -2,6 +2,7 @@ package com.bjtu.zero.a2048.core;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.animation.Animation;
 
@@ -10,6 +11,7 @@ import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.SoundManager;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -108,9 +110,6 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            scoreBoardLayout.setScore(nextStatus.getScore());
-                            if (scoreBoardLayout.now > scoreBoardLayout.high)
-                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toY = j - 1;
                             while (toY >= 0 && nextBlock[i][toY].isEmpty()) {
                                 toY--;
@@ -156,9 +155,6 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[i][k].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            scoreBoardLayout.setScore(nextStatus.getScore());
-                            if (scoreBoardLayout.now > scoreBoardLayout.high)
-                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toY = j + 1;
                             while (toY < size && nextBlock[i][toY].isEmpty()) {
                                 toY++;
@@ -203,9 +199,6 @@ public class GamePresenter {
                             maxRank = Math.max(maxRank, nextBlock[i][j].getRank());
                             nextBlock[k][j].setRank(0);
                             nextStatus.addScore(Setting.UI.SCORE_LIST[nextBlock[i][j].getRank()]);
-                            scoreBoardLayout.setScore(nextStatus.getScore());
-                            if (scoreBoardLayout.now > scoreBoardLayout.high)
-                                scoreBoardLayout.setHighScore(scoreBoardLayout.now);
                             int toX = i - 1;
                             while (toX >= 0 && nextBlock[toX][j].isEmpty()) {
                                 toX--;
@@ -276,9 +269,6 @@ public class GamePresenter {
         }
         soundManager.playProcess(maxRank);
         validOperation(changeList, nextStatus);
-        scoreBoardLayout.setScore(nextStatus.getScore());
-        if (scoreBoardLayout.now > scoreBoardLayout.high)
-            scoreBoardLayout.setHighScore(scoreBoardLayout.now);
     }
 
     private void validOperation(BlockChangeList changeList, Status status) {
@@ -304,11 +294,30 @@ public class GamePresenter {
                 }
             });
         }
+        new AnotherTask().execute(String.valueOf(status.getScore()));
         gameModel.append(status);
         if (gameLayout != null) {
             gameLayout.setBoard2(); // critical !
         } else {
             spawnBlock();
+        }
+        //new AnotherTask().execute(String.valueOf(status.getScore()));
+    }
+    private class AnotherTask extends AsyncTask<String,Void,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params)
+        {
+            return params[0];
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            //更新UI的操作，这里面的内容是在UI线程里面执行的
+            s.setScore(Integer.parseInt(result));
+            if(s.now > s.high)
+                s.setHighScore(s.now);
         }
     }
 
@@ -334,6 +343,7 @@ public class GamePresenter {
             gameModel.popBack();
             gameLayout.setBoard(gameModel.lastBoard());
             gameLayout.refresh();
+            new AnotherTask().execute(String.valueOf(gameModel.lastStatus().getScore()));
         }
     }
 

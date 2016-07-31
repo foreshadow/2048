@@ -1,6 +1,7 @@
 package com.bjtu.zero.a2048;
 
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
+import com.bjtu.zero.a2048.core.Score;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
@@ -25,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
@@ -93,8 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                gamePresenter.setGameLayout(gameLayout);
+
                 gameLayout.setBoard(gamePresenter.getGameModel().lastBoard());
+                gamePresenter.setGameLayout(gameLayout);
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
                 undoButton.update(gamePresenter.getGameModel().size());
@@ -134,11 +141,13 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                gamePresenter.setGameLayout(gameLayout);
+
                 gameLayout.setBoard(gamePresenter.getGameModel().lastBoard());
+                gamePresenter.setGameLayout(gameLayout);
                 Setting.Runtime.ANIMATION_DURATION_MILLISECONDS =
                         Setting.UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
                 undoButton.update(gamePresenter.getGameModel().size());
+
             }
         });
         topButtonLayout.addView(undoButton);

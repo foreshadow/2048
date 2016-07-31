@@ -15,6 +15,7 @@ import com.bjtu.zero.a2048.core.BlockChangeList;
 import com.bjtu.zero.a2048.core.BlockChangeListItem;
 import com.bjtu.zero.a2048.core.Board;
 import com.bjtu.zero.a2048.core.GamePresenter;
+import com.bjtu.zero.a2048.core.Score;
 
 public class GameLayout extends FrameLayout {
 
@@ -140,6 +141,9 @@ public class GameLayout extends FrameLayout {
         animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point p = findCoordinate(item.block);
+            if (p == null)
+                continue;
+            // TODO
             int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
             int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
             Animation animation = new TranslateAnimation(0, toX, 0, toY);
