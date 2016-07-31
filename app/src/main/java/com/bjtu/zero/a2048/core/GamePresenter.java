@@ -70,6 +70,10 @@ public class GamePresenter {
         soundManager.setEnabled(enable);
     }
 
+    public boolean getSound(){
+        return  soundManager.getEnablde();
+    }
+
     public void loadSound(Context context) {
         soundManager.load(context);
     }

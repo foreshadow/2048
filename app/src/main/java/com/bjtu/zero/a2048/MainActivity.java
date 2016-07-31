@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = gamePresenter.getSound();
+                        gamePresenter.setSound(false );
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                             }
                         }
+                        gamePresenter.setSound(soundEnable);
                     }
                 });
                 t.start();
@@ -119,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = gamePresenter.getSound();
+                        gamePresenter.setSound(false );
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -135,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                             }
                         }
+                        gamePresenter.setSound(soundEnable);
                     }
                 });
                 t.start();

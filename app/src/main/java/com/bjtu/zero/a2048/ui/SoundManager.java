@@ -88,6 +88,10 @@ public class SoundManager {
         this.enabled = enabled;
     }
 
+    public boolean  getEnablde(){
+        return enabled ;
+    }
+
     public void playProcess(int maxRank, int mergeNum) {
         if (enabled) {
             if (maxRank >= 2 && isFirstBlood) {
