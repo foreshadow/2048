@@ -61,4 +61,8 @@ public class Setting {
         public static int ANIMATION_DURATION_MILLISECONDS =
                 UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
     }
+
+    public static class Sound {
+        public static int SoundPack = 2;
+    }
 }
