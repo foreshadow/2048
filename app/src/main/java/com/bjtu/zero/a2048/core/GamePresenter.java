@@ -11,7 +11,6 @@ import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.SoundManager;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -303,23 +302,6 @@ public class GamePresenter {
         }
         //new AnotherTask().execute(String.valueOf(status.getScore()));
     }
-    private class AnotherTask extends AsyncTask<String,Void,String>
-    {
-
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return params[0];
-        }
-        @Override
-        protected void onPostExecute(String result)
-        {
-            //更新UI的操作，这里面的内容是在UI线程里面执行的
-            s.setScore(Integer.parseInt(result));
-            if(s.now > s.high)
-                s.setHighScore(s.now);
-        }
-    }
 
     public void spawnBlock() {
         if (isGameOver()) {
@@ -361,5 +343,19 @@ public class GamePresenter {
 
     public GameModel getGameModel() {
         return gameModel;
+    }
+
+    private class AnotherTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return params[0];
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //更新UI的操作，这里面的内容是在UI线程里面执行的
+            scoreBoardLayout.setScore(Integer.parseInt(result));
+        }
     }
 }

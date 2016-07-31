@@ -8,16 +8,18 @@ import android.widget.TextView;
 
 public class ScoreBoardLayout extends LinearLayout {
 
-    public int now;
-    public int high;
-    protected TextView score;
-    protected TextView highScore;
+    protected TextView scoreView;
+    protected TextView highScoreView;
     protected TextView textView;
     protected TextView textView1;
     protected TextView textView2;
+    private int currentScore;
+    private int highestScore;
 
     public ScoreBoardLayout(Context context) {
         super(context);
+        currentScore = 0;
+        highestScore = 0;
         setOrientation(HORIZONTAL);
         setMinimumHeight(300);
         setGravity(Gravity.CENTER);
@@ -39,30 +41,29 @@ public class ScoreBoardLayout extends LinearLayout {
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
         textView1.setGravity(Gravity.CENTER);
         vertical1.addView(textView1);
-        score = new TextView(context);
-        score.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        score.setGravity(Gravity.CENTER);
-        vertical1.addView(score);
+        scoreView = new TextView(context);
+        scoreView.setText(String.valueOf(currentScore));
+        scoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        scoreView.setGravity(Gravity.CENTER);
+        vertical1.addView(scoreView);
         textView2 = new TextView(context);
         textView2.setText("最高分");
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
         textView2.setGravity(Gravity.CENTER);
         vertical2.addView(textView2);
-        highScore = new TextView(context);
-        highScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        highScore.setGravity(Gravity.CENTER);
-        vertical2.addView(highScore);
-        setScore(0);
-        setHighScore(0);
+        highScoreView = new TextView(context);
+        highScoreView.setText(String.valueOf(highestScore));
+        highScoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        highScoreView.setGravity(Gravity.CENTER);
+        vertical2.addView(highScoreView);
     }
 
-    public void setScore(int a) {
-        now = a;
-        score.setText(String.valueOf(now));
-    }
-
-    public void setHighScore(int a) {
-        high = a;
-        highScore.setText(String.valueOf(high));
+    public void setScore(int score) {
+        currentScore = score;
+        scoreView.setText(String.valueOf(currentScore));
+        if (score > highestScore) {
+            highestScore = score;
+            highScoreView.setText(String.valueOf(highestScore));
+        }
     }
 }
