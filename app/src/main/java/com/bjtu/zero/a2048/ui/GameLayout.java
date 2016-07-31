@@ -18,6 +18,7 @@ import com.bjtu.zero.a2048.core.BlockChangeList;
 import com.bjtu.zero.a2048.core.BlockChangeListItem;
 import com.bjtu.zero.a2048.core.Board;
 import com.bjtu.zero.a2048.core.GamePresenter;
+import com.bjtu.zero.a2048.core.Score;
 
 public class GameLayout extends FrameLayout {
 
@@ -28,38 +29,40 @@ public class GameLayout extends FrameLayout {
     int[][] centerX;
     int[][] centerY;
 
-    public GameLayout(Context context, int width, GamePresenter gamePresenter,Score s) {
-        this(context, width, gamePresenter, Setting.Game.DEFAULT_SIZE,s);
+    public GameLayout(Context context, int width, GamePresenter gamePresenter) {
+        this(context, width, gamePresenter, Setting.Game.DEFAULT_SIZE);
     }
 
-    public GameLayout(Context context, int width, GamePresenter gamePresenter, int size,Score s) {
+    public GameLayout(Context context, int width, GamePresenter gamePresenter, int size) {
         super(context);
         this.size = size;
         this.gamePresenter = gamePresenter;
-        game.s = s;
+        gamePresenter.s = new Score(context);
 
         LinearLayout ll_h1 = new LinearLayout(this.getContext());
-        game.s.t1 = new TextView(this.getContext());
-        game.s.t1.setText("分数");
-        game.s.t1.setWidth(200);
-        game.s.t1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-        game.s.score = new TextView(this.getContext());
-        game.s.score.setText("0");
-        game.s.score.setWidth(300);
-        game.s.score.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        game.s.t2 = new TextView(this.getContext());
-        game.s.t2.setText("最高分");
-        game.s.t2.setWidth(300);
-        game.s.t2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-        game.s.highScore = new TextView(this.getContext());
-        game.s.highScore.setText("0");
-        game.s.highScore.setWidth(300);
-        game.s.highScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        ll_h1.addView(game.s.t1);
-        ll_h1.addView(game.s.score);
-        ll_h1.addView(game.s.t2);
-        ll_h1.addView(game.s.highScore);
+        gamePresenter.s.t1 = new TextView(this.getContext());
+        gamePresenter.s.t1.setText("分数");
+        gamePresenter.s.t1.setWidth(200);
+        gamePresenter.s.t1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        gamePresenter.s.score = new TextView(this.getContext());
+        gamePresenter.s.score.setText("0");
+        gamePresenter.s.score.setWidth(300);
+        gamePresenter.s.score.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        gamePresenter.s.t2 = new TextView(this.getContext());
+        gamePresenter.s.t2.setText("最高分");
+        gamePresenter.s.t2.setWidth(300);
+        gamePresenter.s.t2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        gamePresenter.s.highScore = new TextView(this.getContext());
+        //gamePresenter.s.highScore.setText("0");
+        gamePresenter.s.init();
+        gamePresenter.s.highScore.setWidth(300);
+        gamePresenter.s.highScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        ll_h1.addView(gamePresenter.s.t1);
+        ll_h1.addView(gamePresenter.s.score);
+        ll_h1.addView(gamePresenter.s.t2);
+        ll_h1.addView(gamePresenter.s.highScore);
         this.addView(ll_h1);
+
 
 
         viewGrid = new BlockView[size][size];
@@ -161,6 +164,8 @@ public class GameLayout extends FrameLayout {
         animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point p = findCoordinate(item.block);
+            if(p==null)
+                continue;
             int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
             int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
             Animation animation = new TranslateAnimation(0, toX, 0, toY);
