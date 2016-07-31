@@ -57,6 +57,7 @@ public class Setting {
     }
 
     public static class Runtime {
+
         public static int ANIMATION_DURATION_MILLISECONDS =
                 UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
     }
