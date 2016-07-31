@@ -50,7 +50,6 @@ public class Score {
             setHighScore(0);
         else
             setHighScore(Integer.parseInt(a));
-        //this.high = Integer.parseInt(a);
         Log.e("aaaaa","Score");
     }
 
