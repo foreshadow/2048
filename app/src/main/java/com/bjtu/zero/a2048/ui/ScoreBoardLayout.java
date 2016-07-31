@@ -11,21 +11,19 @@ import android.widget.TextView;
 
 public class ScoreBoardLayout extends LinearLayout {
 
+    public final String KEY = "HIGH";
     protected TextView scoreView;
     protected TextView highScoreView;
     protected TextView textView;
     protected TextView textView1;
     protected TextView textView2;
+    private SharedPreferences sp;
     private int currentScore;
     private int highestScore;
-    SharedPreferences sp = null;
-    SharedPreferences.Editor editor = null;
-    public final String KEY = "HIGH";
 
     public ScoreBoardLayout(Context context) {
         super(context);
-        this.sp =  context.getSharedPreferences("test", Activity.MODE_PRIVATE);
-        this.editor = sp.edit();
+        this.sp = context.getSharedPreferences("test", Activity.MODE_PRIVATE);
         currentScore = 0;
         highestScore = 0;
         setOrientation(HORIZONTAL);
@@ -60,13 +58,11 @@ public class ScoreBoardLayout extends LinearLayout {
         textView2.setGravity(Gravity.CENTER);
         vertical2.addView(textView2);
         highScoreView = new TextView(context);
-        String a = sp.getString(KEY,"");
-        Log.e("aaaaa",a);
-        if(a == null)
-            setHighScore(0);
-        else
-            setHighScore(Integer.parseInt(a));
-        //highScoreView.setText(String.valueOf(highestScore));
+
+        String a = sp.getString(KEY, "0");
+        Log.e("aaaaa", a);
+        setHighScore(Integer.parseInt(a));
+
         highScoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         highScoreView.setGravity(Gravity.CENTER);
         vertical2.addView(highScoreView);
@@ -76,16 +72,16 @@ public class ScoreBoardLayout extends LinearLayout {
         currentScore = score;
         scoreView.setText(String.valueOf(currentScore));
         if (score > highestScore) {
-            highestScore = score;
-            highScoreView.setText(String.valueOf(highestScore));
+            setHighScore(score);
         }
     }
 
-    public void setHighScore(int a){
-        highestScore = a;
-        highScoreView.setText(String.valueOf(a));
-        editor.putString(KEY, String.valueOf(a));
-        editor.commit();
-        Log.e("aaaaa","setHigh");
+    public void setHighScore(int score) {
+        highestScore = score;
+        highScoreView.setText(String.valueOf(score));
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(KEY, String.valueOf(score));
+        editor.apply();
+        Log.e("aaaaa", "setHigh");
     }
 }
