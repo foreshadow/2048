@@ -4,9 +4,10 @@ import android.graphics.Point;
 
 import com.bjtu.zero.a2048.Setting;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Board implements Cloneable {
+public class Board implements Cloneable , Serializable {
 
     private int size;
     private Block[][] data;

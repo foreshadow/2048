@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        gamePresenter.write();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LinearLayout linearLayout = new LinearLayout(this);
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         gamePresenter = new GamePresenter();
         gamePresenter.setScoreBoard(scoreBoardLayout);
+        gamePresenter.con = linearLayout.getContext();
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
@@ -243,4 +250,11 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gamePresenter.read();
+        undoButton.update(gamePresenter.getGameModel().size());
+    }
 }
