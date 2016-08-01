@@ -1,6 +1,8 @@
 package com.bjtu.zero.a2048.core;
 
-public class Block implements Cloneable {
+import java.io.Serializable;
+
+public class Block implements Cloneable , Serializable {
 
     private int rank;
 

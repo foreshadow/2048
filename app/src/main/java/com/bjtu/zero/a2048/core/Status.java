@@ -1,6 +1,8 @@
 package com.bjtu.zero.a2048.core;
 
-public class Status implements Cloneable {
+import java.io.Serializable;
+
+public class Status implements Cloneable , Serializable {
 
     private int score;
     private int adds;
