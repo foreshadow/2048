@@ -225,5 +225,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         gamePresenter.read();
+        undoButton.update(gamePresenter.getGameModel().size());
     }
 }
