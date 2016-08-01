@@ -27,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gamePresenter.write();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         gamePresenter = new GamePresenter();
         gamePresenter.setScoreBoard(scoreBoardLayout);
+        gamePresenter.con = linearLayout.getContext();
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
@@ -214,5 +219,11 @@ public class MainActivity extends AppCompatActivity {
         gameLayout.setLongClickable(true);
         gamePresenter.loadSound(this);
         gamePresenter.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gamePresenter.read();
     }
 }

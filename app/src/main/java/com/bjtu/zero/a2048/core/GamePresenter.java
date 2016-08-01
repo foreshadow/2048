@@ -11,7 +11,14 @@ import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.SoundManager;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Random;
 
 public class GamePresenter {
@@ -23,6 +30,8 @@ public class GamePresenter {
     private GameModel gameModel;
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    public Context con;
+
 
     public GamePresenter() {
         this(Setting.Game.DEFAULT_SIZE);
@@ -32,16 +41,87 @@ public class GamePresenter {
         this.size = size;
         animationInProgress = false;
         gameModel = new GameModel(Setting.Game.HISTORY_SIZE);
+        Log.e("aaaaa","init");
         soundManager = new SoundManager();
     }
 
     public void reset() {
+        write();
         gameModel.clear();
         if (gameLayout != null) {
             gameLayout.setBoard(new Board());
             start();
         }
         scoreBoardLayout.setScore(0);
+    }
+
+    public void write(){
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try{
+            Log.e("aaaaa","write");
+            fos = con.openFileOutput("history.txt",Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa","write111");
+            oos.writeObject(gameModel);
+            Log.e("aaaaa","write ok");
+            fos.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            if (fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    //fos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (oos != null){
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    //oos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public void read(){
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        Log.e("aaaaa","read");
+        try {
+            fis = con.openFileInput("history.txt");
+            Log.e("aaaaa","read111");
+            ois = new ObjectInputStream(fis);
+            Log.e("aaaaa","read222");
+            gameModel=((GameModel)ois.readObject());
+            Log.e("aaaaa","read ok");
+            gameLayout.setBoard(gameModel.lastBoard());
+            scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //这里是读取文件产生异常
+        } finally {
+            if (fis != null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    //fis流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (ois != null){
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    //ois流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void start() {

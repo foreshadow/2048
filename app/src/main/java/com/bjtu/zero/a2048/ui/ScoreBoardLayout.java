@@ -62,7 +62,7 @@ public class ScoreBoardLayout extends LinearLayout {
         highScoreView = new TextView(context);
         String a = sp.getString(KEY,"");
         Log.e("aaaaa",a);
-        if(a == null)
+        if(a.equals("") || a == null)
             setHighScore(0);
         else
             setHighScore(Integer.parseInt(a));
