@@ -1,28 +1,28 @@
 package com.bjtu.zero.a2048;
 
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
-import com.bjtu.zero.a2048.core.Score;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTouchListener, OnGestureListener {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
@@ -31,11 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private long exitTime = 0;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
@@ -165,63 +164,63 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.addView(topButtonLayout);
         setContentView(linearLayout);
         gamePresenter.setGameLayout(gameLayout);
-        gestureDetector = new GestureDetector(gameLayout.getContext(), new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public void onShowPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float vx, float vy) {
-                double dx = motionEvent1.getX() - motionEvent.getX();
-                double dy = motionEvent1.getY() - motionEvent.getY();
-                Log.e("UIOPERATION", String.format("FLING d=(%f, %f) v=(%f, %f)", dx, dy, vx, vy));
-                if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
-                        && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
-                    if (dx > dy && dx > -dy) {
-                        gamePresenter.slideRight();
-                    } else if (dx < dy && dx < -dy) {
-                        gamePresenter.slideLeft();
-                    } else if (dy > dx && dy > -dx) {
-                        gamePresenter.slideDown();
-                    } else if (dy < dx && dy < -dx) {
-                        gamePresenter.slideUp();
-                    }
-                    undoButton.update(gamePresenter.getGameModel().size());
-                    return true;
-                }
-                return false;
-            }
-        });
-        gameLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
+        gestureDetector = new GestureDetector(gameLayout.getContext(), this);
+        gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
         gamePresenter.loadSound(this);
         gamePresenter.start();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return gestureDetector.onTouchEvent(motionEvent);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float vx, float vy) {
+        double dx = motionEvent1.getX() - motionEvent.getX();
+        double dy = motionEvent1.getY() - motionEvent.getY();
+        Log.e("UIOPERATION", String.format("FLING d=(%f, %f) v=(%f, %f)", dx, dy, vx, vy));
+        if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
+                && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
+            if (dx > dy && dx > -dy) {
+                gamePresenter.slideRight();
+            } else if (dx < dy && dx < -dy) {
+                gamePresenter.slideLeft();
+            } else if (dy > dx && dy > -dx) {
+                gamePresenter.slideDown();
+            } else if (dy < dx && dy < -dx) {
+                gamePresenter.slideUp();
+            }
+            undoButton.update(gamePresenter.getGameModel().size());
+            return true;
+        }
+        return false;
     }
 
     @Override
