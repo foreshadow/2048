@@ -1,8 +1,8 @@
 package com.bjtu.zero.a2048;
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -22,15 +22,13 @@ import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements OnTouchListener, OnGestureListener {
+public class MainActivity extends Activity implements OnTouchListener, OnGestureListener {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
-
-
 
     @Override
     protected void onPause() {
@@ -249,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
             System.exit(0);
         }
     }
-
 
     @Override
     protected void onResume() {
