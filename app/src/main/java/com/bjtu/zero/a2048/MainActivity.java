@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
 import com.bjtu.zero.a2048.ui.GameLayout;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
     private GameLayout gameLayout;
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
+    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = gamePresenter.getSound();
+                        gamePresenter.setSound(false );
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
+                        gamePresenter.setSound(soundEnable);
                     }
                 });
                 t.start();
@@ -114,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = gamePresenter.getSound();
+                        gamePresenter.setSound(false );
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -130,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
+                        gamePresenter.setSound(soundEnable);
                     }
                 });
                 t.start();
@@ -225,4 +234,25 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         }
         return false;
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 }

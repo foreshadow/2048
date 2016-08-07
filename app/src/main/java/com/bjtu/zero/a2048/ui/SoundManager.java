@@ -5,62 +5,107 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.bjtu.zero.a2048.R;
+import com.bjtu.zero.a2048.Setting;
 
 public class SoundManager {
 
     private boolean enabled;
+    private boolean isFirstBlood;
     private SoundPool soundPool;
-    private int move, merge, good, great, excellent, amazing, unbelievable;
+    private int[] rank;
+    private int[] merge;
+    private int firstblood;
+    int move;
 
     public SoundManager() {
         enabled = true;
-        soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        isFirstBlood = true;
+        rank = new int[17];
+        merge = new int[6];
+    }
+
+    public void clear() {
+        isFirstBlood = true;
     }
 
     public void load(Context context) {
-        merge = soundPool.load(context, R.raw.merge, 1);
-        move = soundPool.load(context, R.raw.move, 1);
-        good = soundPool.load(context, R.raw.good, 1);
-        great = soundPool.load(context, R.raw.great, 1);
-        excellent = soundPool.load(context, R.raw.excellent, 1);
-        amazing = soundPool.load(context, R.raw.amazing, 1);
-        unbelievable = soundPool.load(context, R.raw.unbelievable, 1);
+        soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
+
+        if (Setting.Sound.SoundPack == 2)
+            isFirstBlood = false;
+        switch (Setting.Sound.SoundPack) {
+            case 0: //dota
+                firstblood = soundPool.load(context, R.raw.dotafirstblood, 1);
+
+                rank[4] = soundPool.load(context, R.raw.dotakillingspree, 1); //16 三杀
+                rank[5] = soundPool.load(context, R.raw.dotadominating, 1);
+                rank[6] = soundPool.load(context, R.raw.dotamegakill, 1);
+                rank[7] = soundPool.load(context, R.raw.dotaunstoppable, 1);
+                rank[8] = soundPool.load(context, R.raw.dotawhickedsick, 1);
+                rank[9] = soundPool.load(context, R.raw.dotamonsterkill, 1);
+                rank[10] = soundPool.load(context, R.raw.dotagodlike, 1);
+                rank[11] = soundPool.load(context, R.raw.dotaholyshit, 1);
+
+                merge[2] = soundPool.load(context, R.raw.dotadoublekill, 1);
+                merge[3] = soundPool.load(context, R.raw.dotatriplekill, 1);
+                merge[4] = soundPool.load(context, R.raw.dotaultrakill, 1);
+                merge[5] = soundPool.load(context, R.raw.dotarampage, 1);
+
+                break;
+            case 1:
+                firstblood = soundPool.load(context, R.raw.lolfirstblood, 1);
+
+                rank[4] = soundPool.load(context, R.raw.lolkillingspree, 1); //16 三杀
+                rank[5] = soundPool.load(context, R.raw.lolrampage, 1);
+                rank[6] = soundPool.load(context, R.raw.lolunstopped, 1);
+                rank[7] = soundPool.load(context, R.raw.loldominating, 1);
+                rank[8] = soundPool.load(context, R.raw.lolgodlike, 1);
+                rank[9] = soundPool.load(context, R.raw.lollegendary, 1);
+                rank[10] = soundPool.load(context, R.raw.lolshutdown, 1);
+                rank[11] = soundPool.load(context, R.raw.lolshutdown, 1);
+
+                merge[2] = soundPool.load(context, R.raw.loldoublekill, 1);
+                merge[3] = soundPool.load(context, R.raw.loltriplekill, 1);
+                merge[4] = soundPool.load(context, R.raw.lolquatrekill, 1);
+                merge[5] = soundPool.load(context, R.raw.lolpentakill, 1);
+
+                break;
+            default:
+                rank[4] = soundPool.load(context, R.raw.happygood, 1); //16 三杀
+                rank[5] = soundPool.load(context, R.raw.happygreat, 1);
+                rank[6] = soundPool.load(context, R.raw.happyexcellent, 1);
+                rank[7] = soundPool.load(context, R.raw.happyexcellent, 1);
+                rank[8] = soundPool.load(context, R.raw.happyamazing, 1);
+                rank[9] = soundPool.load(context, R.raw.happyamazing, 1);
+                rank[10] = soundPool.load(context, R.raw.happyunbelieveable, 1);
+                rank[11] = soundPool.load(context, R.raw.happyunbelieveable, 1);
+                move = soundPool.load(context, R.raw.happymove, 1);
+                soundPool.setVolume(move, (float) 0.5, (float) 0.5);
+        }
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    public void playProcess(int maxRank) {
+    public boolean  getEnablde(){
+        return enabled ;
+    }
+
+    public void playProcess(int maxRank, int mergeNum) {
         if (enabled) {
-            switch (maxRank) {
-                case 1:
-                    soundPool.play(move, 1, 1, 0, 0, 1);
-                    break;
-                case 5:
-                    soundPool.play(good, 1, 1, 0, 0, 1);
-                    break;
-                case 6:
-                    soundPool.play(good, 1, 1, 0, 0, 1);
-                    break;
-                case 7:
-                    soundPool.play(great, 1, 1, 0, 0, 1);
-                    break;
-                case 8:
-                    soundPool.play(great, 1, 1, 0, 0, 1);
-                    break;
-                case 9:
-                    soundPool.play(excellent, 1, 1, 0, 0, 1);
-                    break;
-                case 10:
-                    soundPool.play(amazing, 1, 1, 0, 0, 1);
-                    break;
-                case 11:
-                    soundPool.play(unbelievable, 1, 1, 0, 0, 1);
-                    break;
-                default:
-                    soundPool.play(merge, 1, 1, 0, 0, 1);
-                    break;
+            if (maxRank >= 2 && isFirstBlood) {
+                soundPool.play(firstblood, 1, 1, 0, 0, 1);
+                isFirstBlood = false;
+            }
+            if (maxRank >= 7)
+                soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
+            else if (mergeNum >= 2 && Setting.Sound.SoundPack != 2)
+                soundPool.play(merge[Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
+            else if (maxRank >= 4)
+                soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
+            else if (Setting.Sound.SoundPack == 2) {
+                soundPool.play(move, 1, 1, 0, 0, 1);
             }
         }
     }
