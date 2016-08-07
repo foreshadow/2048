@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean soundEnable = gamePresenter.getSound();
+                        boolean soundEnable = gamePresenter.isSoundEnabled();
                         gamePresenter.setSound(false );
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean soundEnable = gamePresenter.getSound();
+                        boolean soundEnable = gamePresenter.isSoundEnabled();
                         gamePresenter.setSound(false );
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {

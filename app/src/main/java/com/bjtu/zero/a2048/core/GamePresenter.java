@@ -142,8 +142,8 @@ public class GamePresenter {
         this.setScoreBoardLayout(scoreBoardLayout);
     }
 
-    public boolean getSound() {
-        return soundManager.getEnablde();
+    public boolean isSoundEnabled() {
+        return soundManager.isEnabled();
     }
 
     //设置是否播放音效
@@ -422,7 +422,7 @@ public class GamePresenter {
     private void gameOverJudge() {
         if (isGameOver()) {
             // TODO: 2016/7/24
-            //soundManager.playGameOver();
+            soundManager.playGameOver();
         }
 
     }

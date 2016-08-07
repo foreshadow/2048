@@ -9,13 +9,13 @@ import com.bjtu.zero.a2048.Setting;
 
 public class SoundManager {
 
+    int move;
     private boolean enabled;
     private boolean isFirstBlood;
     private SoundPool soundPool;
     private int[] rank;
     private int[] merge;
     private int firstblood;
-    int move;
 
     public SoundManager() {
         enabled = true;
@@ -84,12 +84,12 @@ public class SoundManager {
         }
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public boolean  getEnablde(){
-        return enabled ;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void playProcess(int maxRank, int mergeNum) {
