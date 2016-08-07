@@ -12,25 +12,23 @@ import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.SoundManager;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.Random;
 
 public class GamePresenter {
 
-    public ScoreBoardLayout scoreBoardLayout;
+    private ScoreBoardLayout scoreBoardLayout;
     private int size;
     private boolean animationInProgress;
     private GameLayout gameLayout;
     private GameModel gameModel;
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    public Context con;
+    private Context context;
 
 
     public GamePresenter() {
@@ -52,7 +50,7 @@ public class GamePresenter {
             gameLayout.setBoard(new Board());
             start();
         }
-        scoreBoardLayout.setScore(0);
+        getScoreBoardLayout().setScore(0);
     }
 
     public void write(){
@@ -60,7 +58,7 @@ public class GamePresenter {
         ObjectOutputStream oos = null;
         try{
             Log.e("aaaaa","write");
-            fos = con.openFileOutput("history.txt",Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput("history.txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa","write111");
             oos.writeObject(gameModel);
@@ -92,14 +90,14 @@ public class GamePresenter {
         ObjectInputStream ois = null;
         Log.e("aaaaa","read");
         try {
-            fis = con.openFileInput("history.txt");
+            fis = getContext().openFileInput("history.txt");
             Log.e("aaaaa","read111");
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa","read222");
             gameModel=((GameModel)ois.readObject());
             Log.e("aaaaa","read ok");
             gameLayout.setBoard(gameModel.lastBoard());
-            scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
+            getScoreBoardLayout().setScore(gameModel.lastStatus().getScore());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +139,7 @@ public class GamePresenter {
     }
 
     public void setScoreBoard(ScoreBoardLayout scoreBoardLayout) {
-        this.scoreBoardLayout = scoreBoardLayout;
+        this.setScoreBoardLayout(scoreBoardLayout);
     }
 
     //设置是否播放音效
@@ -425,6 +423,22 @@ public class GamePresenter {
         return gameModel;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public ScoreBoardLayout getScoreBoardLayout() {
+        return scoreBoardLayout;
+    }
+
+    public void setScoreBoardLayout(ScoreBoardLayout scoreBoardLayout) {
+        this.scoreBoardLayout = scoreBoardLayout;
+    }
+
     private class AnotherTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -435,7 +449,7 @@ public class GamePresenter {
         @Override
         protected void onPostExecute(String result) {
             //更新UI的操作，这里面的内容是在UI线程里面执行的
-            scoreBoardLayout.setScore(Integer.parseInt(result));
+            getScoreBoardLayout().setScore(Integer.parseInt(result));
         }
     }
 }
