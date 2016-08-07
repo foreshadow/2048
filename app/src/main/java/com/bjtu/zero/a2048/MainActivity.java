@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                     @Override
                     public void run() {
                         boolean soundEnable = gamePresenter.isSoundEnabled();
-                        gamePresenter.setSound(false );
+                        gamePresenter.setSound(false);
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                     @Override
                     public void run() {
                         boolean soundEnable = gamePresenter.isSoundEnabled();
-                        gamePresenter.setSound(false );
+                        gamePresenter.setSound(false);
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
 
     public void exit() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
+            gamePresenter.write();
             Toast.makeText(getApplicationContext(), "再按一次退出程序",
                     Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();

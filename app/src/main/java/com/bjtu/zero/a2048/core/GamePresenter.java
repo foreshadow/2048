@@ -38,8 +38,9 @@ public class GamePresenter {
         this.size = size;
         animationInProgress = false;
         gameModel = new GameModel(Setting.Game.HISTORY_SIZE);
-        Log.e("aaaaa","init");
+        Log.e("aaaaa", "loading soundmanager");
         soundManager = new SoundManager();
+        Log.e("aaaaa", "soundmanager loaded");
     }
 
     public void reset() {
@@ -53,21 +54,21 @@ public class GamePresenter {
         getScoreBoardLayout().setScore(0);
     }
 
-    public void write(){
+    public void write() {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
-        try{
-            Log.e("aaaaa","write");
+        try {
+            Log.e("aaaaa", "write");
             fos = getContext().openFileOutput("history.txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa","write111");
+            Log.e("aaaaa", "write111");
             oos.writeObject(gameModel);
-            Log.e("aaaaa","write ok");
+            Log.e("aaaaa", "write ok");
             fos.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null){
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
@@ -75,7 +76,7 @@ public class GamePresenter {
                     e.printStackTrace();
                 }
             }
-            if (oos != null){
+            if (oos != null) {
                 try {
                     oos.close();
                 } catch (IOException e) {
@@ -85,17 +86,18 @@ public class GamePresenter {
             }
         }
     }
-    public void read(){
+
+    public void read() {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
-        Log.e("aaaaa","read");
+        Log.e("aaaaa", "read");
         try {
             fis = getContext().openFileInput("history.txt");
-            Log.e("aaaaa","read111");
+            Log.e("aaaaa", "read111");
             ois = new ObjectInputStream(fis);
-            Log.e("aaaaa","read222");
-            gameModel=((GameModel)ois.readObject());
-            Log.e("aaaaa","read ok");
+            Log.e("aaaaa", "read222");
+            gameModel = ((GameModel) ois.readObject());
+            Log.e("aaaaa", "read ok");
             gameLayout.setBoard(gameModel.lastBoard());
             getScoreBoardLayout().setScore(gameModel.lastStatus().getScore());
 
@@ -103,7 +105,7 @@ public class GamePresenter {
             e.printStackTrace();
             //这里是读取文件产生异常
         } finally {
-            if (fis != null){
+            if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
@@ -111,7 +113,7 @@ public class GamePresenter {
                     e.printStackTrace();
                 }
             }
-            if (ois != null){
+            if (ois != null) {
                 try {
                     ois.close();
                 } catch (IOException e) {
