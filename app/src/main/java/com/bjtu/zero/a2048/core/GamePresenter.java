@@ -30,7 +30,6 @@ public class GamePresenter {
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private Context context;
 
-
     public GamePresenter() {
         this(Setting.Game.DEFAULT_SIZE);
     }
@@ -143,13 +142,13 @@ public class GamePresenter {
         this.setScoreBoardLayout(scoreBoardLayout);
     }
 
+    public boolean getSound() {
+        return soundManager.getEnablde();
+    }
+
     //设置是否播放音效
     public void setSound(boolean enable) {
         soundManager.setEnabled(enable);
-    }
-
-    public boolean getSound(){
-        return  soundManager.getEnablde();
     }
 
     public void loadSound(Context context) {

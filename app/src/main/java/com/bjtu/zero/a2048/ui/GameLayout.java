@@ -15,7 +15,6 @@ import com.bjtu.zero.a2048.core.BlockChangeList;
 import com.bjtu.zero.a2048.core.BlockChangeListItem;
 import com.bjtu.zero.a2048.core.Board;
 import com.bjtu.zero.a2048.core.GamePresenter;
-import com.bjtu.zero.a2048.core.Score;
 
 public class GameLayout extends FrameLayout {
 
