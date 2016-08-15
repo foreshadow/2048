@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -33,6 +34,12 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        gamePresenter.write();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LinearLayout linearLayout = new LinearLayout(this);
@@ -43,6 +50,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         gamePresenter = new GamePresenter();
         gamePresenter.setScoreBoard(scoreBoardLayout);
+        gamePresenter.con = linearLayout.getContext();
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
@@ -246,4 +254,11 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gamePresenter.read();
+        undoButton.update(gamePresenter.getGameModel().size());
+    }
 }
