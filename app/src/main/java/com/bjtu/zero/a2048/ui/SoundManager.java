@@ -9,7 +9,7 @@ import com.bjtu.zero.a2048.Setting;
 
 public class SoundManager {
 
-    private boolean enabled;
+    //private boolean enabled;
     private boolean isFirstBlood;
     private SoundPool soundPool;
     private int[] rank;
@@ -18,7 +18,7 @@ public class SoundManager {
     private int move, merge;
 
     public SoundManager() {
-        enabled = true;
+        //enabled = true;
         isFirstBlood = true;
         rank = new int[17];
         mergenum = new int[6];
@@ -91,16 +91,16 @@ public class SoundManager {
         }
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+//    public void setEnabled(boolean enabled) {
+//        this.enabled = enabled;
+//    }
 
-    public boolean  getEnablde(){
-        return enabled ;
-    }
+//    public boolean  getEnablde(){
+//        return enabled ;
+//    }
 
     public void playProcess(int maxRank, int mergeNum) {
-        if (enabled) {
+        if (Setting.Sound.enabled) {
             switch(Setting.Sound.SoundPack){
                 case 3:
                     if(maxRank>1)
@@ -130,13 +130,4 @@ public class SoundManager {
             }
         }
     }
-
-    public void playGameOver() {
-
-    }
-
-    public void startGame() {
-
-    }
-
 }
