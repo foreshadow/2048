@@ -31,6 +31,7 @@ public class GamePresenter {
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     public Context con;
+    private String name = "game";
 
 
     public GamePresenter() {
@@ -60,7 +61,7 @@ public class GamePresenter {
         ObjectOutputStream oos = null;
         try{
             Log.e("aaaaa","write");
-            fos = con.openFileOutput("history.txt",Context.MODE_PRIVATE);
+            fos = con.openFileOutput(name+String.valueOf(size)+".txt",Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa","write111");
             oos.writeObject(gameModel);
@@ -92,7 +93,7 @@ public class GamePresenter {
         ObjectInputStream ois = null;
         Log.e("aaaaa","read");
         try {
-            fis = con.openFileInput("history.txt");
+            fis = con.openFileInput(name+String.valueOf(size)+".txt");
             Log.e("aaaaa","read111");
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa","read222");
