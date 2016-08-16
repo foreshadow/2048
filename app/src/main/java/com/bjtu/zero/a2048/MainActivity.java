@@ -1,9 +1,10 @@
 package com.bjtu.zero.a2048;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -18,9 +19,14 @@ import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
@@ -36,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         gamePresenter.setScoreBoard(scoreBoardLayout);
         gamePresenter.con = linearLayout.getContext();
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
+
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
         topButtonLayout.setMinimumHeight(200);
@@ -160,6 +165,43 @@ public class MainActivity extends AppCompatActivity {
         topButtonLayout.addView(autoButton1);
         topButtonLayout.addView(autoButton2);
         linearLayout.addView(topButtonLayout);
+
+        LinearLayout ButtonLayout = new LinearLayout(linearLayout.getContext());
+        ButtonLayout.setMinimumHeight(200);
+        ButtonLayout.setGravity(Gravity.CENTER);
+        Button Button1 = new Button(ButtonLayout.getContext());
+        Button1.setText("save 1");
+        Button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                gamePresenter.write(1);
+            }
+        });
+        Button Button2 = new Button(ButtonLayout.getContext());
+        Button2.setText("save 2");
+        Button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                gamePresenter.write(2);
+            }
+        });
+        Button Button3 = new Button(ButtonLayout.getContext());
+        Button3.setText("save 3");
+        Button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                gamePresenter.write(3);
+            }
+        });
+        ButtonLayout.addView(Button1);
+        ButtonLayout.addView(Button2);
+        ButtonLayout.addView(Button3);
+        linearLayout.addView(ButtonLayout);
+
+
         setContentView(linearLayout);
         gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), new GestureDetector.OnGestureListener() {
@@ -224,7 +266,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        gamePresenter.read();
+        if(Setting.savemodel == 0)
+            gamePresenter.read();
+        else if(Setting.savemodel == 2)
+            gamePresenter.read(1);
+        else if(Setting.savemodel == 3)
+            gamePresenter.read(2);
+        else if(Setting.savemodel == 4)
+            gamePresenter.read(3);
+        else {
+            gamePresenter.read();
+            gamePresenter.reset();
+        }
         undoButton.update(gamePresenter.getGameModel().size());
     }
+
 }

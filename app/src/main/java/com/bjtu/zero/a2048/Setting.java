@@ -4,6 +4,8 @@ import android.graphics.Color;
 
 public class Setting {
 
+    public static int savemodel = 0;
+
     public static class UI {
 
         public static final String[] STRING_LIST = new String[]{
@@ -48,6 +50,7 @@ public class Setting {
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
         public static final int BLOCK_FONT_SIZE_MIN = 40;
+
     }
 
     public static class Game {

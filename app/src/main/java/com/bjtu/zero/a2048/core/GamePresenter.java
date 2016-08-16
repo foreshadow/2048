@@ -125,6 +125,78 @@ public class GamePresenter {
         }
     }
 
+
+    public void write(int i){
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try{
+            Log.e("aaaaa","write");
+            fos = con.openFileOutput("save"+String.valueOf(i)+".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa","write111");
+            oos.writeObject(gameModel);
+            Log.e("aaaaa","write ok");
+            fos.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            if (fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    //fos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (oos != null){
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    //oos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public  void read(int i){
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        Log.e("aaaaa","read");
+        try {
+            fis = con.openFileInput("save"+String.valueOf(i)+".txt");
+            Log.e("aaaaa","read111");
+            ois = new ObjectInputStream(fis);
+            Log.e("aaaaa","read222");
+            gameModel=((GameModel)ois.readObject());
+            Log.e("aaaaa","read ok");
+            gameLayout.setBoard(gameModel.lastBoard());
+            scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //这里是读取文件产生异常
+        } finally {
+            if (fis != null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    //fis流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (ois != null){
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    //ois流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     public void start() {
         gameModel.append(new Status(size));
         if (gameLayout != null) {
