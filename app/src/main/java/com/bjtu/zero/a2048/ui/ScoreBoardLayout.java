@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bjtu.zero.a2048.Setting;
+
 public class ScoreBoardLayout extends LinearLayout {
 
     public final String KEY = "HIGH";
@@ -70,14 +72,13 @@ public class ScoreBoardLayout extends LinearLayout {
     }
 
     private int refitText(String text) {
-        int textWidth = 150;
+        int textWidth = (int) (600. / Setting.Runtime.BOARD_SIZE * 0.75);
         Log.e("ccccc", "wid=" + String.valueOf(textWidth));
-        Log.e("ccccc", "l=" + text.length());
         int minTextSize = 15;
         int maxTextSize = 40;
         if (textWidth > 0) {
             int trySize = maxTextSize;
-            while ((trySize > minTextSize) && trySize * text.length() >= textWidth) {
+            while ((trySize > minTextSize) && trySize * text.toCharArray().length >= textWidth) {
                 trySize -= 1;
                 if (trySize <= minTextSize) {
                     trySize = minTextSize;
@@ -111,6 +112,5 @@ public class ScoreBoardLayout extends LinearLayout {
         editor.putString(KEY, String.valueOf(highScore));
         editor.commit();
         Log.e("aaaaa", "setHigh");
-        setHighScore(highScore);
     }
 }

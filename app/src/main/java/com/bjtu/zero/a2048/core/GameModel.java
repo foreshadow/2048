@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 public class GameModel implements Serializable {
 
-    private static final long serialVersion = 1L;
     private Deque<Status> history;
     private int capacity;
 
