@@ -125,7 +125,6 @@ public class GamePresenter {
         }
     }
 
-
     public void write(int i){
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
