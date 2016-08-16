@@ -29,6 +29,8 @@ public class GamePresenter {
     private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private Context context;
+    private String name = "game";
+
 
     public GamePresenter() {
         this(Setting.Game.DEFAULT_BOARD_SIZE);
@@ -59,7 +61,7 @@ public class GamePresenter {
         ObjectOutputStream oos = null;
         try {
             Log.e("aaaaa", "write");
-            fos = getContext().openFileOutput("history.txt", Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput(name+String.valueOf(size)+".txt",Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111");
             oos.writeObject(gameModel);
@@ -92,7 +94,7 @@ public class GamePresenter {
         ObjectInputStream ois = null;
         Log.e("aaaaa", "read");
         try {
-            fis = getContext().openFileInput("history.txt");
+            fis = getContext().openFileInput(name+String.valueOf(size)+".txt");
             Log.e("aaaaa", "read111");
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read222");

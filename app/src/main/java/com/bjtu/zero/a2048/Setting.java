@@ -67,6 +67,7 @@ public class Setting {
         public static final int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 100;
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
+        public static final int BLOCK_FONT_SIZE_MIN = 40;
         public static final int DOUBLE_HIT_INTERVAL = 2000;
     }
 
