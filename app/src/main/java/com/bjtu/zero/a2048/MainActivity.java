@@ -1,8 +1,9 @@
 package com.bjtu.zero.a2048;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -22,13 +23,14 @@ import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements OnTouchListener, OnGestureListener {
+public class MainActivity extends Activity implements OnTouchListener, OnGestureListener {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //测试代码
+                Intent intent = new Intent(MainActivity.this,NewGameActivity.class);
+                startActivity(intent);
                 gamePresenter.reset();
                 undoButton.update(gamePresenter.getGameModel().size());
             }
@@ -75,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean soundEnable = gamePresenter.isSoundEnabled();
-                        gamePresenter.setSound(false);
+                        boolean soundEnable = Setting.Sound.enabled ;
+                        Setting.Sound.enabled =false ;
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
-                        gamePresenter.setSound(soundEnable);
+                        Setting.Sound.enabled =soundEnable ;
                     }
                 });
                 t.start();
@@ -120,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean soundEnable = gamePresenter.isSoundEnabled();
-                        gamePresenter.setSound(false);
+                        boolean soundEnable = Setting.Sound.enabled ;
+                        Setting.Sound.enabled =false ;
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
-                        gamePresenter.setSound(soundEnable);
+                        Setting.Sound.enabled=soundEnable ;
                     }
                 });
                 t.start();

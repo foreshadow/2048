@@ -148,11 +148,6 @@ public class GamePresenter {
         return soundManager.isEnabled();
     }
 
-    //设置是否播放音效
-    public void setSound(boolean enable) {
-        soundManager.setEnabled(enable);
-    }
-
     public void loadSound(Context context) {
         soundManager.load(context);
     }
