@@ -55,7 +55,7 @@ public class MainActivity extends Activity
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
                 gamePresenter.undo();
-                undoButton.update(gamePresenter.getGameModel().size());
+                undoButton.update(gamePresenter.getGameModel().historySize());
             }
         });
         Button restartButton = new Button(topButtonLayout.getContext());
@@ -67,7 +67,7 @@ public class MainActivity extends Activity
                 Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
                 startActivity(intent);
                 gamePresenter.reset();
-                undoButton.update(gamePresenter.getGameModel().size());
+                undoButton.update(gamePresenter.getGameModel().historySize());
             }
         });
         topButtonLayout.addView(undoButton);
@@ -87,7 +87,7 @@ public class MainActivity extends Activity
     protected void onResume() {
         super.onResume();
         gamePresenter.read();
-        undoButton.update(gamePresenter.getGameModel().size());
+        undoButton.update(gamePresenter.getGameModel().historySize());
     }
 
     @Override
@@ -137,7 +137,7 @@ public class MainActivity extends Activity
             } else if (dy < dx && dy < -dx) {
                 gamePresenter.slideUp();
             }
-            undoButton.update(gamePresenter.getGameModel().size());
+            undoButton.update(gamePresenter.getGameModel().historySize());
             return true;
         }
         return false;

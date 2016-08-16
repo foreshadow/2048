@@ -95,7 +95,7 @@ public class GameLayout extends FrameLayout {
     }
 
     public void setBoard(Board board) {
-        if (size != board.getSize()) {
+        if (size != board.size()) {
             throw new AssertionError();
         }
         for (int i = 0; i < size; i++) {

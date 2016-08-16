@@ -85,7 +85,7 @@ public class ScoreBoardLayout extends LinearLayout {
                     break;
                 }
             }
-            Log.e("ccccc", "size = " + String.valueOf(trySize));
+            Log.e("ccccc", "historySize = " + String.valueOf(trySize));
             return trySize;
 
         }
