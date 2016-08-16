@@ -62,7 +62,7 @@ public class BlockView extends View {
             fontSize = trySize;
             Log.e("bbbbb","size = " + String.valueOf(fontSize));
         }
-    };
+    }
 
     void setGeometry(int centerX, int centerY, int width, int height) {
         width = (int) (width * Setting.UI.INNER_BLOCK_PERCENT);
@@ -90,7 +90,7 @@ public class BlockView extends View {
             Paint.FontMetricsInt fontMetrics = painter.getFontMetricsInt();
             int baseline = (boundingRect.bottom + boundingRect.top
                     - fontMetrics.bottom - fontMetrics.top) / 2;
-            canvas.drawText(Setting.UI.STRING_LIST[block.getRank()],
+            canvas.drawText(Setting.Runtime.STRING_LIST[block.getRank()],
                     boundingRect.centerX(), baseline, painter);
         }
     }

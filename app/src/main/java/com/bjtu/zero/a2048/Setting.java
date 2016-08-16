@@ -6,7 +6,6 @@ public class Setting {
 
     public static class UI {
 
-
         public static final String[] STRING_LIST_CLASSICAL = new String[]{
                 "",
                 "2", "4", "8", "16",
@@ -14,25 +13,20 @@ public class Setting {
                 "512", "1024", "2048", "4096",
                 "8192", "16384", "32768", "65536",
         };
-
-        public  static  final String [] STRING_LIST_ACADEMIC = new String []{
+        public static final String[] STRING_LIST_ACADEMIC = new String[]{
                 "",
                 "幼儿园", "一年级", "二年级", "三年级",
                 "四年级", "五年级", "六年级", "初一",
                 "初二", "初三", "高一", "高二",
                 "高三", "大学", "硕士", "博士",
         };
-
-        public  static  final String [] STRING_LIST_DYNASTY = new String []{
+        public static final String[] STRING_LIST_DYNASTY = new String[]{
                 "",
                 "夏", "商", "周", "秦",
-                "汉", "三国","晋", "南北朝",
+                "汉", "三国", "晋", "南北朝",
                 "隋", "唐", "宋", "元",
                 "明", "清", "中华民国", "新中国"
         };
-
-        public static String[] STRING_LIST = STRING_LIST_CLASSICAL;
-
         public static final int[] SCORE_LIST = new int[]{
                 0, 2, 4, 8, 16, 32, 64, 128, 256,
                 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,
@@ -82,12 +76,14 @@ public class Setting {
 
         public static int ANIMATION_DURATION_MILLISECONDS =
                 UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
+        public static int BOARD_SIZE = Game.DEFAULT_BOARD_SIZE;
+        public static String[] STRING_LIST = UI.STRING_LIST_CLASSICAL;
     }
 
     public static class Sound {
 
         //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
         public static boolean enabled = false;
-        public static int SoundPack = 0;
+        public static int SOUND_PACK = 0;
     }
 }

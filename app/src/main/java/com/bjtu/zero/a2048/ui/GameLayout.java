@@ -32,7 +32,7 @@ public class GameLayout extends FrameLayout {
     }
 
     public GameLayout(Context context, int width, int height, GamePresenter gamePresenter) {
-        this(context, width, height, gamePresenter, Setting.Game.DEFAULT_SIZE);
+        this(context, width, height, gamePresenter, Setting.Runtime.BOARD_SIZE);
 
     }
 

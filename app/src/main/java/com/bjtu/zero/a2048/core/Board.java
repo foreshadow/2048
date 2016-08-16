@@ -13,7 +13,7 @@ public class Board implements Cloneable , Serializable {
     private Block[][] data;
 
     public Board() {
-        this(Setting.Game.DEFAULT_BOARD_SIZE);
+        this(Setting.Runtime.BOARD_SIZE);
     }
 
     public Board(int size) {

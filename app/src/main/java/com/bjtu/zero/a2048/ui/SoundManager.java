@@ -92,7 +92,7 @@ public class SoundManager {
 
     public void playProcess(int maxRank, int mergeNum) {
         if (Setting.Sound.enabled) {
-            switch(Setting.Sound.SoundPack){
+            switch (Setting.Sound.SOUND_PACK) {
                 case 3:
                     if(maxRank>1)
                         soundPool.play(merge, 1, 1, 0, 0, 1);

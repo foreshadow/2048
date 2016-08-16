@@ -33,7 +33,7 @@ public class GamePresenter {
 
 
     public GamePresenter() {
-        this(Setting.Game.DEFAULT_BOARD_SIZE);
+        this(Setting.Runtime.BOARD_SIZE);
     }
 
     public GamePresenter(int size) {
@@ -144,10 +144,6 @@ public class GamePresenter {
 
     public void setScoreBoard(ScoreBoardLayout scoreBoardLayout) {
         this.setScoreBoardLayout(scoreBoardLayout);
-    }
-
-    public boolean isSoundEnabled() {
-        return soundManager.isEnabled();
     }
 
     public void loadSound(Context context) {
@@ -421,7 +417,7 @@ public class GamePresenter {
     private void gameOverJudge() {
         if (isGameOver()) {
             // TODO: 2016/7/24
-            soundManager.playGameOver();
+//            soundManager.playGameOver();
         }
 
     }

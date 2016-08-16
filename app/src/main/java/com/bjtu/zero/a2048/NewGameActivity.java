@@ -2,7 +2,6 @@ package com.bjtu.zero.a2048;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -13,17 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 public class NewGameActivity extends Activity {
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +45,12 @@ public class NewGameActivity extends Activity {
         size6.setText("6×6");
         size4.setTextColor(Color.BLUE);
         size4.getPaint().setFakeBoldText(true);
-        Setting.Game.DEFAULT_SIZE =4;
+        Setting.Runtime.BOARD_SIZE = 4;
 
         size4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.Game.DEFAULT_SIZE=4;
+                Setting.Runtime.BOARD_SIZE = 4;
                 size4.setTextColor(Color.BLUE);
                 size4.getPaint().setFakeBoldText(true);
                 size5.setTextColor(Color.BLACK);
@@ -74,7 +63,7 @@ public class NewGameActivity extends Activity {
         size5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.Game.DEFAULT_SIZE=5;
+                Setting.Runtime.BOARD_SIZE = 5;
                 size5.setTextColor(Color.BLUE);
                 size5.getPaint().setFakeBoldText(true);
                 size4.setTextColor(Color.BLACK);
@@ -87,7 +76,7 @@ public class NewGameActivity extends Activity {
         size6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.Game.DEFAULT_SIZE=6;
+                Setting.Runtime.BOARD_SIZE = 6;
                 size6.setTextColor(Color.BLUE);
                 size6.getPaint().setFakeBoldText(true);
                 size5.setTextColor(Color.BLACK);
@@ -122,7 +111,7 @@ public class NewGameActivity extends Activity {
         number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.UI.STRING_LIST = Setting.UI.STRING_LIST_CLASSICAL ;
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_CLASSICAL;
                 number.setTextColor(Color.BLUE);
                 number.getPaint().setFakeBoldText(true);
                 dynasty.setTextColor(Color.BLACK);
@@ -135,7 +124,7 @@ public class NewGameActivity extends Activity {
         academic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.UI.STRING_LIST = Setting.UI.STRING_LIST_ACADEMIC;
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_ACADEMIC;
                 academic.setTextColor(Color.BLUE);
                 academic.getPaint().setFakeBoldText(true);
                 dynasty.setTextColor(Color.BLACK);
@@ -148,7 +137,7 @@ public class NewGameActivity extends Activity {
         dynasty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Setting.UI.STRING_LIST = Setting.UI.STRING_LIST_DYNASTY ;
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_DYNASTY;
                 dynasty.setTextColor(Color.BLUE);
                 dynasty.getPaint().setFakeBoldText(true);
                 academic.setTextColor(Color.BLACK);
@@ -178,25 +167,24 @@ public class NewGameActivity extends Activity {
 //        simple.setMinimumWidth(size4.getWidth()*3/2);
         final Button happy = new Button(this);
         happy.setText("开心消消乐版");
-       // happy.setMinimumWidth(450);
+        // happy.setMinimumWidth(450);
         final Button lol = new Button(this);
         lol.setText("lol版");
-        final Button dota  = new Button(this);
+        final Button dota = new Button(this);
         dota.setText("dota版");
 
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Setting.Sound.enabled && Setting.Sound.SoundPack==3){
-                    Setting.Sound.enabled =false ;
+                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 3) {
+                    Setting.Sound.enabled = false;
                     soundSeting.setText("音效    关");
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
-                }
-                else {
-                    Setting.Sound.enabled =true ;
+                } else {
+                    Setting.Sound.enabled = true;
                     soundSeting.setText("音效    开");
-                    Setting.Sound.SoundPack=3;
+                    Setting.Sound.SOUND_PACK = 3;
                     simple.setTextColor(Color.BLUE);
                     simple.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -212,16 +200,15 @@ public class NewGameActivity extends Activity {
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Setting.Sound.enabled && Setting.Sound.SoundPack==2){
-                    Setting.Sound.enabled =false ;
+                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 2) {
+                    Setting.Sound.enabled = false;
                     soundSeting.setText("音效    关");
                     happy.setTextColor(Color.BLACK);
                     happy.getPaint().setFakeBoldText(false);
-                }
-                else {
-                    Setting.Sound.enabled =true ;
+                } else {
+                    Setting.Sound.enabled = true;
                     soundSeting.setText("音效    开");
-                    Setting.Sound.SoundPack=2;
+                    Setting.Sound.SOUND_PACK = 2;
                     happy.setTextColor(Color.BLUE);
                     happy.getPaint().setFakeBoldText(true);
                     simple.setTextColor(Color.BLACK);
@@ -237,16 +224,15 @@ public class NewGameActivity extends Activity {
         dota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Setting.Sound.enabled && Setting.Sound.SoundPack==0){
-                    Setting.Sound.enabled =false ;
+                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 0) {
+                    Setting.Sound.enabled = false;
                     soundSeting.setText("音效    关");
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
-                }
-                else {
-                    Setting.Sound.enabled =true ;
+                } else {
+                    Setting.Sound.enabled = true;
                     soundSeting.setText("音效    开");
-                    Setting.Sound.SoundPack=0;
+                    Setting.Sound.SOUND_PACK = 0;
                     dota.setTextColor(Color.BLUE);
                     dota.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -262,16 +248,15 @@ public class NewGameActivity extends Activity {
         lol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Setting.Sound.enabled && Setting.Sound.SoundPack==1){
-                    Setting.Sound.enabled =false ;
+                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 1) {
+                    Setting.Sound.enabled = false;
                     soundSeting.setText("音效    关");
                     lol.setTextColor(Color.BLACK);
                     lol.getPaint().setFakeBoldText(false);
-                }
-                else {
-                    Setting.Sound.enabled =true ;
+                } else {
+                    Setting.Sound.enabled = true;
                     soundSeting.setText("音效    开");
-                    Setting.Sound.SoundPack=1;
+                    Setting.Sound.SOUND_PACK = 1;
                     lol.setTextColor(Color.BLUE);
                     lol.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -302,7 +287,7 @@ public class NewGameActivity extends Activity {
         NewGameSound.addView(soundSeting);
         NewGameSound.addView(soundBar1);
         NewGameSound.addView(soundBar2);
-        Button  makeSure = new Button(this);
+        Button makeSure = new Button(this);
         makeSure.setText("确定");
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,48 +305,5 @@ public class NewGameActivity extends Activity {
         NewGameLayout.addView(blank);
         NewGameLayout.addView(makeSure);
         setContentView(NewGameLayout);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "NewGame Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.bjtu.zero.a2048/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "NewGame Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.bjtu.zero.a2048/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 }
