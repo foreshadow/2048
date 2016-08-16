@@ -15,7 +15,6 @@ public class GameModel implements Serializable{
 
     private Deque<Status> history;
     private int capacity;
-    private static final long serialVersion = 1L;
 
     public GameModel(int capacity) {
         history = new LinkedList<>();
@@ -51,14 +50,5 @@ public class GameModel implements Serializable{
 
     public void popBack() {
         history.removeLast();
-    }
-
-    public Deque<Status> getHistory() {
-        return history;
-    }
-
-    public void setHistory(Deque<Status> h){
-        history = h;
-        Log.e("aaaaa","histroy");
     }
 }

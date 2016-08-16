@@ -47,6 +47,7 @@ public class Setting {
         public static final float BLOCK_SPAWN_SCALE_FROM_PERCENT = 0.5f;
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
+        public static final int BLOCK_FONT_SIZE_MIN = 40;
     }
 
     public static class Game {
