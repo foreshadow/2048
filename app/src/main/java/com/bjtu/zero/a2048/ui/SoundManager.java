@@ -30,10 +30,10 @@ public class SoundManager {
 
     public void load(Context context) {
         soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
-
-        if (Setting.Sound.SoundPack == 2)
+        if (Setting.Sound.SOUND_PACK == 2) {
             isFirstBlood = false;
-        switch (Setting.Sound.SoundPack) {
+        }
+        switch (Setting.Sound.SOUND_PACK) {
             case 0: //dota
                 firstblood = soundPool.load(context, R.raw.dotafirstblood, 1);
 
@@ -98,13 +98,13 @@ public class SoundManager {
                 soundPool.play(firstblood, 1, 1, 0, 0, 1);
                 isFirstBlood = false;
             }
-            if (maxRank >= 7)
+            if (maxRank >= 7) {
                 soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-            else if (mergeNum >= 2 && Setting.Sound.SoundPack != 2)
+            } else if (mergeNum >= 2 && Setting.Sound.SOUND_PACK != 2) {
                 soundPool.play(merge[Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
-            else if (maxRank >= 4)
+            } else if (maxRank >= 4) {
                 soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-            else if (Setting.Sound.SoundPack == 2) {
+            } else if (Setting.Sound.SOUND_PACK == 2) {
                 soundPool.play(move, 1, 1, 0, 0, 1);
             }
         }

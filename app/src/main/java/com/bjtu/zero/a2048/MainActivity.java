@@ -238,22 +238,16 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exit();
+            if (System.currentTimeMillis() - exitTime > Setting.UI.DOUBLE_HIT_INTERVAL) {
+                exitTime = System.currentTimeMillis();
+                gamePresenter.write();
+                Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                finish();
+            }
             return false;
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    public void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
-            gamePresenter.write();
-            Toast.makeText(getApplicationContext(), "再按一次退出程序",
-                    Toast.LENGTH_SHORT).show();
-            exitTime = System.currentTimeMillis();
-        } else {
-            finish();
-            System.exit(0);
-        }
-    }
-
 }

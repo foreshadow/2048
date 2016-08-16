@@ -31,7 +31,7 @@ public class GamePresenter {
     private Context context;
 
     public GamePresenter() {
-        this(Setting.Game.DEFAULT_SIZE);
+        this(Setting.Game.DEFAULT_BOARD_SIZE);
     }
 
     public GamePresenter(int size) {

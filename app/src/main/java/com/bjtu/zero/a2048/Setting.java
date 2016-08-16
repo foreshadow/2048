@@ -43,17 +43,18 @@ public class Setting {
         public static final double INNER_BLOCK_PERCENT = 0.9;
         public static final double MINIMUM_MOVING_DISTANCE_ON_FLING = 50;
         public static final double MINIMUM_MOVING_VELOCITY_ON_FLING = 1000;
-        public static final int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 100;
         public static final float BLOCK_SPAWN_SCALE_FROM_PERCENT = 0.5f;
+        public static final int DEFAULT_ANIMATION_DURATION_MILLISECONDS = 100;
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
+        public static final int DOUBLE_HIT_INTERVAL = 2000;
     }
 
     public static class Game {
 
         public static final int HISTORY_SIZE = 21;
-        public static final double RANK_2_PROBABILITY = 0.1; //RANK2出现的概率
-        public static final int DEFAULT_SIZE = 4;
+        public static final double RANK_2_PROBABILITY = 0.1;
+        public static final int DEFAULT_BOARD_SIZE = 4;
     }
 
     public static class Runtime {
@@ -63,6 +64,7 @@ public class Setting {
     }
 
     public static class Sound {
-        public static int SoundPack = 2;
+
+        public static int SOUND_PACK = 2;
     }
 }
