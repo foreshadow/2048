@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bjtu.zero.a2048.R;
 
 public class ScoreBoardLayout extends LinearLayout {
 
@@ -31,9 +34,13 @@ public class ScoreBoardLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
         textView = new TextView(context);
         textView.setText("2048");
+        ImageView imageView = new ImageView(context);  //创建imageview
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));  //image的布局方式
+        imageView.setImageResource(R.drawable.show);  //设置imageview呈现的图片
+        this.addView(imageView);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50);
         textView.setGravity(Gravity.CENTER);
-        addView(textView);
+        //addView(textView);
         LinearLayout vertical1 = new LinearLayout(context);
         vertical1.setOrientation(VERTICAL);
         vertical1.setMinimumWidth(300);

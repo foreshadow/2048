@@ -28,7 +28,7 @@ public class Setting {
                 "夏", "商", "周", "秦",
                 "汉", "三国","晋", "南北朝",
                 "隋", "唐", "宋", "元",
-                "明", "清", "中华民国", "新中国"
+                "明", "清", "中华民国", "中国"
         };
 
         public static String[] STRING_LIST = STRING_LIST_CLASSICAL;

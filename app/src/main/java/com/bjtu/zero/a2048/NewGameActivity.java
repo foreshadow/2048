@@ -32,6 +32,7 @@ public class NewGameActivity extends Activity {
         LinearLayout NewGameLayout = new LinearLayout(this);
         NewGameLayout.setOrientation(LinearLayout.VERTICAL);
 
+        this.setFinishOnTouchOutside(false);
         TextView title = new TextView(this);
         title.setText(" 2 0 4 8 ");
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
@@ -312,7 +313,6 @@ public class NewGameActivity extends Activity {
         });
         TextView blank = new TextView(this);
         blank.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-
         NewGameLayout.addView(title);
         NewGameLayout.addView(NewGameSize);
         NewGameLayout.addView(NewGameShow);
@@ -328,7 +328,6 @@ public class NewGameActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
