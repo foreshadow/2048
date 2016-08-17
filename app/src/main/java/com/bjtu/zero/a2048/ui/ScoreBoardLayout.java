@@ -21,12 +21,14 @@ public class ScoreBoardLayout extends LinearLayout {
     protected TextView textView1;
     protected TextView textView2;
     private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     private int currentScore;
     private int highestScore;
 
     public ScoreBoardLayout(Context context) {
         super(context);
         this.sp = context.getSharedPreferences("test", Activity.MODE_PRIVATE);
+        editor = sp.edit();
         currentScore = 0;
         highestScore = 0;
         setOrientation(HORIZONTAL);
@@ -55,7 +57,8 @@ public class ScoreBoardLayout extends LinearLayout {
         textView1.setGravity(Gravity.CENTER);
         vertical1.addView(textView1);
         scoreView = new TextView(context);
-        scoreView.setText(String.valueOf(currentScore));
+        setScore(currentScore);
+        //scoreView.setText(String.valueOf(currentScore));
         scoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         scoreView.setGravity(Gravity.CENTER);
         vertical1.addView(scoreView);
@@ -75,20 +78,49 @@ public class ScoreBoardLayout extends LinearLayout {
         vertical2.addView(highScoreView);
     }
 
+    private int refitText(String text)
+    {
+        int textWidth = 150;
+        Log.e("ccccc","wid=" + String.valueOf(textWidth));
+        Log.e("ccccc","l=" + text.length());
+        int minTextSize =  15;
+        int maxTextSize = 40;
+        if (textWidth > 0)
+        {
+            int trySize = maxTextSize;
+            while ((trySize > minTextSize) && trySize * text.length() >= textWidth)
+            {
+                trySize -= 1;
+                if (trySize <= minTextSize)
+                {
+                    trySize = minTextSize;
+                    break;
+                }
+            }
+            Log.e("ccccc","size = " + String.valueOf(trySize));
+            return trySize;
+
+        }
+        return maxTextSize;
+    };
+
     public void setScore(int score) {
         currentScore = score;
+        int size = refitText(String.valueOf(score));
+        scoreView.setTextSize(size);
         scoreView.setText(String.valueOf(currentScore));
         if (score > highestScore) {
             setHighScore(score);
         }
     }
 
-    public void setHighScore(int score) {
-        highestScore = score;
-        highScoreView.setText(String.valueOf(score));
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(KEY, String.valueOf(score));
-        editor.apply();
-        Log.e("aaaaa", "setHigh");
+    public void setHighScore(int a){
+        highestScore = a;
+        int size = refitText(String.valueOf(a));
+        highScoreView.setTextSize(size);
+        highScoreView.setText(String.valueOf(a));
+        editor.putString(KEY, String.valueOf(a));
+        editor.commit();
+        Log.e("aaaaa","setHigh");
     }
 }

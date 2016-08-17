@@ -31,6 +31,7 @@
           </value>
         </option>
         <option name="RIGHT_MARGIN" value="100" />
+<<<<<<< HEAD
         <AndroidXmlCodeStyleSettings>
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
@@ -62,6 +63,8 @@
             <pair source="c" header="h" />
           </extensions>
         </Objective-C-extensions>
+=======
+>>>>>>> refs/remotes/origin/dev-brioso
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
