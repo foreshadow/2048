@@ -64,11 +64,7 @@ public class Setting {
         public static final int BLOCK_ROUND_RAD = 20;
         public static final int BLOCK_FONT_SIZE = 75;
         public static final int BLOCK_FONT_SIZE_MIN = 40;
-<<<<<<< HEAD
-
-=======
         public static final int DOUBLE_HIT_INTERVAL = 2000;
->>>>>>> refs/remotes/origin/dev-Infinity
     }
 
     public static class Game {
@@ -89,7 +85,7 @@ public class Setting {
     public static class Sound {
 
         //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
-        public static boolean enabled = false;
-        public static int SOUND_PACK = 0;
+        public static boolean enabled = true;
+        public static int SOUND_PACK = 1;
     }
 }
