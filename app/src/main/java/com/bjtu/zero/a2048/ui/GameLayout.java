@@ -62,6 +62,10 @@ public class GameLayout extends FrameLayout {
         }
     }
 
+    public void setSize(int size){
+        this.size = size;
+    }
+
     public void setBlock(int i, int j, Block block, boolean visible) {
         if (viewGrid[i][j] != null) {
             removeView(viewGrid[i][j]);

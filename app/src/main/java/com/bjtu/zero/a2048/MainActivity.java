@@ -31,17 +31,20 @@ public class MainActivity extends Activity
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
     private DoubleClickDetector doubleClickDetector;
+    private LinearLayout linearLayout;
+    private ScoreBoardLayout scoreBoardLayout;
+    private Point windowSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
+        scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
         linearLayout.addView(scoreBoardLayout);
-        Point windowSize = new Point();
+        windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        gamePresenter = new GamePresenter();
+        gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
         gamePresenter.setScoreBoard(scoreBoardLayout);
         gamePresenter.setContext(linearLayout.getContext());
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
@@ -65,9 +68,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 //测试代码
-                Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
-                startActivity(intent);
-                gamePresenter.reset();
+                //gamePresenter.reset();
                 undoButton.update(gamePresenter.getGameModel().historySize());
             }
         });
@@ -111,6 +112,7 @@ public class MainActivity extends Activity
         linearLayout.addView(ButtonLayout);
 
 
+
         setContentView(linearLayout);
         gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
@@ -118,13 +120,16 @@ public class MainActivity extends Activity
         gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
         gamePresenter.loadSound(this);
+
+        Log.e("aaa","onCreat "+ Setting.savemodel);
         gamePresenter.start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        gamePresenter.read();
+        //gamePresenter.read();
+        Log.e("aaa","onResume");
         if (Setting.savemodel == 0) {
             gamePresenter.read();
         } else if (Setting.savemodel == 2) {
@@ -134,10 +139,12 @@ public class MainActivity extends Activity
         } else if (Setting.savemodel == 4) {
             gamePresenter.read(3);
         } else {
-            gamePresenter.read();
-            gamePresenter.reset();
+            //gamePresenter.read();
+            //gamePresenter.reset();
+            //newGame();
         }
         undoButton.update(gamePresenter.getGameModel().historySize());
+
     }
 
     @Override
@@ -217,4 +224,5 @@ public class MainActivity extends Activity
     public void onLongPress(MotionEvent motionEvent) {
 
     }
+
 }

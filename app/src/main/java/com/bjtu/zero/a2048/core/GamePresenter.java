@@ -73,6 +73,7 @@ public class GamePresenter {
         write();
         gameModel.clear();
         soundManager.clear();
+        gameLayout.setSize(Setting.Runtime.BOARD_SIZE);
         if (gameLayout != null) {
             gameLayout.setBoard(new Board());
             start();
@@ -160,12 +161,12 @@ public class GamePresenter {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            Log.e("aaaaa", "write");
+            Log.e("aaaaa", "write "+i);
             fos = getContext().openFileOutput("save" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111");
+            Log.e("aaaaa", "write111 "+i);
             oos.writeObject(gameModel);
-            Log.e("aaaaa", "write ok");
+            Log.e("aaaaa", "write ok "+i);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,14 +193,13 @@ public class GamePresenter {
     public void read(int i) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
-        Log.e("aaaaa", "read");
         try {
             fis = getContext().openFileInput("save" + String.valueOf(i) + ".txt");
-            Log.e("aaaaa", "read111");
+            Log.e("aaaaa", "read111 "+i);
             ois = new ObjectInputStream(fis);
-            Log.e("aaaaa", "read222");
+            Log.e("aaaaa", "read222 "+i);
             gameModel = ((GameModel) ois.readObject());
-            Log.e("aaaaa", "read ok");
+            Log.e("aaaaa", "read ok "+i);
             gameLayout.setBoard(gameModel.lastBoard());
             scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
 

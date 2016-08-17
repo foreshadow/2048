@@ -106,12 +106,18 @@ public class ScoreBoardLayout extends LinearLayout {
         scoreView.setTextSize(size);
         scoreView.setText(String.valueOf(currentScore));
         if (score > highestScore) {
-            highestScore = score;
-            highScoreView.setText(String.valueOf(highestScore));
+            setHighScore(score);
         }
+        Log.e("aaaaa","setScore "+score);
+        Log.e("aaaaa","high "+highestScore);
     }
 
     public void setHighScore(int highScore) {
+        String a = sp.getString(KEY, "0");
+        int aa = Integer.parseInt(a);
+        Log.e("aaaaa", "setHigh aa " + highScore);
+        if(aa > highScore)
+            highScore = aa;
         highestScore = highScore;
         int size = refitText(String.valueOf(highScore));
         highScoreView.setTextSize(size);
@@ -119,6 +125,6 @@ public class ScoreBoardLayout extends LinearLayout {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(KEY, String.valueOf(highScore));
         editor.commit();
-        Log.e("aaaaa", "setHigh");
+        Log.e("aaaaa", "setHigh " + highScore);
     }
 }
