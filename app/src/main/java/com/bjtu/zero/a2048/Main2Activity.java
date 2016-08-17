@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bjtu.zero.a2048.core.GameModel;
+import com.bjtu.zero.a2048.core.Status;
 import com.bjtu.zero.a2048.ui.DoubleClickDetector;
 
 import java.io.FileInputStream;
@@ -34,7 +35,7 @@ public class Main2Activity extends Activity implements
 
     private GestureDetector gestureDetector;
     private DoubleClickDetector doubleClickDetector;
-    private Bitmap m;
+    Bitmap[] m = {new Status(4).thumbnail(),new Status(4).thumbnail(),new Status(4).thumbnail(),new Status(4).thumbnail()};
     ImageView imageView ;
     TextView textView ;
     String[] myText = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
@@ -157,7 +158,7 @@ public class Main2Activity extends Activity implements
             textView.setTextSize(30);
             if(i > 1){
                 read(i-1);
-                imageView.setImageBitmap(m);
+                imageView.setImageBitmap(m[i-1]);
                 textView.setText(myText[i] + "  分数：" + sco[i-1] + "\n" + time[i-1]);
                 textView.setTextSize(25);
             }
@@ -174,7 +175,7 @@ public class Main2Activity extends Activity implements
             Log.e("aaaaa", "read image 111 "+i);
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read image 222 "+i);
-            m = BitmapFactory.decodeStream(fis);
+            m[i] = BitmapFactory.decodeStream(fis);
             fis.close();
             fis = openFileInput("score" + String.valueOf(i) + ".txt");
             ois = new ObjectInputStream(fis);
