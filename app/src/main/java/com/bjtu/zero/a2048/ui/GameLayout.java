@@ -100,7 +100,7 @@ public class GameLayout extends FrameLayout {
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                setBlock(i, j, board.getData()[i][j], true);
+                setBlock(i, j, board.getBlock(i, j), true);
             }
         }
     }
