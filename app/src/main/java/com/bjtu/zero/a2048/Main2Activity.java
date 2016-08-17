@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bjtu.zero.a2048.ui.DoubleClickDetector;
+import com.bjtu.zero.a2048.ui.SoundManager;
 
 public class Main2Activity extends Activity implements
         View.OnTouchListener,
@@ -25,11 +26,15 @@ public class Main2Activity extends Activity implements
 
     private GestureDetector gestureDetector;
     private DoubleClickDetector doubleClickDetector;
-
+    private SoundManager mySoundManager ;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        mySoundManager=new SoundManager(this.getApplicationContext());
+        Setting.mySoundManager = mySoundManager;
+        mySoundManager.execute();
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         ListView list = (ListView) findViewById(R.id.listView);
         MyAdapter adapter = new MyAdapter();
@@ -52,6 +57,7 @@ public class Main2Activity extends Activity implements
                         Setting.savemodel = 1;
                         //Intent intent0 = new Intent(Main2Activity.this, NewGameActivity.class);
                         //startActivity(intent0);
+                        Setting.mySoundManager.clear();
                         intent.setClass(Main2Activity.this, NewGameActivity.class);
                         break;
                     case 2:

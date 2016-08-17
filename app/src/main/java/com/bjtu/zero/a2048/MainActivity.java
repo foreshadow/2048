@@ -1,6 +1,7 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,18 +64,19 @@ public class MainActivity extends Activity
                 undoButton.update(gamePresenter.getGameModel().historySize());
             }
         });
-        Button restartButton = new Button(topButtonLayout.getContext());
-        restartButton.setText("Restart");
-        restartButton.setOnClickListener(new View.OnClickListener() {
+
+        Button soundSettingButton = new Button(topButtonLayout.getContext());
+        soundSettingButton.setText("音效");
+        soundSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //测试代码
-                //gamePresenter.reset();
-                undoButton.update(gamePresenter.getGameModel().historySize());
+                Intent intent = new Intent(MainActivity.this, SoundSettingMenu.class);
+                startActivity(intent);
             }
         });
+
         topButtonLayout.addView(undoButton);
-        topButtonLayout.addView(restartButton);
+        topButtonLayout.addView(soundSettingButton);
         linearLayout.addView(topButtonLayout);
 
         LinearLayout ButtonLayout = new LinearLayout(linearLayout.getContext());
@@ -120,7 +122,6 @@ public class MainActivity extends Activity
         doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
         gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
-        gamePresenter.loadSound(this);
 
         Log.e("aaa","onCreat "+ Setting.savemodel);
         gamePresenter.start();

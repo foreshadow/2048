@@ -2,9 +2,13 @@ package com.bjtu.zero.a2048;
 
 import android.graphics.Color;
 
+import com.bjtu.zero.a2048.ui.SoundManager;
+
 public class Setting {
 
     public static int savemodel = 0;
+
+    public static SoundManager mySoundManager;
 
     public static class UI {
 

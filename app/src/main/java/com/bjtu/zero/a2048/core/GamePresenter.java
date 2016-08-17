@@ -9,7 +9,6 @@ import android.view.animation.Animation;
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
-import com.bjtu.zero.a2048.ui.SoundManager;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +33,6 @@ public class GamePresenter {
     private boolean animationInProgress;
     private GameLayout gameLayout;
     private GameModel gameModel;
-    private SoundManager soundManager;
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private Context context;
     private String name = "game";
@@ -59,7 +57,6 @@ public class GamePresenter {
         animationInProgress = false;
         gameModel = new GameModel(size, Setting.Game.HISTORY_SIZE);
         Log.e("aaaaa", "loading soundmanager");
-        soundManager = new SoundManager();
         Log.e("aaaaa", "soundmanager loaded");
     }
 
@@ -72,7 +69,7 @@ public class GamePresenter {
     public void reset() {
         write();
         gameModel.clear();
-        soundManager.clear();
+        //Setting.mySoundManager.clear();
         gameLayout.setSize(Setting.Runtime.BOARD_SIZE);
         if (gameLayout != null) {
             gameLayout.setBoard(new Board());
@@ -271,15 +268,6 @@ public class GamePresenter {
     /**
      * // TODO: 2016/8/17 Lazy_sheep
      *
-     * @param context
-     */
-    public void loadSound(Context context) {
-        soundManager.load(context);
-    }
-
-    /**
-     * // TODO: 2016/8/17 Lazy_sheep
-     *
      * @param direction
      * @return
      */
@@ -349,7 +337,7 @@ public class GamePresenter {
             }
         }
         nextStatus.setAdds(nextStatus.getScore() - getGameModel().lastStatus().getScore());
-        soundManager.playProcess(maxRank, mergeNum);
+        Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -397,7 +385,7 @@ public class GamePresenter {
                 }
             }
         }
-        soundManager.playProcess(maxRank, mergeNum);
+        Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -445,7 +433,7 @@ public class GamePresenter {
                 }
             }
         }
-        soundManager.playProcess(maxRank, mergeNum);
+        Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -493,7 +481,7 @@ public class GamePresenter {
                 }
             }
         }
-        soundManager.playProcess(maxRank, mergeNum);
+        Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
