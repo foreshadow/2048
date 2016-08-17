@@ -17,28 +17,22 @@ public class SoundManager {
     private int move, merge;
 
     public SoundManager() {
+        //enabled = true;
         isFirstBlood = true;
         rank = new int[17];
         mergenum = new int[6];
     }
 
-    /**
-     * 将本局游戏的声音记录清空
-     */
     public void clear() {
         isFirstBlood = true;
     }
 
-    /**
-     * 加载声音文件
-     * @param context  上下文
-     */
     public void load(Context context) {
         soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
-
-        if (Setting.Sound.SoundPack >= 2)
+        if (Setting.Sound.SOUND_PACK >= 2) {
             isFirstBlood = false;
-        switch (Setting.Sound.SoundPack) {
+        }
+        switch (Setting.Sound.SOUND_PACK) {
             case 0: //dota
                 firstblood = soundPool.load(context, R.raw.dotafirstblood, 1);
 
@@ -96,14 +90,9 @@ public class SoundManager {
         }
     }
 
-    /**
-     * 对每一次合法滑动，播放相应的音效
-     * @param maxRank  本次滑动使游戏产生的最大分数
-     * @param mergeNum 本次滑动同时合并的块数
-     */
     public void playProcess(int maxRank, int mergeNum) {
         if (Setting.Sound.enabled) {
-            switch(Setting.Sound.SoundPack){
+            switch (Setting.Sound.SOUND_PACK) {
                 case 3:
                     if(maxRank>1)
                         soundPool.play(merge, 1, 1, 0, 0, 1);

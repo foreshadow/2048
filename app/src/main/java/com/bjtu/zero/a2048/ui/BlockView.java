@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 import com.bjtu.zero.a2048.Setting;
@@ -16,14 +17,51 @@ public class BlockView extends View {
     private Rect boundingRect = new Rect();
     private Block block;
     private boolean visible;
+    private int fontSize = 75;
+    private int wid;
 
     public BlockView(Context context, Block block, int centerX, int centerY, int width, int height) {
         super(context);
         this.block = block;
         visible = true;
-        painter.setTextSize(Setting.UI.BLOCK_FONT_SIZE);
+        wid = width;
+        int a;
+        if(block == null)
+            a = 0;
+        else  a = block.getRank();
+        refitText(String.valueOf(Setting.UI.SCORE_LIST[a]));
+        painter.setTextSize(fontSize);
         painter.setTextAlign(Paint.Align.CENTER);
+
         setGeometry(centerX, centerY, width, height);
+    }
+
+    /**
+     * Re size the font so the specified text fits in the text box * assuming
+     * the text box is the specified width.
+     */
+    private void refitText(String text)
+    {
+        int textWidth = (int) (wid*1.5);
+        Log.e("bbbbb","wid=" + String.valueOf(textWidth));
+        Log.e("bbbbb","l=" + text.length());
+        int minTextSize =  Setting.UI.BLOCK_FONT_SIZE_MIN;
+        int maxTextSize = Setting.UI.BLOCK_FONT_SIZE;
+        if (textWidth > 0)
+        {
+            int trySize = maxTextSize;
+            while ((trySize > minTextSize) && trySize * text.length() >= textWidth)
+            {
+                trySize -= 1;
+                if (trySize <= minTextSize)
+                {
+                    trySize = minTextSize;
+                    break;
+                }
+            }
+            fontSize = trySize;
+            Log.e("bbbbb","size = " + String.valueOf(fontSize));
+        }
     }
 
     void setGeometry(int centerX, int centerY, int width, int height) {
@@ -52,7 +90,7 @@ public class BlockView extends View {
             Paint.FontMetricsInt fontMetrics = painter.getFontMetricsInt();
             int baseline = (boundingRect.bottom + boundingRect.top
                     - fontMetrics.bottom - fontMetrics.top) / 2;
-            canvas.drawText(Setting.UI.STRING_LIST[block.getRank()],
+            canvas.drawText(Setting.Runtime.STRING_LIST[block.getRank()],
                     boundingRect.centerX(), baseline, painter);
         }
     }
