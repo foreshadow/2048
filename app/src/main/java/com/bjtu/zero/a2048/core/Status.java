@@ -117,12 +117,13 @@ public class Status implements Cloneable, Serializable {
      *
      * @return 缩略图
      */
-    Bitmap thumbnail() {
+    public Bitmap thumbnail() {
         int bitmapSize = 240;
         int blockSize = bitmapSize / board.size();
         Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         Paint painter = new Paint();
+        canvas.drawRGB(127, 127, 127);
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.size(); j++) {
                 painter.setColor(Setting.UI.BACKGROUND[board.getBlock(i, j).getRank()]);

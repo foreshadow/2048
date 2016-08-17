@@ -1,6 +1,8 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,11 @@ import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+
 public class MainActivity extends Activity
         implements
         View.OnTouchListener,
@@ -35,6 +42,7 @@ public class MainActivity extends Activity
     private LinearLayout linearLayout;
     private ScoreBoardLayout scoreBoardLayout;
     private Point windowSize;
+    private Bitmap m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +94,8 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                m = gamePresenter.getGameModel().lastStatus().thumbnail();
+                write(1);
                 gamePresenter.write(1);
             }
         });
@@ -95,6 +105,8 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                m = gamePresenter.getGameModel().lastStatus().thumbnail();
+                write(2);
                 gamePresenter.write(2);
             }
         });
@@ -104,6 +116,8 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                m = gamePresenter.getGameModel().lastStatus().thumbnail();
+                write(3);
                 gamePresenter.write(3);
             }
         });
@@ -124,6 +138,49 @@ public class MainActivity extends Activity
 
         Log.e("aaa","onCreat "+ Setting.savemodel);
         gamePresenter.start();
+    }
+
+    public void write(int i) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            Log.e("aaaaa", "write "+i);
+            fos = openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa", "write111 "+i);
+            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
+            fos.close();
+            fos = openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(gamePresenter.getGameModel().lastStatus().getScore());
+            Log.e("aaaaa", "write ok "+i);
+            fos.close();
+            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+            String date = sDateFormat.format(new  java.util.Date());
+            fos = openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(date);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    //fos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    //oos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

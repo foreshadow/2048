@@ -13,8 +13,8 @@
 
 
     <ListView
-        android:layout_width="200dp"
-        android:layout_height="355dp"
+        android:layout_width="match_parent"
+        android:layout_height="505dp"
         android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

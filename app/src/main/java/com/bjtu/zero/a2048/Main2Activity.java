@@ -2,7 +2,10 @@ package com.bjtu.zero.a2048;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,7 +19,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bjtu.zero.a2048.core.GameModel;
 import com.bjtu.zero.a2048.ui.DoubleClickDetector;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Main2Activity extends Activity implements
         View.OnTouchListener,
@@ -25,6 +34,12 @@ public class Main2Activity extends Activity implements
 
     private GestureDetector gestureDetector;
     private DoubleClickDetector doubleClickDetector;
+    private Bitmap m;
+    ImageView imageView ;
+    TextView textView ;
+    String[] myText = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
+    String[] sco = {"","","",""};
+    String[] time = {"","","",""};
 
     @Override
 
@@ -108,8 +123,6 @@ public class Main2Activity extends Activity implements
     //适配器
     public class MyAdapter extends BaseAdapter {
 
-        String[] myText = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
-
         //要显示多少条数据
         @Override
         public int getCount() {
@@ -135,14 +148,65 @@ public class Main2Activity extends Activity implements
             //Context Activity继承Context
             LayoutInflater inflater = LayoutInflater.from(Main2Activity.this);
             View root = inflater.inflate(R.layout.item_list, null);
-            ImageView imageView = (ImageView) root.findViewById(R.id.item_ion);
-            TextView textView = (TextView) root.findViewById(R.id.item_text);
+            imageView = (ImageView) root.findViewById(R.id.item_ion);
+            textView = (TextView) root.findViewById(R.id.item_text);
 
             //2.为ItemView设置上显示的数据
             imageView.setImageResource(R.mipmap.ic_launcher);
             textView.setText(myText[i]);
+            textView.setTextSize(30);
+            if(i > 1){
+                read(i-1);
+                imageView.setImageBitmap(m);
+                textView.setText(myText[i] + "  分数：" + sco[i-1] + "\n" + time[i-1]);
+                textView.setTextSize(25);
+            }
             //3.返回到ListView显示
             return root;
+        }
+    }
+
+    public void read(int i) {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = openFileInput("image" + String.valueOf(i) + ".txt");
+            Log.e("aaaaa", "read image 111 "+i);
+            ois = new ObjectInputStream(fis);
+            Log.e("aaaaa", "read image 222 "+i);
+            m = BitmapFactory.decodeStream(fis);
+            fis.close();
+            fis = openFileInput("score" + String.valueOf(i) + ".txt");
+            ois = new ObjectInputStream(fis);
+            int score = ((int) ois.readObject());
+            sco[i] = String.valueOf(score);
+            Log.e("aaaaa", "read ok "+i);
+            fis.close();
+            fis = openFileInput("time" + String.valueOf(i) + ".txt");
+            ois = new ObjectInputStream(fis);
+            String date = ((String) ois.readObject());
+            time[i] =date;
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            //这里是读取文件产生异常
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    //fis流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    //ois流关闭异常
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
