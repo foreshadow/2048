@@ -32,6 +32,9 @@
         </option>
         <option name="RIGHT_MARGIN" value="100" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/dev-Infinity
         <AndroidXmlCodeStyleSettings>
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
@@ -63,8 +66,11 @@
             <pair source="c" header="h" />
           </extensions>
         </Objective-C-extensions>
+<<<<<<< HEAD
 =======
 >>>>>>> refs/remotes/origin/dev-brioso
+=======
+>>>>>>> refs/remotes/origin/dev-Infinity
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
