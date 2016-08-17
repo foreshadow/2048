@@ -3,24 +3,14 @@ package com.bjtu.zero.a2048;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.bjtu.zero.a2048.core.GameModel;
-import com.bjtu.zero.a2048.core.GamePresenter;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class Main2Activity extends Activity {
 
@@ -28,8 +18,6 @@ public class Main2Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main2);
-
         ListView list = (ListView) findViewById(R.id.listView);
         MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);
@@ -52,6 +40,8 @@ public class Main2Activity extends Activity {
             }
         });
     }
+
+
 
     //适配器
     public class MyAdapter extends BaseAdapter {

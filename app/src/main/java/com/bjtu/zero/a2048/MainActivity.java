@@ -1,20 +1,15 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
-<<<<<<< Temporary merge branch 1
-=======
 import android.content.Intent;
->>>>>>> Temporary merge branch 2
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -37,12 +32,6 @@ public class MainActivity extends Activity
     private GestureDetector gestureDetector;
     private long exitTime = 0;
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        gamePresenter.write();
-    }
     private DoubleClickDetector doubleClickDetector;
 
     @Override
@@ -147,8 +136,7 @@ public class MainActivity extends Activity
         } else if (Setting.savemodel == 4) {
             gamePresenter.read(3);
         } else {
-            gamePresenter.read();
-            gamePresenter.reset();
+
         }
         undoButton.update(gamePresenter.getGameModel().historySize());
     }

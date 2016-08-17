@@ -2,6 +2,7 @@ package com.bjtu.zero.a2048;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -12,8 +13,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class NewGameActivity extends Activity {
 
+    private GoogleApiClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -305,9 +311,6 @@ public class NewGameActivity extends Activity {
         NewGameLayout.addView(blank);
         NewGameLayout.addView(makeSure);
         setContentView(NewGameLayout);
-<<<<<<< HEAD
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
@@ -348,7 +351,5 @@ public class NewGameActivity extends Activity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-=======
->>>>>>> refs/remotes/origin/dev-Infinity
     }
 }
