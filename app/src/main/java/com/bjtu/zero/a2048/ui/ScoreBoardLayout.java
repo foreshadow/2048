@@ -6,28 +6,30 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bjtu.zero.a2048.R;
 import com.bjtu.zero.a2048.Setting;
 
 public class ScoreBoardLayout extends LinearLayout {
 
+    public final String KEY = "HIGH";
     protected TextView scoreView;
     protected TextView highScoreView;
     protected TextView textView;
     protected TextView textView1;
     protected TextView textView2;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     private int currentScore;
     private int highestScore;
-    SharedPreferences sp = null;
-    SharedPreferences.Editor editor = null;
-    public final String KEY = "HIGH";
 
     public ScoreBoardLayout(Context context) {
         super(context);
-        this.sp =  context.getSharedPreferences("test", Activity.MODE_PRIVATE);
-        this.editor = sp.edit();
+        this.sp = context.getSharedPreferences("test", Activity.MODE_PRIVATE);
+        editor = sp.edit();
         currentScore = 0;
         highestScore = 0;
         setOrientation(HORIZONTAL);
@@ -35,9 +37,13 @@ public class ScoreBoardLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
         textView = new TextView(context);
         textView.setText("2048");
+        ImageView imageView = new ImageView(context);  //创建imageview
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));  //image的布局方式
+        imageView.setImageResource(R.drawable.show);  //设置imageview呈现的图片
+        this.addView(imageView);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50);
         textView.setGravity(Gravity.CENTER);
-        addView(textView);
+        //addView(textView);
         LinearLayout vertical1 = new LinearLayout(context);
         vertical1.setOrientation(VERTICAL);
         vertical1.setMinimumWidth(300);
@@ -63,43 +69,36 @@ public class ScoreBoardLayout extends LinearLayout {
         textView2.setGravity(Gravity.CENTER);
         vertical2.addView(textView2);
         highScoreView = new TextView(context);
-        String a = sp.getString(KEY,"");
-        Log.e("aaaaa",a);
-        if(a.equals("") || a == null)
-            setHighScore(0);
-        else
-            setHighScore(Integer.parseInt(a));
-        //highScoreView.setText(String.valueOf(highestScore));
+
+        String a = sp.getString(KEY, "0");
+        Log.e("aaaaa", a);
+        setHighScore(Integer.parseInt(a));
+
         highScoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         highScoreView.setGravity(Gravity.CENTER);
         vertical2.addView(highScoreView);
     }
 
-    private int refitText(String text)
-    {
-        int textWidth = 150;
-        Log.e("ccccc","wid=" + String.valueOf(textWidth));
-        Log.e("ccccc","l=" + text.length());
-        int minTextSize =  15;
+    private int refitText(String text) {
+        int textWidth = (int) (600. / Setting.Runtime.BOARD_SIZE * 0.75);
+        Log.e("ccccc", "wid=" + String.valueOf(textWidth));
+        int minTextSize = 15;
         int maxTextSize = 40;
-        if (textWidth > 0)
-        {
+        if (textWidth > 0) {
             int trySize = maxTextSize;
-            while ((trySize > minTextSize) && trySize * text.length() >= textWidth)
-            {
+            while ((trySize > minTextSize) && trySize * text.toCharArray().length >= textWidth) {
                 trySize -= 1;
-                if (trySize <= minTextSize)
-                {
+                if (trySize <= minTextSize) {
                     trySize = minTextSize;
                     break;
                 }
             }
-            Log.e("ccccc","size = " + String.valueOf(trySize));
+            Log.e("ccccc", "historySize = " + String.valueOf(trySize));
             return trySize;
 
         }
         return maxTextSize;
-    };
+    }
 
     public void setScore(int score) {
         currentScore = score;
@@ -112,13 +111,14 @@ public class ScoreBoardLayout extends LinearLayout {
         }
     }
 
-    public void setHighScore(int a){
-        highestScore = a;
-        int size = refitText(String.valueOf(a));
+    public void setHighScore(int highScore) {
+        highestScore = highScore;
+        int size = refitText(String.valueOf(highScore));
         highScoreView.setTextSize(size);
-        highScoreView.setText(String.valueOf(a));
-        editor.putString(KEY, String.valueOf(a));
+        highScoreView.setText(String.valueOf(highScore));
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(KEY, String.valueOf(highScore));
         editor.commit();
-        Log.e("aaaaa","setHigh");
+        Log.e("aaaaa", "setHigh");
     }
 }
