@@ -2,8 +2,10 @@ package com.bjtu.zero.a2048;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -104,7 +106,7 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
                                     break;
                             }
                         }
-                        Setting.Sound.enabled =soundEnable ;
+                        gamePresenter.setSound(soundEnable);
                     }
                 });
                 t.start();
@@ -254,6 +256,12 @@ public class MainActivity extends Activity implements OnTouchListener, OnGesture
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gamePresenter.read();
+        undoButton.update(gamePresenter.getGameModel().size());
+    }
     @Override
     protected void onResume() {
         super.onResume();
