@@ -9,7 +9,6 @@ import com.bjtu.zero.a2048.Setting;
 
 public class SoundManager {
 
-    //private boolean enabled;
     private boolean isFirstBlood;
     private SoundPool soundPool;
     private int[] rank;
@@ -18,16 +17,22 @@ public class SoundManager {
     private int move, merge;
 
     public SoundManager() {
-        //enabled = true;
         isFirstBlood = true;
         rank = new int[17];
         mergenum = new int[6];
     }
 
+    /**
+     * 将本局游戏的声音记录清空
+     */
     public void clear() {
         isFirstBlood = true;
     }
 
+    /**
+     * 加载声音文件
+     * @param context  上下文
+     */
     public void load(Context context) {
         soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
 
@@ -91,14 +96,11 @@ public class SoundManager {
         }
     }
 
-//    public void setEnabled(boolean enabled) {
-//        this.enabled = enabled;
-//    }
-
-//    public boolean  getEnablde(){
-//        return enabled ;
-//    }
-
+    /**
+     * 对每一次合法滑动，播放相应的音效
+     * @param maxRank  本次滑动使游戏产生的最大分数
+     * @param mergeNum 本次滑动同时合并的块数
+     */
     public void playProcess(int maxRank, int mergeNum) {
         if (Setting.Sound.enabled) {
             switch(Setting.Sound.SoundPack){

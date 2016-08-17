@@ -24,6 +24,7 @@ public class ScoreBoardLayout extends LinearLayout {
     private int currentScore;
     private int highestScore;
 
+    
     public ScoreBoardLayout(Context context) {
         super(context);
         this.sp = context.getSharedPreferences("test", Activity.MODE_PRIVATE);
