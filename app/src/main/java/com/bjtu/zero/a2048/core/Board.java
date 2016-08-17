@@ -65,8 +65,8 @@ public class Board implements Cloneable, Serializable {
             clone.data = new Block[size][size];
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    if (getData()[i][j] != null) {
-                        clone.data[i][j] = this.getData()[i][j].clone();
+                    if (getBlock(i, j) != null) {
+                        clone.data[i][j] = getBlock(i, j).clone();
                     }
                 }
             }
@@ -87,13 +87,24 @@ public class Board implements Cloneable, Serializable {
 
     /**
      * 获得data数组。
-     * 仅能通过这种方式得到棋盘中的Block
-     * // TODO: 2016/8/17 Infinity 添加以坐标方式得到Block的方法
+     * 如非必要，建议使用getBlock。
      *
      * @return data数组
+     * @see #getBlock(int, int)
      */
     public Block[][] getData() {
         return data;
+    }
+
+    /**
+     * 获得指定位置的Block。
+     *
+     * @param i 行
+     * @param j 列
+     * @return 指定位置的Block
+     */
+    public Block getBlock(int i, int j) {
+        return data[i][j];
     }
 
     /**
@@ -130,7 +141,7 @@ public class Board implements Cloneable, Serializable {
         ArrayList<Point> array = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (getData()[i][j].isEmpty()) {
+                if (getBlock(i, j).isEmpty()) {
                     array.add(new Point(i, j));
                 }
             }

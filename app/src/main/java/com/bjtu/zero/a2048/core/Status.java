@@ -1,5 +1,11 @@
 package com.bjtu.zero.a2048.core;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
+import com.bjtu.zero.a2048.Setting;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +17,7 @@ import java.io.Serializable;
  * @author Infinity 其他
  */
 
-public class Status implements Cloneable , Serializable {
+public class Status implements Cloneable, Serializable {
 
     private int score;
     private int adds;
@@ -33,6 +39,7 @@ public class Status implements Cloneable , Serializable {
     /**
      * 以指定的分数和棋盘创建状态。
      * 一般用于恢复游戏。
+     *
      * @param score 分数
      * @param board 棋盘
      */
@@ -44,6 +51,7 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * 克隆Status
+     *
      * @return 克隆的Status
      */
     public Status clone() {
@@ -61,6 +69,7 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * // TODO: 2016/8/17 brioso
+     *
      * @return
      */
     public int getAdds() {
@@ -69,6 +78,7 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * // TODO: 2016/8/17 brioso
+     *
      * @param adds
      */
     public void setAdds(int adds) {
@@ -77,6 +87,7 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * 得到分数。
+     *
      * @return 分数
      */
     public int getScore() {
@@ -85,6 +96,7 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * // TODO: 2016/8/17 brioso
+     *
      * @param score
      */
     public void addScore(int score) {
@@ -93,9 +105,36 @@ public class Status implements Cloneable , Serializable {
 
     /**
      * 得到棋盘。
-     * @return 棋盘。
+     *
+     * @return 棋盘
      */
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * 得到缩略图。
+     *
+     * @return 缩略图
+     */
+    Bitmap thumbnail() {
+        int bitmapSize = 240;
+        int blockSize = bitmapSize / board.size();
+        Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        Paint painter = new Paint();
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                painter.setColor(Setting.UI.BACKGROUND[board.getBlock(i, j).getRank()]);
+                canvas.drawRect(
+                        i * blockSize,
+                        j * blockSize,
+                        i * blockSize + blockSize,
+                        j * blockSize + blockSize,
+                        painter
+                );
+            }
+        }
+        return bitmap;
     }
 }
