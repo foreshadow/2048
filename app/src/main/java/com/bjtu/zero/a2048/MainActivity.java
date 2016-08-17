@@ -1,17 +1,20 @@
 package com.bjtu.zero.a2048;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
 import com.bjtu.zero.a2048.ui.GameLayout;
@@ -20,12 +23,14 @@ import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements OnTouchListener, OnGestureListener {
+public class MainActivity extends Activity implements OnTouchListener, OnGestureListener {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
+    private long exitTime = 0;
+
 
     @Override
     protected void onPause() {
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //测试代码
+                Intent intent = new Intent(MainActivity.this,NewGameActivity.class);
+                startActivity(intent);
                 gamePresenter.reset();
                 undoButton.update(gamePresenter.getGameModel().size());
             }
@@ -78,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = Setting.Sound.enabled ;
+                        Setting.Sound.enabled =false ;
                         for (int i = 0; i < 50; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -94,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
+                        Setting.Sound.enabled =soundEnable ;
                     }
                 });
                 t.start();
@@ -120,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean soundEnable = Setting.Sound.enabled ;
+                        Setting.Sound.enabled =false ;
                         for (int i = 0; i < 500; i++) {
                             switch (new Random().nextInt(4)) {
                                 case 0:
@@ -136,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
                                     break;
                             }
                         }
+                        Setting.Sound.enabled=soundEnable ;
                     }
                 });
                 t.start();
@@ -218,6 +232,27 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         }
         return false;
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 
     @Override
     protected void onResume() {
