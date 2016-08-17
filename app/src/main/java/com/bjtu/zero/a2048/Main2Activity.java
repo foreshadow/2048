@@ -31,11 +31,10 @@ public class Main2Activity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main2);
         ListView list = (ListView) findViewById(R.id.listView);
         MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);
-        gestureDetector = new GestureDetector(this);
-        doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
@@ -70,6 +69,8 @@ public class Main2Activity extends Activity implements
                 startActivity(intent);
             }
         });
+        gestureDetector = new GestureDetector(this);
+        doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
     }
 
     @Override
@@ -102,30 +103,7 @@ public class Main2Activity extends Activity implements
         return false;
     }
 
-    @Override
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            doubleClickDetector.onClick();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onFirstClick() {
-        Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSecondClick() {
-        finish();
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return gestureDetector.onTouchEvent(motionEvent);
-    }
 
     //适配器
     public class MyAdapter extends BaseAdapter {
@@ -168,5 +146,29 @@ public class Main2Activity extends Activity implements
         }
     }
 
+    @Override
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            doubleClickDetector.onClick();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onFirstClick() {
+        Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSecondClick() {
+        finish();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return gestureDetector.onTouchEvent(motionEvent);
+    }
 
 }
