@@ -42,7 +42,7 @@ public class Main2Activity extends Activity {
                 Intent intent = new Intent();
                 //MainActivity a = new MainActivity();
                 switch(i){
-                    case 0:Setting.savemodel = 0; intent.setClass(Main2Activity.this,MainActivity.class);break;
+                    case 0:Setting.savemodel = 0;intent.setClass(Main2Activity.this,MainActivity.class);break;
                     case 1:Setting.savemodel = 1;intent.setClass(Main2Activity.this,MainActivity.class);break;
                     case 2:Setting.savemodel = 2;intent.setClass(Main2Activity.this,MainActivity.class);break;
                     case 3:Setting.savemodel = 3;intent.setClass(Main2Activity.this,MainActivity.class);break;
@@ -93,6 +93,8 @@ public class Main2Activity extends Activity {
             return root;
         }
     }
+
+
 
 
 }
