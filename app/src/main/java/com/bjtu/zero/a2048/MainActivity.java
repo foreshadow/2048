@@ -1,7 +1,6 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +29,8 @@ public class MainActivity extends Activity
     private GameLayout gameLayout;
     private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
+    private long exitTime = 0;
+
     private DoubleClickDetector doubleClickDetector;
     private LinearLayout linearLayout;
     private ScoreBoardLayout scoreBoardLayout;
@@ -138,10 +139,6 @@ public class MainActivity extends Activity
             gamePresenter.read(2);
         } else if (Setting.savemodel == 4) {
             gamePresenter.read(3);
-        } else {
-            //gamePresenter.read();
-            //gamePresenter.reset();
-            //newGame();
         }
         undoButton.update(gamePresenter.getGameModel().historySize());
 
@@ -203,6 +200,17 @@ public class MainActivity extends Activity
     @Override
     public boolean onDown(MotionEvent motionEvent) {
         return false;
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 
     @Override

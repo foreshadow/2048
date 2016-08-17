@@ -3,44 +3,34 @@ package com.bjtu.zero.a2048;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bjtu.zero.a2048.core.GameModel;
-import com.bjtu.zero.a2048.core.GamePresenter;
 import com.bjtu.zero.a2048.ui.DoubleClickDetector;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
-public class Main2Activity extends Activity  implements
+public class Main2Activity extends Activity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
-        DoubleClickDetector.ClickListener{
+        DoubleClickDetector.ClickListener {
 
     private GestureDetector gestureDetector;
     private DoubleClickDetector doubleClickDetector;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main2);
-
         ListView list = (ListView) findViewById(R.id.listView);
         MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);
@@ -53,16 +43,29 @@ public class Main2Activity extends Activity  implements
                 //startActivity()
                 Intent intent = new Intent();
                 //MainActivity a = new MainActivity();
-                switch(i){
-                    case 0:Setting.savemodel = 0;intent.setClass(Main2Activity.this,MainActivity.class);break;
-                    case 1:Setting.savemodel = 1;
+                switch (i) {
+                    case 0:
+                        Setting.savemodel = 0;
+                        intent.setClass(Main2Activity.this, MainActivity.class);
+                        break;
+                    case 1:
+                        Setting.savemodel = 1;
                         //Intent intent0 = new Intent(Main2Activity.this, NewGameActivity.class);
                         //startActivity(intent0);
-                        intent.setClass(Main2Activity.this,NewGameActivity.class);
+                        intent.setClass(Main2Activity.this, NewGameActivity.class);
                         break;
-                    case 2:Setting.savemodel = 2;intent.setClass(Main2Activity.this,MainActivity.class);break;
-                    case 3:Setting.savemodel = 3;intent.setClass(Main2Activity.this,MainActivity.class);break;
-                    case 4:Setting.savemodel = 4;intent.setClass(Main2Activity.this,MainActivity.class);break;
+                    case 2:
+                        Setting.savemodel = 2;
+                        intent.setClass(Main2Activity.this, MainActivity.class);
+                        break;
+                    case 3:
+                        Setting.savemodel = 3;
+                        intent.setClass(Main2Activity.this, MainActivity.class);
+                        break;
+                    case 4:
+                        Setting.savemodel = 4;
+                        intent.setClass(Main2Activity.this, MainActivity.class);
+                        break;
                 }
                 startActivity(intent);
             }
@@ -99,10 +102,35 @@ public class Main2Activity extends Activity  implements
         return false;
     }
 
+    @Override
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            doubleClickDetector.onClick();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onFirstClick() {
+        Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSecondClick() {
+        finish();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return gestureDetector.onTouchEvent(motionEvent);
+    }
+
     //适配器
     public class MyAdapter extends BaseAdapter {
 
-        String[] myText = {"继续游戏","新游戏","存档1", "存档2", "存档3"};
+        String[] myText = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
 
         //要显示多少条数据
         @Override
@@ -138,30 +166,6 @@ public class Main2Activity extends Activity  implements
             //3.返回到ListView显示
             return root;
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            doubleClickDetector.onClick();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onFirstClick() {
-        Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSecondClick() {
-        finish();
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return gestureDetector.onTouchEvent(motionEvent);
     }
 
 

@@ -15,18 +15,25 @@ public class SoundManager {
     private int mergenum[];
     private int firstblood;
     private int move, merge;
+    private long lastDoubleKillTime = 0;
 
     public SoundManager() {
-        //enabled = true;
         isFirstBlood = true;
         rank = new int[17];
         mergenum = new int[6];
     }
 
+    /**
+     * 清空游戏中的音效记录
+     */
     public void clear() {
         isFirstBlood = true;
     }
 
+    /**
+     * 在游戏开始前加载音频文件
+     * @param context  音效播放的上下文
+     */
     public void load(Context context) {
         soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
         if (Setting.Sound.SOUND_PACK >= 2) {
@@ -35,7 +42,6 @@ public class SoundManager {
         switch (Setting.Sound.SOUND_PACK) {
             case 0: //dota
                 firstblood = soundPool.load(context, R.raw.dotafirstblood, 1);
-
                 rank[4] = soundPool.load(context, R.raw.dotakillingspree, 1); //16 三杀
                 rank[5] = soundPool.load(context, R.raw.dotadominating, 1);
                 rank[6] = soundPool.load(context, R.raw.dotamegakill, 1);
@@ -51,9 +57,9 @@ public class SoundManager {
                 mergenum[5] = soundPool.load(context, R.raw.dotarampage, 1);
 
                 break;
-            case 1:
-                firstblood = soundPool.load(context, R.raw.lolfirstblood, 1);
+            case 1://lol
 
+                firstblood = soundPool.load(context, R.raw.lolfirstblood, 1);
                 rank[4] = soundPool.load(context, R.raw.lolkillingspree, 1); //16 三杀
                 rank[5] = soundPool.load(context, R.raw.lolrampage, 1);
                 rank[6] = soundPool.load(context, R.raw.lolunstopped, 1);
@@ -67,10 +73,9 @@ public class SoundManager {
                 mergenum[3] = soundPool.load(context, R.raw.loltriplekill, 1);
                 mergenum[4] = soundPool.load(context, R.raw.lolquatrekill, 1);
                 mergenum[5] = soundPool.load(context, R.raw.lolpentakill, 1);
-
                 break;
 
-            case 2:
+            case 2://happy
                 rank[3] = soundPool.load(context, R.raw.happygood, 1);
                 rank[4] = soundPool.load(context, R.raw.happygreat, 1);
                 rank[5] = soundPool.load(context, R.raw.happygreat, 1);
@@ -81,15 +86,19 @@ public class SoundManager {
                 rank[10] = soundPool.load(context, R.raw.happyunbelieveable, 1);
                 rank[11] = soundPool.load(context, R.raw.happyunbelieveable, 1);
                 move  = soundPool.load(context, R.raw.happymove, 1);
-                //merge  = soundPool.load(context, R.raw.happymerge , 1);
                 break ;
 
-            default:
+            default: //simple
                 move  = soundPool.load(context, R.raw.simplemove, 1);
                 merge  = soundPool.load(context, R.raw.simplemerge , 1);
         }
     }
 
+    /**
+     * 对用户的有效操作播放音效
+     * @param maxRank  本次操作产生的方块的的最大rank
+     * @param mergeNum  本次操作同时合并的方块的对数
+     */
     public void playProcess(int maxRank, int mergeNum) {
         if (Setting.Sound.enabled) {
             switch (Setting.Sound.SOUND_PACK) {
@@ -114,8 +123,10 @@ public class SoundManager {
                     }
                     if (maxRank >= 7)
                         soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-                    else if (mergeNum >= 2)
+                    else if (mergeNum >= 2&& System.currentTimeMillis()-lastDoubleKillTime > 2000){
                         soundPool.play(mergenum[Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
+                        lastDoubleKillTime = System.currentTimeMillis();
+                    }
                     else if(maxRank >= 4)
                         soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
             }

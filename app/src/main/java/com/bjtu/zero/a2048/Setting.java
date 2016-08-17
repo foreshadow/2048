@@ -85,7 +85,7 @@ public class Setting {
     public static class Sound {
 
         //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
-        public static boolean enabled = false;
-        public static int SOUND_PACK = 0;
+        public static boolean enabled = true;
+        public static int SOUND_PACK = 1;
     }
 }
