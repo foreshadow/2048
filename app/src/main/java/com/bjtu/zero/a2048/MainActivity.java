@@ -68,8 +68,6 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 //测试代码
-                Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
-                startActivity(intent);
                 //gamePresenter.reset();
                 undoButton.update(gamePresenter.getGameModel().historySize());
             }

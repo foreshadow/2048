@@ -1,6 +1,7 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -300,6 +301,8 @@ public class NewGameActivity extends Activity {
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(NewGameActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
