@@ -15,7 +15,6 @@ import com.bjtu.zero.a2048.core.BlockChangeList;
 import com.bjtu.zero.a2048.core.BlockChangeListItem;
 import com.bjtu.zero.a2048.core.Board;
 import com.bjtu.zero.a2048.core.GamePresenter;
-import com.bjtu.zero.a2048.core.Score;
 
 public class GameLayout extends FrameLayout {
 
@@ -33,7 +32,7 @@ public class GameLayout extends FrameLayout {
     }
 
     public GameLayout(Context context, int width, int height, GamePresenter gamePresenter) {
-        this(context, width, height, gamePresenter, 4);
+        this(context, width, height, gamePresenter, Setting.Runtime.BOARD_SIZE);
     }
 
     public GameLayout(Context context, int width, int height, GamePresenter gamePresenter, int size) {
@@ -96,7 +95,7 @@ public class GameLayout extends FrameLayout {
     }
 
     public void setBoard(Board board) {
-        if (size != board.getSize()) {
+        if (size != board.size()) {
             throw new AssertionError();
         }
         for (int i = 0; i < size; i++) {

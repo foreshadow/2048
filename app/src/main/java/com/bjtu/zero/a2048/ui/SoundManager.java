@@ -9,7 +9,6 @@ import com.bjtu.zero.a2048.Setting;
 
 public class SoundManager {
 
-    //private boolean enabled;
     private boolean isFirstBlood;
     private SoundPool soundPool;
     private int[] rank;
@@ -30,10 +29,10 @@ public class SoundManager {
 
     public void load(Context context) {
         soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
-
-        if (Setting.Sound.SoundPack >= 2)
+        if (Setting.Sound.SOUND_PACK >= 2) {
             isFirstBlood = false;
-        switch (Setting.Sound.SoundPack) {
+        }
+        switch (Setting.Sound.SOUND_PACK) {
             case 0: //dota
                 firstblood = soundPool.load(context, R.raw.dotafirstblood, 1);
 
@@ -91,17 +90,9 @@ public class SoundManager {
         }
     }
 
-//    public void setEnabled(boolean enabled) {
-//        this.enabled = enabled;
-//    }
-
-//    public boolean  getEnablde(){
-//        return enabled ;
-//    }
-
     public void playProcess(int maxRank, int mergeNum) {
         if (Setting.Sound.enabled) {
-            switch(Setting.Sound.SoundPack){
+            switch (Setting.Sound.SOUND_PACK) {
                 case 3:
                     if(maxRank>1)
                         soundPool.play(merge, 1, 1, 0, 0, 1);
