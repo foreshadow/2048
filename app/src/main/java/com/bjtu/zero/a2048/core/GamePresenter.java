@@ -1,6 +1,7 @@
 package com.bjtu.zero.a2048.core;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -37,6 +39,7 @@ public class GamePresenter implements Serializable {
     private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private Context context;
     private String name = "game";
+    private Bitmap m;
 
     /**
      * 该函数仅在测试时使用。
@@ -165,6 +168,50 @@ public class GamePresenter implements Serializable {
             Log.e("aaaaa", "write111 "+i);
             oos.writeObject(gameModel);
             Log.e("aaaaa", "write ok "+i);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    //fos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    //oos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void writee(int i) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            Log.e("aaaaa", "write "+i);
+            fos = getContext().openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa", "write111 "+i);
+            m = gameModel.lastStatus().thumbnail();
+            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
+            fos.close();
+            fos = getContext().openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(gameModel.lastStatus().getScore());
+            Log.e("aaaaa", "write ok "+i);
+            fos.close();
+            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+            String date = sDateFormat.format(new  java.util.Date());
+            fos = getContext().openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(date);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -338,7 +385,7 @@ public class GamePresenter implements Serializable {
             }
         }
         nextStatus.setAdds(nextStatus.getScore() - getGameModel().lastStatus().getScore());
-        Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -386,7 +433,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -434,7 +481,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -482,7 +529,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 

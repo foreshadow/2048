@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +32,6 @@ public class MainActivity extends Activity
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
-    private GamePresenter gamePresenter;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
 
@@ -49,11 +49,10 @@ public class MainActivity extends Activity
         linearLayout.addView(scoreBoardLayout);
         windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
-        Setting.gamePresenter = gamePresenter ;
-        gamePresenter.setScoreBoard(scoreBoardLayout);
-        gamePresenter.setContext(linearLayout.getContext());
-        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
+        Setting.gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
+        Setting.gamePresenter.setScoreBoard(scoreBoardLayout);
+        Setting.gamePresenter.setContext(linearLayout.getContext());
+        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, Setting.gamePresenter);
 
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
@@ -64,8 +63,8 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                gamePresenter.undo();
-                undoButton.update(gamePresenter.getGameModel().historySize());
+                Setting.gamePresenter.undo();
+                undoButton.update(Setting.gamePresenter.getGameModel().historySize());
             }
         });
 
@@ -87,56 +86,13 @@ public class MainActivity extends Activity
 
 
         setContentView(linearLayout);
-        gamePresenter.setGameLayout(gameLayout);
+        Setting.gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
         gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
 
         Log.e("aaa","onCreat "+ Setting.savemodel);
-        gamePresenter.start();
-    }
-
-    public void write(int i) {
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-        try {
-            Log.e("aaaaa", "write "+i);
-            fos = openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
-            oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111 "+i);
-            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
-            fos.close();
-            fos = openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(gamePresenter.getGameModel().lastStatus().getScore());
-            Log.e("aaaaa", "write ok "+i);
-            fos.close();
-            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
-            String date = sDateFormat.format(new  java.util.Date());
-            fos = openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(date);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    //fos流关闭异常
-                    e.printStackTrace();
-                }
-            }
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                    //oos流关闭异常
-                    e.printStackTrace();
-                }
-            }
-        }
+        Setting.gamePresenter.start();
     }
 
     @Override
@@ -145,26 +101,22 @@ public class MainActivity extends Activity
         //gamePresenter.read();
         Log.e("aaa","onResume");
         if (Setting.savemodel == 0) {
-            gamePresenter.read();
-            Setting.gamePresenter = gamePresenter ;
+            Setting.gamePresenter.read();
         } else if (Setting.savemodel == 2) {
-            gamePresenter.read(1);
-            Setting.gamePresenter = gamePresenter ;
+            Setting.gamePresenter.read(1);
         } else if (Setting.savemodel == 3) {
-            gamePresenter.read(2);
-            Setting.gamePresenter = gamePresenter ;
+            Setting.gamePresenter.read(2);
         } else if (Setting.savemodel == 4) {
-            gamePresenter.read(3);
-            Setting.gamePresenter = gamePresenter ;
+            Setting.gamePresenter.read(3);
         }
-        undoButton.update(gamePresenter.getGameModel().historySize());
+        undoButton.update(Setting.gamePresenter.getGameModel().historySize());
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        gamePresenter.write();
+        Setting.gamePresenter.write();
     }
 
     @Override
@@ -180,15 +132,15 @@ public class MainActivity extends Activity
         if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
                 && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
             if (dx > dy && dx > -dy) {
-                gamePresenter.slideRight();
+                Setting.gamePresenter.slideRight();
             } else if (dx < dy && dx < -dy) {
-                gamePresenter.slideLeft();
+                Setting.gamePresenter.slideLeft();
             } else if (dy > dx && dy > -dx) {
-                gamePresenter.slideDown();
+                Setting.gamePresenter.slideDown();
             } else if (dy < dx && dy < -dx) {
-                gamePresenter.slideUp();
+                Setting.gamePresenter.slideUp();
             }
-            undoButton.update(gamePresenter.getGameModel().historySize());
+            undoButton.update(Setting.gamePresenter.getGameModel().historySize());
             return true;
         }
         return false;
@@ -217,5 +169,49 @@ public class MainActivity extends Activity
     @Override
     public void onLongPress(MotionEvent motionEvent) {
 
+    }
+
+    public void write(int i) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            Log.e("aaaaa", "write "+i);
+            fos = openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa", "write111 "+i);
+            m = Setting.gamePresenter.getGameModel().lastStatus().thumbnail();
+            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
+            fos.close();
+            fos = openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(Setting.gamePresenter.getGameModel().lastStatus().getScore());
+            Log.e("aaaaa", "write ok "+i);
+            fos.close();
+            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+            String date = sDateFormat.format(new  java.util.Date());
+            fos = openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(date);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    //fos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    //oos流关闭异常
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

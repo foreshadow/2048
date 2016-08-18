@@ -214,6 +214,7 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                Setting.gamePresenter.writee(1);
                 Setting.gamePresenter.write(1);
                 Toast.makeText(getApplicationContext(), "已存入存档1", Toast.LENGTH_SHORT).show();
             }
@@ -222,6 +223,7 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                Setting.gamePresenter.writee(2);
                 Setting.gamePresenter.write(2);
                 Toast.makeText(getApplicationContext(), "已存入存档2", Toast.LENGTH_SHORT).show();
             }
@@ -230,6 +232,7 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                Setting.gamePresenter.writee(3);
                 Setting.gamePresenter.write(3);
                 Toast.makeText(getApplicationContext(), "已存入存档3", Toast.LENGTH_SHORT).show();
             }

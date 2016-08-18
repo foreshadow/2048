@@ -1,9 +1,11 @@
 package com.bjtu.zero.a2048;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -42,8 +44,11 @@ public class Main2Activity extends Activity implements
     String[] myText = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
     String[] sco = {"","","",""};
     String[] time = {"","","",""};
+    ListView list;
+    MyAdapter adapter;
 
     private SoundManager mySoundManager ;
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,8 @@ public class Main2Activity extends Activity implements
         mySoundManager.execute();
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main2);
-        ListView list = (ListView) findViewById(R.id.listView);
-        MyAdapter adapter = new MyAdapter();
+        list = (ListView) findViewById(R.id.listView);
+        adapter = new MyAdapter();
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,12 +94,23 @@ public class Main2Activity extends Activity implements
                         intent.setClass(Main2Activity.this, MainActivity.class);
                         break;
                 }
-                startActivity(intent);
+                startActivityForResult(intent,0);
             }
         });
+
+
         gestureDetector = new GestureDetector(this);
         doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        Log.e("eeeee","result");
+       adapter.notifyDataSetChanged();
+
+    }
+
 
     @Override
     public boolean onDown(MotionEvent motionEvent) {
