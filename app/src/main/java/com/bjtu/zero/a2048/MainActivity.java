@@ -66,9 +66,9 @@ public class MainActivity extends Activity
         SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
-                i.setClass(MainActivity.this, SoundSettingMenu.class);
-                startActivity(i);
+                //Intent intent = new Intent(MainActivity.this,GameOverActivity .class);
+                Intent intent = new Intent(MainActivity.this,NewGameActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -136,6 +136,10 @@ public class MainActivity extends Activity
                 gamePresenter.slideDown();
             } else if (dy < dx && dy < -dx) {
                 gamePresenter.slideUp();
+            }
+            if(gamePresenter.isGameOver()){
+                Intent intent = new Intent(MainActivity.this,GameOverActivity.class);
+                startActivity(intent);
             }
             undoButton.update(gamePresenter.getGameModel().historySize());
             return true;

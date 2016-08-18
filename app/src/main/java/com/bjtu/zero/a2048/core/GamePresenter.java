@@ -563,7 +563,7 @@ public class GamePresenter implements Serializable {
      *
      * @return GameModel中最后一个状态的棋盘是否不能再做有效操作
      */
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         return gameModel.lastBoard().isStalemate();
     }
 
@@ -575,7 +575,6 @@ public class GamePresenter implements Serializable {
     private void gameOverJudge() {
         if (isGameOver()) {
             // TODO: 2016/7/24
-//            soundManager.playGameOver();
         }
 
     }
