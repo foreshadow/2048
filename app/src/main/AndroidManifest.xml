@@ -24,6 +24,8 @@
         <activity
             android:name=".SoundSettingMenu"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".GameOverActivity"
+            android:theme="@style/Transparent"></activity>
     </application>
 
 </manifest>

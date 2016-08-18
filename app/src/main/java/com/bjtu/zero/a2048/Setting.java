@@ -7,11 +7,6 @@ import com.bjtu.zero.a2048.ui.SoundManager;
 
 public class Setting {
 
-    public static int savemodel = 0;
-
-    public static SoundManager mySoundManager;
-    public static GamePresenter gamePresenter;
-
     public static class UI {
 
         public static final String[] STRING_LIST_CLASSICAL = new String[]{
@@ -75,9 +70,9 @@ public class Setting {
 
     public static class Game {
 
+        public static final int DEFAULT_BOARD_SIZE = 4;
         public static final int HISTORY_SIZE = 21;
         public static final double RANK_2_PROBABILITY = 0.1;
-        public static final int DEFAULT_BOARD_SIZE = 4;
     }
 
     public static class Runtime {
@@ -86,12 +81,16 @@ public class Setting {
                 UI.DEFAULT_ANIMATION_DURATION_MILLISECONDS;
         public static int BOARD_SIZE = Game.DEFAULT_BOARD_SIZE;
         public static String[] STRING_LIST = UI.STRING_LIST_CLASSICAL;
+        public static int FILE_ID = 0;
+        public static SoundManager soundManager;
+        public static GamePresenter gamePresenter;
+
+        public static class Sound {
+
+            //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
+            public static boolean enabled = true;
+            public static int SOUND_PACK = 1;
+        }
     }
 
-    public static class Sound {
-
-        //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
-        public static boolean enabled = true;
-        public static int SOUND_PACK = 1;
-    }
 }
