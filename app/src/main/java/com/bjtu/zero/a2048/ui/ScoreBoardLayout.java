@@ -13,7 +13,9 @@ import android.widget.TextView;
 import com.bjtu.zero.a2048.R;
 import com.bjtu.zero.a2048.Setting;
 
-public class ScoreBoardLayout extends LinearLayout {
+import java.io.Serializable;
+
+public class ScoreBoardLayout extends LinearLayout implements Serializable {
 
     public final String KEY = "HIGH";
     protected TextView scoreView;

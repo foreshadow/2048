@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bjtu.zero.a2048.core.GameModel;
 import com.bjtu.zero.a2048.core.Status;
 import com.bjtu.zero.a2048.ui.DoubleClickDetector;
+import com.bjtu.zero.a2048.ui.SoundManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,10 +43,15 @@ public class Main2Activity extends Activity implements
     String[] sco = {"","","",""};
     String[] time = {"","","",""};
 
+    private SoundManager mySoundManager ;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        mySoundManager=new SoundManager(this.getApplicationContext());
+        Setting.mySoundManager = mySoundManager;
+        mySoundManager.execute();
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main2);
         ListView list = (ListView) findViewById(R.id.listView);
@@ -67,6 +73,7 @@ public class Main2Activity extends Activity implements
                         Setting.savemodel = 1;
                         //Intent intent0 = new Intent(Main2Activity.this, NewGameActivity.class);
                         //startActivity(intent0);
+                        Setting.mySoundManager.clear();
                         intent.setClass(Main2Activity.this, NewGameActivity.class);
                         break;
                     case 2:

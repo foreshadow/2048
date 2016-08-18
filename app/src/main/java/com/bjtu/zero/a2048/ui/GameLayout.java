@@ -16,7 +16,9 @@ import com.bjtu.zero.a2048.core.BlockChangeListItem;
 import com.bjtu.zero.a2048.core.Board;
 import com.bjtu.zero.a2048.core.GamePresenter;
 
-public class GameLayout extends FrameLayout {
+import java.io.Serializable;
+
+public class GameLayout extends FrameLayout implements Serializable {
 
     int size;
     GamePresenter gamePresenter;

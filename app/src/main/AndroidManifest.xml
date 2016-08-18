@@ -17,11 +17,13 @@
         </activity>
         <activity
             android:name=".NewGameActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog">
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <meta-data android:name="com.google.android.gms.version" />
 
-        </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".SoundSettingMenu"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
     </application>
 
 </manifest>

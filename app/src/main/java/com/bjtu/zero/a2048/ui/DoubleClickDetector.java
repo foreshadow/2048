@@ -1,6 +1,8 @@
 package com.bjtu.zero.a2048.ui;
 
-public class DoubleClickDetector {
+import java.io.Serializable;
+
+public class DoubleClickDetector implements Serializable {
 
     private long intervalMillis;
     private long lastClick;

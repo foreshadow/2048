@@ -2,9 +2,10 @@ package com.bjtu.zero.a2048.core;
 
 import com.bjtu.zero.a2048.Setting;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BlockChangeList extends ArrayList<BlockChangeListItem> {
+public class BlockChangeList extends ArrayList<BlockChangeListItem> implements Serializable {
 
     public int scoreIncrement() {
         int score = 0;

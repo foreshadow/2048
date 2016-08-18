@@ -109,6 +109,7 @@ public class NewGameActivity extends Activity {
         number.setText("经典版");
         number.setTextColor(Color.BLUE);
         number.getPaint().setFakeBoldText(true);
+        Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_CLASSICAL;
 
         number.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,14 +167,13 @@ public class NewGameActivity extends Activity {
         soundSeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
         final Button simple = new Button(this);
         simple.setText("精简版");
-//        simple.setMinimumWidth(size4.getWidth()*3/2);
         final Button happy = new Button(this);
         happy.setText("开心消消乐版");
-        // happy.setMinimumWidth(450);
         final Button lol = new Button(this);
         lol.setText("lol版");
         final Button dota = new Button(this);
         dota.setText("dota版");
+        Setting.Sound.enabled=false;
 
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +196,7 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
+                Setting.mySoundManager.setSoundType();
             }
         });
 
@@ -220,6 +221,7 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
+                Setting.mySoundManager.setSoundType();
             }
         });
 
@@ -244,6 +246,7 @@ public class NewGameActivity extends Activity {
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
                 }
+                Setting.mySoundManager.setSoundType();
             }
         });
 
@@ -268,6 +271,7 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
+                Setting.mySoundManager.setSoundType();
             }
         });
 
