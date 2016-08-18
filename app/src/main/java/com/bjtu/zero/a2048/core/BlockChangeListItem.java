@@ -1,6 +1,8 @@
 package com.bjtu.zero.a2048.core;
 
-public class BlockChangeListItem {
+import java.io.Serializable;
+
+public class BlockChangeListItem implements Serializable {
 
     public Block block;
     public int toX;

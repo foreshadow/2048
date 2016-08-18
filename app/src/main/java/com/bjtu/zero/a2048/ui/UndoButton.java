@@ -3,7 +3,9 @@ package com.bjtu.zero.a2048.ui;
 import android.content.Context;
 import android.widget.Button;
 
-public class UndoButton extends Button {
+import java.io.Serializable;
+
+public class UndoButton extends Button  implements Serializable {
 
     private static final String text = "Undo";
     private int size = 0;

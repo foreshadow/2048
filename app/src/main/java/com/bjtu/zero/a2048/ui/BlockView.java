@@ -11,7 +11,9 @@ import android.view.View;
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.core.Block;
 
-public class BlockView extends View {
+import java.io.Serializable;
+
+public class BlockView extends View implements Serializable {
 
     private Paint painter = new Paint();
     private Rect boundingRect = new Rect();

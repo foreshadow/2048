@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ import java.util.Random;
  * @author Infinity   其他
  */
 
-public class GamePresenter {
+public class GamePresenter implements Serializable {
 
     private ScoreBoardLayout scoreBoardLayout;
     private int size;

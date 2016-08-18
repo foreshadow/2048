@@ -3,7 +3,9 @@ package com.bjtu.zero.a2048.ui;
 import android.content.Context;
 import android.widget.Button;
 
-public class AutoButton extends Button {
+import java.io.Serializable;
+
+public class AutoButton extends Button implements Serializable {
 
     private static final String text = new String("Auto");
     private int ops;

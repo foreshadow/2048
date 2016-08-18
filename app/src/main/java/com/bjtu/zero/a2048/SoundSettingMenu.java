@@ -3,6 +3,7 @@ package com.bjtu.zero.a2048;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -11,12 +12,20 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bjtu.zero.a2048.core.GamePresenter;
 
 public class SoundSettingMenu extends Activity {
+
+    GamePresenter gamePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setFinishOnTouchOutside(false);
         LinearLayout SoundSettingLayout = new LinearLayout(this);
@@ -179,6 +188,11 @@ public class SoundSettingMenu extends Activity {
         soundBar2.addView(dota);
         soundBar2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+
+
+
+
+
         final TextView saveView = new TextView(this);
         saveView.setGravity(Gravity.CENTER);
         saveView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
@@ -195,6 +209,31 @@ public class SoundSettingMenu extends Activity {
         saveBar.addView(save1);
         saveBar.addView(save2);
         saveBar.addView(save3);
+
+        save1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                Setting.gamePresenter.write(1);
+                Toast.makeText(getApplicationContext(), "已存入存档1", Toast.LENGTH_SHORT).show();
+            }
+        });
+        save2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                Setting.gamePresenter.write(2);
+                Toast.makeText(getApplicationContext(), "已存入存档2", Toast.LENGTH_SHORT).show();
+            }
+        });
+        save3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("UI", "undo clicked");
+                Setting.gamePresenter.write(3);
+                Toast.makeText(getApplicationContext(), "已存入存档3", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         TextView blank = new TextView(this);
         blank.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);

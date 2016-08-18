@@ -9,8 +9,10 @@ import android.util.Log;
 import com.bjtu.zero.a2048.R;
 import com.bjtu.zero.a2048.Setting;
 
+import java.io.Serializable;
 
-public class SoundManager  extends AsyncTask<java.lang.Void,java.lang.Void,java.lang.Void> {
+
+public class SoundManager  extends AsyncTask<java.lang.Void,java.lang.Void,java.lang.Void> implements Serializable {
 
     private boolean isFirstBlood;
     private SoundPool soundPool;

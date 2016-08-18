@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.bjtu.zero.a2048.core.GamePresenter;
-import com.bjtu.zero.a2048.ui.DoubleClickDetector;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
@@ -23,8 +20,7 @@ import com.bjtu.zero.a2048.ui.UndoButton;
 public class MainActivity extends Activity
         implements
         View.OnTouchListener,
-        GestureDetector.OnGestureListener,
-        DoubleClickDetector.ClickListener {
+        GestureDetector.OnGestureListener {
 
     private UndoButton undoButton;
     private GameLayout gameLayout;
@@ -32,7 +28,6 @@ public class MainActivity extends Activity
     private GestureDetector gestureDetector;
     private long exitTime = 0;
 
-    private DoubleClickDetector doubleClickDetector;
     private LinearLayout linearLayout;
     private ScoreBoardLayout scoreBoardLayout;
     private Point windowSize;
@@ -47,6 +42,7 @@ public class MainActivity extends Activity
         windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
+        Setting.gamePresenter = gamePresenter ;
         gamePresenter.setScoreBoard(scoreBoardLayout);
         gamePresenter.setContext(linearLayout.getContext());
         gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, gamePresenter);
@@ -65,61 +61,26 @@ public class MainActivity extends Activity
             }
         });
 
-        Button soundSettingButton = new Button(topButtonLayout.getContext());
-        soundSettingButton.setText("音效");
-        soundSettingButton.setOnClickListener(new View.OnClickListener() {
+        Button SettingButton = new Button(topButtonLayout.getContext());
+        SettingButton.setText("菜单");
+        SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SoundSettingMenu.class);
-                startActivity(intent);
+                Intent i = new Intent();
+                i.setClass(MainActivity.this, SoundSettingMenu.class);
+                startActivity(i);
             }
         });
 
         topButtonLayout.addView(undoButton);
-        topButtonLayout.addView(soundSettingButton);
+        topButtonLayout.addView(SettingButton);
         linearLayout.addView(topButtonLayout);
-
-        LinearLayout ButtonLayout = new LinearLayout(linearLayout.getContext());
-        ButtonLayout.setMinimumHeight(200);
-        ButtonLayout.setGravity(Gravity.CENTER);
-        Button Button1 = new Button(ButtonLayout.getContext());
-        Button1.setText("save 1");
-        Button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("UI", "undo clicked");
-                gamePresenter.write(1);
-            }
-        });
-        Button Button2 = new Button(ButtonLayout.getContext());
-        Button2.setText("save 2");
-        Button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("UI", "undo clicked");
-                gamePresenter.write(2);
-            }
-        });
-        Button Button3 = new Button(ButtonLayout.getContext());
-        Button3.setText("save 3");
-        Button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("UI", "undo clicked");
-                gamePresenter.write(3);
-            }
-        });
-        ButtonLayout.addView(Button1);
-        ButtonLayout.addView(Button2);
-        ButtonLayout.addView(Button3);
-        linearLayout.addView(ButtonLayout);
 
 
 
         setContentView(linearLayout);
         gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
-        doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
         gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
 
@@ -134,12 +95,16 @@ public class MainActivity extends Activity
         Log.e("aaa","onResume");
         if (Setting.savemodel == 0) {
             gamePresenter.read();
+            Setting.gamePresenter = gamePresenter ;
         } else if (Setting.savemodel == 2) {
             gamePresenter.read(1);
+            Setting.gamePresenter = gamePresenter ;
         } else if (Setting.savemodel == 3) {
             gamePresenter.read(2);
+            Setting.gamePresenter = gamePresenter ;
         } else if (Setting.savemodel == 4) {
             gamePresenter.read(3);
+            Setting.gamePresenter = gamePresenter ;
         }
         undoButton.update(gamePresenter.getGameModel().historySize());
 
@@ -149,26 +114,6 @@ public class MainActivity extends Activity
     protected void onPause() {
         super.onPause();
         gamePresenter.write();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            doubleClickDetector.onClick();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onFirstClick() {
-        gamePresenter.write();
-        Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSecondClick() {
-        finish();
     }
 
     @Override
@@ -203,17 +148,6 @@ public class MainActivity extends Activity
         return false;
     }
 
-    public void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再按一次退出程序",
-                    Toast.LENGTH_SHORT).show();
-            exitTime = System.currentTimeMillis();
-        } else {
-            finish();
-            System.exit(0);
-        }
-    }
-
     @Override
     public void onShowPress(MotionEvent motionEvent) {
 
@@ -233,5 +167,4 @@ public class MainActivity extends Activity
     public void onLongPress(MotionEvent motionEvent) {
 
     }
-
 }
