@@ -19,27 +19,27 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 /**
  * 处理绝大部分游戏逻辑
  *
- * @author Lazy_sheep isAbleToMove slide*
+ * @author Lazy_sheep unableToMove slide*
  * @author brioso     read write
  * @author Infinity   其他
  */
 
 public class GamePresenter implements Serializable {
 
-    private ScoreBoardLayout scoreBoardLayout;
-    private int size;
+    private static final int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    private static final String name = "game";
+    private final int size;
     private boolean animationInProgress;
-    private GameLayout gameLayout;
-    private GameModel gameModel;
-    private int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private Context context;
-    private String name = "game";
-    private Bitmap m;
+    private GameModel gameModel;
+    private GameLayout gameLayout;
+    private ScoreBoardLayout scoreBoardLayout;
 
     /**
      * 该函数仅在测试时使用。
@@ -60,8 +60,6 @@ public class GamePresenter implements Serializable {
         this.size = size;
         animationInProgress = false;
         gameModel = new GameModel(size, Setting.Game.HISTORY_SIZE);
-        Log.e("aaaaa", "loading soundmanager");
-        Log.e("aaaaa", "soundmanager loaded");
     }
 
     /**
@@ -73,7 +71,7 @@ public class GamePresenter implements Serializable {
     public void reset() {
         write();
         gameModel.clear();
-        //Setting.mySoundManager.clear();
+        //Setting.soundManager.clear();
         gameLayout.setSize(Setting.Runtime.BOARD_SIZE);
         if (gameLayout != null) {
             gameLayout.setBoard(new Board());
@@ -90,7 +88,7 @@ public class GamePresenter implements Serializable {
         ObjectOutputStream oos = null;
         try {
             Log.e("aaaaa", "write");
-            fos = getContext().openFileOutput(name + String.valueOf(size) + ".txt", Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput(String.format("%s%s.txt", name, String.valueOf(size)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111");
             oos.writeObject(gameModel);
@@ -99,21 +97,15 @@ public class GamePresenter implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
+            try {
+                if (fos != null) {
                     fos.close();
-                } catch (IOException e) {
-                    //fos流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (oos != null) {
-                try {
+                if (oos != null) {
                     oos.close();
-                } catch (IOException e) {
-                    //oos流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -126,7 +118,7 @@ public class GamePresenter implements Serializable {
         ObjectInputStream ois = null;
         Log.e("aaaaa", "read");
         try {
-            fis = getContext().openFileInput(name + String.valueOf(size) + ".txt");
+            fis = getContext().openFileInput(String.format("%s%s.txt", name, String.valueOf(size)));
             Log.e("aaaaa", "read111");
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read222");
@@ -137,23 +129,16 @@ public class GamePresenter implements Serializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            //这里是读取文件产生异常
         } finally {
-            if (fis != null) {
-                try {
+            try {
+                if (fis != null) {
                     fis.close();
-                } catch (IOException e) {
-                    //fis流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (ois != null) {
-                try {
+                if (ois != null) {
                     ois.close();
-                } catch (IOException e) {
-                    //ois流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -162,31 +147,25 @@ public class GamePresenter implements Serializable {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            Log.e("aaaaa", "write "+i);
-            fos = getContext().openFileOutput("save" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            Log.e("aaaaa", "write " + i);
+            fos = getContext().openFileOutput(String.format("save%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111 "+i);
+            Log.e("aaaaa", "write111 " + i);
             oos.writeObject(gameModel);
-            Log.e("aaaaa", "write ok "+i);
+            Log.e("aaaaa", "write ok " + i);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
+            try {
+                if (fos != null) {
                     fos.close();
-                } catch (IOException e) {
-                    //fos流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (oos != null) {
-                try {
+                if (oos != null) {
                     oos.close();
-                } catch (IOException e) {
-                    //oos流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -195,42 +174,36 @@ public class GamePresenter implements Serializable {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            Log.e("aaaaa", "write "+i);
-            fos = getContext().openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            Log.e("aaaaa", "write " + i);
+            fos = getContext().openFileOutput(String.format("image%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111 "+i);
-            m = gameModel.lastStatus().thumbnail();
-            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
+            Log.e("aaaaa", "write111 " + i);
+            Bitmap thumbnail = gameModel.lastStatus().thumbnail();
+            oos.writeObject(thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, fos));
             fos.close();
-            fos = getContext().openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput(String.format("score%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(gameModel.lastStatus().getScore());
-            Log.e("aaaaa", "write ok "+i);
+            Log.e("aaaaa", "write ok " + i);
             fos.close();
-            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
-            String date = sDateFormat.format(new  java.util.Date());
-            fos = getContext().openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+            String date = format.format(new java.util.Date());
+            fos = getContext().openFileOutput(String.format("time%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(date);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
+            try {
+                if (fos != null) {
                     fos.close();
-                } catch (IOException e) {
-                    //fos流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (oos != null) {
-                try {
+                if (oos != null) {
                     oos.close();
-                } catch (IOException e) {
-                    //oos流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -239,34 +212,27 @@ public class GamePresenter implements Serializable {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = getContext().openFileInput("save" + String.valueOf(i) + ".txt");
-            Log.e("aaaaa", "read111 "+i);
+            fis = getContext().openFileInput(String.format("save%s.txt", String.valueOf(i)));
+            Log.e("aaaaa", "read111 " + i);
             ois = new ObjectInputStream(fis);
-            Log.e("aaaaa", "read222 "+i);
+            Log.e("aaaaa", "read222 " + i);
             gameModel = ((GameModel) ois.readObject());
-            Log.e("aaaaa", "read ok "+i);
+            Log.e("aaaaa", "read ok " + i);
             gameLayout.setBoard(gameModel.lastBoard());
             scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
 
         } catch (Exception e) {
             e.printStackTrace();
-            //这里是读取文件产生异常
         } finally {
-            if (fis != null) {
-                try {
+            try {
+                if (fis != null) {
                     fis.close();
-                } catch (IOException e) {
-                    //fis流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (ois != null) {
-                try {
+                if (ois != null) {
                     ois.close();
-                } catch (IOException e) {
-                    //ois流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -319,8 +285,8 @@ public class GamePresenter implements Serializable {
      * @param direction
      * @return
      */
-    private boolean isAbleToMove(int direction) {
-        if (animationInProgress) return false;
+    private boolean unableToMove(int direction) {
+        if (animationInProgress) return true;
         Status nowStatus = gameModel.lastStatus();
         //某个rank非0的block的next位置为rank==0的block
         //某个rank非0的block的next位置为rank相同的block
@@ -333,18 +299,18 @@ public class GamePresenter implements Serializable {
                 if (x < 0 || x >= size || y < 0 || y >= size) continue;
                 Block nextBlock = nowStatus.getBoard().getData()[x][y];
                 if (nextBlock.isEmpty() || nowBlock.isSameRank(nextBlock)) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
      * // TODO: 2016/8/17 Lazy_sheep
      */
     public void slideLeft() {
-        if (!isAbleToMove(2)) return;
+        if (unableToMove(2)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -366,9 +332,9 @@ public class GamePresenter implements Serializable {
                             }
                             toY++;
                             nextBlock[i][j].swapRank(nextBlock[i][toY]);
-                            //把已经increase且位置没变的blcok也add了
-                            changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY, BlockChangeListItem.NextStatus.INCREASE));
-                            changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY, BlockChangeListItem.NextStatus.DESTROY));
+                            //把已经increase且位置没变的block也add了
+                            changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY));
+                            changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY));
                             break;
                         } else if (!nextBlock[i][k].isEmpty()) break;
                     }
@@ -379,13 +345,13 @@ public class GamePresenter implements Serializable {
                         }
                         toY++;
                         nextBlock[i][j].swapRank(nextBlock[i][toY]);
-                        changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY, BlockChangeListItem.NextStatus.MAINTAIN));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY));
                     }
                 }
             }
         }
         nextStatus.setAdds(nextStatus.getScore() - getGameModel().lastStatus().getScore());
-        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -393,7 +359,7 @@ public class GamePresenter implements Serializable {
      * // TODO: 2016/8/17 Lazy_sheep
      */
     public void slideRight() {
-        if (!isAbleToMove(3)) return;
+        if (unableToMove(3)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -415,9 +381,9 @@ public class GamePresenter implements Serializable {
                             }
                             toY--;
                             nextBlock[i][j].swapRank(nextBlock[i][toY]);
-                            //把已经increase且位置没变的blcok也add了
-                            changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY, BlockChangeListItem.NextStatus.INCREASE));
-                            changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY, BlockChangeListItem.NextStatus.DESTROY));
+                            //把已经increase且位置没变的block也add了
+                            changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY));
+                            changeList.add(new BlockChangeListItem(preBlock[i][k], i, toY));
                             break;
                         } else if (!nextBlock[i][k].isEmpty()) break;
                     }
@@ -428,12 +394,12 @@ public class GamePresenter implements Serializable {
                         }
                         toY--;
                         nextBlock[i][j].swapRank(nextBlock[i][toY]);
-                        changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY, BlockChangeListItem.NextStatus.MAINTAIN));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j], i, toY));
                     }
                 }
             }
         }
-        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -441,7 +407,7 @@ public class GamePresenter implements Serializable {
      * // TODO: 2016/8/17 Lazy_sheep
      */
     public void slideUp() {
-        if (!isAbleToMove(0)) return;
+        if (unableToMove(0)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -463,9 +429,9 @@ public class GamePresenter implements Serializable {
                             }
                             toX++;
                             nextBlock[i][j].swapRank(nextBlock[toX][j]);
-                            //把已经increase且位置没变的blcok也add了
-                            changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j, BlockChangeListItem.NextStatus.INCREASE));
-                            changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j, BlockChangeListItem.NextStatus.DESTROY));
+                            //把已经increase且位置没变的block也add了
+                            changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j));
+                            changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j));
                             break;
                         } else if (!nextBlock[k][j].isEmpty()) break;
                     }
@@ -476,12 +442,12 @@ public class GamePresenter implements Serializable {
                         }
                         toX++;
                         nextBlock[i][j].swapRank(nextBlock[toX][j]);
-                        changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j, BlockChangeListItem.NextStatus.MAINTAIN));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j));
                     }
                 }
             }
         }
-        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -489,7 +455,7 @@ public class GamePresenter implements Serializable {
      * // TODO: 2016/8/17 Lazy_sheep
      */
     public void slideDown() {
-        if (!isAbleToMove(1)) return;
+        if (unableToMove(1)) return;
         Status nextStatus = gameModel.lastStatus().clone();
         Block[][] nextBlock = nextStatus.getBoard().getData();
         Block[][] preBlock = gameModel.lastBlocks();
@@ -511,9 +477,9 @@ public class GamePresenter implements Serializable {
                             }
                             toX--;
                             nextBlock[i][j].swapRank(nextBlock[toX][j]);
-                            //把已经increase且位置没变的blcok也add了
-                            changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j, BlockChangeListItem.NextStatus.INCREASE));
-                            changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j, BlockChangeListItem.NextStatus.DESTROY));
+                            //把已经increase且位置没变的block也add了
+                            changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j));
+                            changeList.add(new BlockChangeListItem(preBlock[k][j], toX, j));
                             break;
                         } else if (!nextBlock[k][j].isEmpty()) break;
                     }
@@ -524,12 +490,12 @@ public class GamePresenter implements Serializable {
                         }
                         toX--;
                         nextBlock[i][j].swapRank(nextBlock[toX][j]);
-                        changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j, BlockChangeListItem.NextStatus.MAINTAIN));
+                        changeList.add(new BlockChangeListItem(preBlock[i][j], toX, j));
                     }
                 }
             }
         }
-        //Setting.mySoundManager.playProcess(maxRank, mergeNum);
+        //Setting.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 

@@ -1,7 +1,5 @@
 package com.bjtu.zero.a2048.core;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -14,9 +12,9 @@ import java.util.LinkedList;
 
 public class GameModel implements Serializable {
 
+    private final int boardSize;
+    private final int capacity;
     private Deque<Status> history;
-    private int boardSize;
-    private int capacity;
 
     /**
      * 创建GameModel。
@@ -117,11 +115,10 @@ public class GameModel implements Serializable {
     /**
      * 设置历史纪录。不觉得这个函数有什么用。
      *
-     * @param h 历史记录
+     * @param history 历史记录
      */
     @Deprecated
-    public void setHistory(Deque<Status> h) {
-        history = h;
-        Log.e("aaaaa", "histroy");
+    public void setHistory(Deque<Status> history) {
+        this.history = history;
     }
 }

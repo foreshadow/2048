@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bjtu.zero.a2048.Setting;
-
 public class SoundSettingMenuActivity extends Activity {
 
     @Override
@@ -232,9 +230,9 @@ public class SoundSettingMenuActivity extends Activity {
 
         TextView blank = new TextView(this);
         blank.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-        final Button makesure = new Button(this);
-        makesure.setText("确定");
-        makesure.setOnClickListener(new View.OnClickListener() {
+        final Button makeSure = new Button(this);
+        makeSure.setText("确定");
+        makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -247,7 +245,7 @@ public class SoundSettingMenuActivity extends Activity {
         SoundSettingLayout.addView(saveView);
         SoundSettingLayout.addView(saveBar);
         SoundSettingLayout.addView(blank);
-        SoundSettingLayout.addView(makesure);
+        SoundSettingLayout.addView(makeSure);
         setContentView(SoundSettingLayout);
     }
 }

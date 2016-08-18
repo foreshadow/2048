@@ -20,13 +20,13 @@ import java.io.Serializable;
 
 public class GameLayout extends FrameLayout implements Serializable {
 
-    int size;
-    GamePresenter gamePresenter;
-    BlockView[][] viewGrid;
-    int blockWidth;
-    int blockHeight;
-    int[][] centerX;
-    int[][] centerY;
+    private int size;
+    private GamePresenter gamePresenter;
+    private BlockView[][] viewGrid;
+    private int blockWidth;
+    private int blockHeight;
+    private int[][] centerX;
+    private int[][] centerY;
 
     public GameLayout(Context context) throws NoSuchMethodException {
         super(context);
@@ -64,7 +64,7 @@ public class GameLayout extends FrameLayout implements Serializable {
         }
     }
 
-    public void setSize(int size){
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -119,7 +119,7 @@ public class GameLayout extends FrameLayout implements Serializable {
         }
     }
 
-    public Point findCoordinate(Block block) {
+    private Point findCoordinate(Block block) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j] != null && viewGrid[i][j].getBlock() == block) {
@@ -146,8 +146,9 @@ public class GameLayout extends FrameLayout implements Serializable {
         animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point p = findCoordinate(item.block);
-            if (p == null)
+            if (p == null) {
                 continue;
+            }
             // TODO
             int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
             int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
@@ -163,7 +164,6 @@ public class GameLayout extends FrameLayout implements Serializable {
                     "Block r=" + item.block.getRank()
                             + ", lPos (" + p.y + ", " + p.x + ")"
                             + "->(" + item.toX + ", " + item.toY + "), "
-                            + "flag=" + item.nextStatus.toString()
             );
         }
         animationSet.start();

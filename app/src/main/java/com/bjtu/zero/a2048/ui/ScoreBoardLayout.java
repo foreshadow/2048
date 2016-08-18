@@ -17,22 +17,19 @@ import java.io.Serializable;
 
 public class ScoreBoardLayout extends LinearLayout implements Serializable {
 
-    public final String KEY = "HIGH";
-    protected TextView scoreView;
-    protected TextView highScoreView;
-    protected TextView textView;
-    protected TextView textView1;
-    protected TextView textView2;
-    private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
+    private final String KEY = "HIGH";
+    private final TextView scoreView;
+    private final TextView highScoreView;
+    private final TextView textView;
+    private final TextView textView1;
+    private final TextView textView2;
+    private final SharedPreferences sp;
     private int currentScore;
     private int highestScore;
 
-    
     public ScoreBoardLayout(Context context) {
         super(context);
         this.sp = context.getSharedPreferences("test", Activity.MODE_PRIVATE);
-        editor = sp.edit();
         currentScore = 0;
         highestScore = 0;
         setOrientation(HORIZONTAL);
@@ -40,9 +37,9 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         setGravity(Gravity.CENTER);
         textView = new TextView(context);
         textView.setText("2048");
-        ImageView imageView = new ImageView(context);  //创建imageview
-        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));  //image的布局方式
-        imageView.setImageResource(R.drawable.show);  //设置imageview呈现的图片
+        ImageView imageView = new ImageView(context);  //创建ImageView
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));  //image的布局方式
+        imageView.setImageResource(R.drawable.show);  //设置ImageView呈现的图片
         this.addView(imageView);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50);
         textView.setGravity(Gravity.CENTER);
@@ -89,7 +86,7 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         int maxTextSize = 40;
         if (textWidth > 0) {
             int trySize = maxTextSize;
-            while ((trySize > minTextSize) && trySize * text.toCharArray().length >= textWidth) {
+            while (trySize > minTextSize && trySize * text.toCharArray().length >= textWidth) {
                 trySize -= 1;
                 if (trySize <= minTextSize) {
                     trySize = minTextSize;
@@ -111,23 +108,24 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         if (score > highestScore) {
             setHighScore(score);
         }
-        Log.e("aaaaa","setScore "+score);
-        Log.e("aaaaa","high "+highestScore);
+        Log.e("aaaaa", "setScore " + score);
+        Log.e("aaaaa", "high " + highestScore);
     }
 
     public void setHighScore(int highScore) {
-        String a = sp.getString(KEY, "0");
-        int aa = Integer.parseInt(a);
+        String loadedScoreString = sp.getString(KEY, "0");
+        int loadedScore = Integer.parseInt(loadedScoreString);
         Log.e("aaaaa", "setHigh aa " + highScore);
-        if(aa > highScore)
-            highScore = aa;
+        if (loadedScore > highScore) {
+            highScore = loadedScore;
+        }
         highestScore = highScore;
         int size = refitText(String.valueOf(highScore));
         highScoreView.setTextSize(size);
         highScoreView.setText(String.valueOf(highScore));
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(KEY, String.valueOf(highScore));
-        editor.commit();
+        editor.apply();
         Log.e("aaaaa", "setHigh " + highScore);
     }
 }

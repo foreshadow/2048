@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class AutoButton extends Button implements Serializable {
 
-    private static final String text = new String("Auto");
-    private int ops;
+    private static final String text = "Auto";
+    private final int ops;
 
     public AutoButton(Context context, int times) {
         this(context, times, null);

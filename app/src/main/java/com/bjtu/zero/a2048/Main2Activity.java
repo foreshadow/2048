@@ -30,17 +30,14 @@ import java.io.ObjectInputStream;
 public class Main2Activity extends Activity implements
         DoubleClickDetector.OnClickListener {
 
-    Bitmap[] bitmaps = {
+    private final Bitmap[] bitmaps = {
             new Status(4).thumbnail(), new Status(4).thumbnail(),
             new Status(4).thumbnail(), new Status(4).thumbnail()
     };
-    ImageView imageView;
-    TextView textView;
-    String[] texts = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
-    String[] scores = {"", "", "", ""};
-    String[] times = {"", "", "", ""};
-    ListView listView;
-    MyAdapter adapter;
+    private final String[] texts = {"继续游戏", "新游戏", "存档1", "存档2", "存档3"};
+    private final String[] scores = {"", "", "", ""};
+    private final String[] times = {"", "", "", ""};
+    private MyAdapter adapter;
     private DoubleClickDetector doubleClickDetector;
 
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
@@ -53,7 +50,7 @@ public class Main2Activity extends Activity implements
         mySoundManager.execute();
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main2);
-        listView = (ListView) findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.listView);
         adapter = new MyAdapter();
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,7 +146,7 @@ public class Main2Activity extends Activity implements
     }
 
     //适配器
-    public class MyAdapter extends BaseAdapter {
+    class MyAdapter extends BaseAdapter {
 
         //要显示多少条数据
         @Override
@@ -176,8 +173,8 @@ public class Main2Activity extends Activity implements
             //Context Activity继承Context
             LayoutInflater inflater = LayoutInflater.from(Main2Activity.this);
             View root = inflater.inflate(R.layout.item_list, null);
-            imageView = (ImageView) root.findViewById(R.id.item_ion);
-            textView = (TextView) root.findViewById(R.id.item_text);
+            ImageView imageView = (ImageView) root.findViewById(R.id.item_ion);
+            TextView textView = (TextView) root.findViewById(R.id.item_text);
 
             //2.为ItemView设置上显示的数据
             imageView.setImageResource(R.mipmap.ic_launcher);

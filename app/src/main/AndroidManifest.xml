@@ -22,9 +22,10 @@
 
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".SoundSettingMenu"
+            android:name=".SoundSettingMenuActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".GameOverActivity"
+        <activity
+            android:name=".GameOverActivity"
             android:theme="@style/Transparent"></activity>
     </application>
 
