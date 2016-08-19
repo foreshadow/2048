@@ -69,7 +69,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(MainActivity.this,GameOverActivity .class);
-                Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
+                Intent intent = new Intent(MainActivity.this, SoundSettingMenuActivity.class);
                 startActivity(intent);
             }
         });

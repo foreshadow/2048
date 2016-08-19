@@ -149,10 +149,14 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
                     }
                     if (maxRank >= 7) {
                         soundPool.play(rank[Setting.Runtime.Sound.SOUND_PACK][Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-                    } else if (mergeNum >= 2 && System.currentTimeMillis() - lastDoubleKillTime > 2000) {
+                    } else if (mergeNum == 2 && System.currentTimeMillis() - lastDoubleKillTime > 2000) {
                         soundPool.play(mergeCount[Setting.Runtime.Sound.SOUND_PACK][Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
                         lastDoubleKillTime = System.currentTimeMillis();
-                    } else if (maxRank >= 4) {
+                    }
+                    else if(mergeNum >2){
+                        soundPool.play(mergeCount[Setting.Runtime.Sound.SOUND_PACK][Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
+                    }
+                    else if (maxRank >= 4) {
                         soundPool.play(rank[Setting.Runtime.Sound.SOUND_PACK][Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
                     }
             }

@@ -351,7 +351,7 @@ public class GamePresenter implements Serializable {
             }
         }
         nextStatus.setAdds(nextStatus.getScore() - getGameModel().lastStatus().getScore());
-        //Setting.soundManager.playProcess(maxRank, mergeNum);
+        Setting.Runtime.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -399,7 +399,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        //Setting.soundManager.playProcess(maxRank, mergeNum);
+        Setting.Runtime.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -447,7 +447,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        //Setting.soundManager.playProcess(maxRank, mergeNum);
+        Setting.Runtime.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
@@ -495,7 +495,7 @@ public class GamePresenter implements Serializable {
                 }
             }
         }
-        //Setting.soundManager.playProcess(maxRank, mergeNum);
+        Setting.Runtime.soundManager.playProcess(maxRank, mergeNum);
         validOperation(changeList, nextStatus);
     }
 
