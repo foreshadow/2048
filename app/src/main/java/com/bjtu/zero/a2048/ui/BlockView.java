@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
@@ -15,23 +16,31 @@ import java.io.Serializable;
 
 public class BlockView extends View implements Serializable {
 
-    private Paint painter = new Paint();
-    private Rect boundingRect = new Rect();
+    private final Paint painter = new Paint();
+    private final Rect boundingRect = new Rect();
     private Block block;
     private boolean visible;
     private int fontSize = 75;
     private int wid;
+
+    public BlockView(Context context, AttributeSet attributeSet) throws NoSuchMethodException {
+        super(context, attributeSet);
+        throw new NoSuchMethodException();
+    }
 
     public BlockView(Context context, Block block, int centerX, int centerY, int width, int height) {
         super(context);
         this.block = block;
         visible = true;
         wid = width;
-        int a;
-        if(block == null)
-            a = 0;
-        else  a = block.getRank();
-        refitText(String.valueOf(Setting.UI.SCORE_LIST[a]));
+        // what's up here
+        int rank;
+        if (block == null) {
+            rank = 0;
+        } else {
+            rank = block.getRank();
+        }
+        refitText(String.valueOf(Setting.UI.SCORE_LIST[rank]));
         painter.setTextSize(fontSize);
         painter.setTextAlign(Paint.Align.CENTER);
 
@@ -42,27 +51,23 @@ public class BlockView extends View implements Serializable {
      * Re size the font so the specified text fits in the text box * assuming
      * the text box is the specified width.
      */
-    private void refitText(String text)
-    {
-        int textWidth = (int) (wid*1.5);
-        Log.e("bbbbb","wid=" + String.valueOf(textWidth));
-        Log.e("bbbbb","l=" + text.length());
-        int minTextSize =  Setting.UI.BLOCK_FONT_SIZE_MIN;
+    private void refitText(String text) {
+        int textWidth = (int) (wid * 1.5);
+        Log.e("bbbbb", "wid=" + String.valueOf(textWidth));
+        Log.e("bbbbb", "l=" + text.length());
+        int minTextSize = Setting.UI.BLOCK_FONT_SIZE_MIN;
         int maxTextSize = Setting.UI.BLOCK_FONT_SIZE;
-        if (textWidth > 0)
-        {
+        if (textWidth > 0) {
             int trySize = maxTextSize;
-            while ((trySize > minTextSize) && trySize * text.length() >= textWidth)
-            {
+            while ((trySize > minTextSize) && trySize * text.length() >= textWidth) {
                 trySize -= 1;
-                if (trySize <= minTextSize)
-                {
+                if (trySize <= minTextSize) {
                     trySize = minTextSize;
                     break;
                 }
             }
             fontSize = trySize;
-            Log.e("bbbbb","size = " + String.valueOf(fontSize));
+            Log.e("bbbbb", "size = " + String.valueOf(fontSize));
         }
     }
 
@@ -99,10 +104,6 @@ public class BlockView extends View implements Serializable {
 
     public Block getBlock() {
         return block;
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
     public void setVisible(boolean visible) {

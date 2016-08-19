@@ -14,17 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bjtu.zero.a2048.core.GamePresenter;
-
-public class SoundSettingMenu extends Activity {
-
-    GamePresenter gamePresenter;
+public class SoundSettingMenuActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setFinishOnTouchOutside(false);
@@ -53,15 +47,15 @@ public class SoundSettingMenu extends Activity {
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 3) {
-                    Setting.Sound.enabled = false;
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 3) {
+                    Setting.Runtime.Sound.enabled = false;
                     soundSeting.setText("音效  关");
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
+                    Setting.Runtime.Sound.enabled = true;
                     soundSeting.setText("音效  开");
-                    Setting.Sound.SOUND_PACK = 3;
+                    Setting.Runtime.Sound.SOUND_PACK = 3;
                     simple.setTextColor(Color.BLUE);
                     simple.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -71,22 +65,22 @@ public class SoundSettingMenu extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 2) {
-                    Setting.Sound.enabled = false;
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 2) {
+                    Setting.Runtime.Sound.enabled = false;
                     soundSeting.setText("音效  关");
                     happy.setTextColor(Color.BLACK);
                     happy.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
+                    Setting.Runtime.Sound.enabled = true;
                     soundSeting.setText("音效  开");
-                    Setting.Sound.SOUND_PACK = 2;
+                    Setting.Runtime.Sound.SOUND_PACK = 2;
                     happy.setTextColor(Color.BLUE);
                     happy.getPaint().setFakeBoldText(true);
                     simple.setTextColor(Color.BLACK);
@@ -96,22 +90,22 @@ public class SoundSettingMenu extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         dota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 0) {
-                    Setting.Sound.enabled = false;
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 0) {
+                    Setting.Runtime.Sound.enabled = false;
                     soundSeting.setText("音效  关");
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
+                    Setting.Runtime.Sound.enabled = true;
                     soundSeting.setText("音效  开");
-                    Setting.Sound.SOUND_PACK = 0;
+                    Setting.Runtime.Sound.SOUND_PACK = 0;
                     dota.setTextColor(Color.BLUE);
                     dota.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -121,22 +115,22 @@ public class SoundSettingMenu extends Activity {
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         lol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 1) {
-                    Setting.Sound.enabled = false;
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 1) {
+                    Setting.Runtime.Sound.enabled = false;
                     soundSeting.setText("音效  关");
                     lol.setTextColor(Color.BLACK);
                     lol.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
+                    Setting.Runtime.Sound.enabled = true;
                     soundSeting.setText("音效  开");
-                    Setting.Sound.SOUND_PACK = 1;
+                    Setting.Runtime.Sound.SOUND_PACK = 1;
                     lol.setTextColor(Color.BLUE);
                     lol.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -146,33 +140,33 @@ public class SoundSettingMenu extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
-        if(Setting.Sound.enabled){
+        if (Setting.Runtime.Sound.enabled) {
             soundSeting.setText("音效  开");
-            switch (Setting.Sound.SOUND_PACK){
+            switch (Setting.Runtime.Sound.SOUND_PACK) {
                 case 0:
                     dota.setTextColor(Color.BLUE);
                     dota.getPaint().setFakeBoldText(true);
-                    break ;
+                    break;
                 case 1:
                     lol.setTextColor(Color.BLUE);
                     lol.getPaint().setFakeBoldText(true);
-                    break ;
+                    break;
                 case 2:
                     happy.setTextColor(Color.BLUE);
                     happy.getPaint().setFakeBoldText(true);
-                    break ;
+                    break;
                 case 3:
                     simple.setTextColor(Color.BLUE);
                     simple.getPaint().setFakeBoldText(true);
-                    break ;
+                    break;
             }
-        }
-        else
+        } else {
             soundSeting.setText("音效  关");
+        }
         LinearLayout soundBar1 = new LinearLayout(this);
         soundBar1.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout soundBar2 = new LinearLayout(this);
@@ -187,10 +181,6 @@ public class SoundSettingMenu extends Activity {
         soundBar2.addView(lol);
         soundBar2.addView(dota);
         soundBar2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
-
-
 
 
         final TextView saveView = new TextView(this);
@@ -214,8 +204,8 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                Setting.gamePresenter.writee(1);
-                Setting.gamePresenter.write(1);
+                Setting.Runtime.gamePresenter.writee(1);
+                Setting.Runtime.gamePresenter.write(1);
                 Toast.makeText(getApplicationContext(), "已存入存档1", Toast.LENGTH_SHORT).show();
             }
         });
@@ -223,8 +213,8 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                Setting.gamePresenter.writee(2);
-                Setting.gamePresenter.write(2);
+                Setting.Runtime.gamePresenter.writee(2);
+                Setting.Runtime.gamePresenter.write(2);
                 Toast.makeText(getApplicationContext(), "已存入存档2", Toast.LENGTH_SHORT).show();
             }
         });
@@ -232,17 +222,17 @@ public class SoundSettingMenu extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                Setting.gamePresenter.writee(3);
-                Setting.gamePresenter.write(3);
+                Setting.Runtime.gamePresenter.writee(3);
+                Setting.Runtime.gamePresenter.write(3);
                 Toast.makeText(getApplicationContext(), "已存入存档3", Toast.LENGTH_SHORT).show();
             }
         });
 
         TextView blank = new TextView(this);
         blank.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-        final Button makesure = new Button(this);
-        makesure.setText("确定");
-        makesure.setOnClickListener(new View.OnClickListener() {
+        final Button makeSure = new Button(this);
+        makeSure.setText("确定");
+        makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -255,7 +245,7 @@ public class SoundSettingMenu extends Activity {
         SoundSettingLayout.addView(saveView);
         SoundSettingLayout.addView(saveBar);
         SoundSettingLayout.addView(blank);
-        SoundSettingLayout.addView(makesure);
-        setContentView( SoundSettingLayout);
+        SoundSettingLayout.addView(makeSure);
+        setContentView(SoundSettingLayout);
     }
 }

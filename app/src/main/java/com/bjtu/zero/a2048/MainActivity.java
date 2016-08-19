@@ -2,9 +2,8 @@ package com.bjtu.zero.a2048;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class MainActivity extends Activity
         implements
@@ -31,29 +31,24 @@ public class MainActivity extends Activity
         GestureDetector.OnGestureListener {
 
     private UndoButton undoButton;
-    private GameLayout gameLayout;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
-
-    private LinearLayout linearLayout;
-    private ScoreBoardLayout scoreBoardLayout;
-    private Point windowSize;
-    private Bitmap m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        linearLayout = new LinearLayout(this);
+        LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
+        ScoreBoardLayout scoreBoardLayout = new ScoreBoardLayout(linearLayout.getContext());
         linearLayout.addView(scoreBoardLayout);
-        windowSize = new Point();
+        Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        Setting.gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
-        Setting.gamePresenter.setScoreBoard(scoreBoardLayout);
-        Setting.gamePresenter.setContext(linearLayout.getContext());
-        gameLayout = new GameLayout(linearLayout.getContext(), windowSize.x, windowSize.x, Setting.gamePresenter);
-
+        Setting.Runtime.gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
+        Setting.Runtime.gamePresenter.setScoreBoard(scoreBoardLayout);
+        Setting.Runtime.gamePresenter.setContext(linearLayout.getContext());
+        GameLayout gameLayout = new GameLayout(linearLayout.getContext(),
+                windowSize.x, windowSize.x, Setting.Runtime.gamePresenter);
+        // deliberately...... ^
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
         topButtonLayout.setMinimumHeight(200);
@@ -63,8 +58,8 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
-                Setting.gamePresenter.undo();
-                undoButton.update(Setting.gamePresenter.getGameModel().historySize());
+                Setting.Runtime.gamePresenter.undo();
+                undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
             }
         });
 
@@ -73,9 +68,9 @@ public class MainActivity extends Activity
         SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
-                i.setClass(MainActivity.this, SoundSettingMenu.class);
-                startActivity(i);
+                //Intent intent = new Intent(MainActivity.this,GameOverActivity .class);
+                Intent intent = new Intent(MainActivity.this, SoundSettingMenuActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -84,39 +79,33 @@ public class MainActivity extends Activity
         linearLayout.addView(topButtonLayout);
 
 
-
         setContentView(linearLayout);
-        Setting.gamePresenter.setGameLayout(gameLayout);
+        Setting.Runtime.gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
         gameLayout.setOnTouchListener(this);
         gameLayout.setLongClickable(true);
 
-        Log.e("aaa","onCreat "+ Setting.savemodel);
-        Setting.gamePresenter.start();
+        Log.e("aaa", "onCreate " + Setting.Runtime.FILE_ID);
+        Setting.Runtime.gamePresenter.start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //gamePresenter.read();
-        Log.e("aaa","onResume");
-        if (Setting.savemodel == 0) {
-            Setting.gamePresenter.read();
-        } else if (Setting.savemodel == 2) {
-            Setting.gamePresenter.read(1);
-        } else if (Setting.savemodel == 3) {
-            Setting.gamePresenter.read(2);
-        } else if (Setting.savemodel == 4) {
-            Setting.gamePresenter.read(3);
+        Log.e("aaa", "onResume");
+        if (Setting.Runtime.FILE_ID == 0) {
+            Setting.Runtime.gamePresenter.read();
+        } else {
+            Setting.Runtime.gamePresenter.read(Setting.Runtime.FILE_ID - 1);
         }
-        undoButton.update(Setting.gamePresenter.getGameModel().historySize());
-
+        undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Setting.gamePresenter.write();
+        Setting.Runtime.gamePresenter.write();
     }
 
     @Override
@@ -132,15 +121,19 @@ public class MainActivity extends Activity
         if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
                 && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
             if (dx > dy && dx > -dy) {
-                Setting.gamePresenter.slideRight();
+                Setting.Runtime.gamePresenter.slideRight();
             } else if (dx < dy && dx < -dy) {
-                Setting.gamePresenter.slideLeft();
+                Setting.Runtime.gamePresenter.slideLeft();
             } else if (dy > dx && dy > -dx) {
-                Setting.gamePresenter.slideDown();
+                Setting.Runtime.gamePresenter.slideDown();
             } else if (dy < dx && dy < -dx) {
-                Setting.gamePresenter.slideUp();
+                Setting.Runtime.gamePresenter.slideUp();
             }
-            undoButton.update(Setting.gamePresenter.getGameModel().historySize());
+            if (Setting.Runtime.gamePresenter.isGameOver()) {
+                Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
+                startActivity(intent);
+            }
+            undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
             return true;
         }
         return false;
@@ -175,20 +168,20 @@ public class MainActivity extends Activity
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            Log.e("aaaaa", "write "+i);
+            Log.e("aaaaa", "write " + i);
             fos = openFileOutput("image" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111 "+i);
-            m = Setting.gamePresenter.getGameModel().lastStatus().thumbnail();
-            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG,100,fos));
+            Log.e("aaaaa", "write111 " + i);
+            Bitmap m = Setting.Runtime.gamePresenter.getGameModel().lastStatus().thumbnail();
+            oos.writeObject(m.compress(Bitmap.CompressFormat.JPEG, 100, fos));
             fos.close();
             fos = openFileOutput("score" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(Setting.gamePresenter.getGameModel().lastStatus().getScore());
-            Log.e("aaaaa", "write ok "+i);
+            oos.writeObject(Setting.Runtime.gamePresenter.getGameModel().lastStatus().getScore());
+            Log.e("aaaaa", "write ok " + i);
             fos.close();
-            SimpleDateFormat sDateFormat  =  new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
-            String date = sDateFormat.format(new  java.util.Date());
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+            String date = sDateFormat.format(new java.util.Date());
             fos = openFileOutput("time" + String.valueOf(i) + ".txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(date);
@@ -196,21 +189,15 @@ public class MainActivity extends Activity
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
+            try {
+                if (fos != null) {
                     fos.close();
-                } catch (IOException e) {
-                    //fos流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (oos != null) {
-                try {
+                if (oos != null) {
                     oos.close();
-                } catch (IOException e) {
-                    //oos流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

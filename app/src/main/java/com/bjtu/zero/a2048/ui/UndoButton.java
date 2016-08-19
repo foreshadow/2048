@@ -4,8 +4,9 @@ import android.content.Context;
 import android.widget.Button;
 
 import java.io.Serializable;
+import java.util.Locale;
 
-public class UndoButton extends Button  implements Serializable {
+public class UndoButton extends Button implements Serializable {
 
     private static final String text = "Undo";
     private int size = 0;
@@ -26,6 +27,6 @@ public class UndoButton extends Button  implements Serializable {
     }
 
     private void update() {
-        setText(String.format("%s (%d)", text, Math.max(size - 1, 0)));
+        setText(String.format(Locale.CHINA, "%s (%d)", text, Math.max(size - 1, 0)));
     }
 }

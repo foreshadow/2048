@@ -126,7 +126,8 @@ public class Status implements Cloneable, Serializable {
         canvas.drawRGB(127, 127, 127);
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.size(); j++) {
-                painter.setColor(Setting.UI.BACKGROUND[board.getBlock(i, j).getRank()]);
+                painter.setColor(Setting.UI.BACKGROUND[board.getBlock(j, i).getRank()]);
+                // deliberately transposition here .................. ^. ^
                 canvas.drawRect(
                         i * blockSize,
                         j * blockSize,

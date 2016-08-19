@@ -4,39 +4,39 @@ import java.io.Serializable;
 
 public class DoubleClickDetector implements Serializable {
 
-    private long intervalMillis;
+    private final long intervalMillis;
     private long lastClick;
-    private ClickListener clickListener;
+    private OnClickListener onClickListener;
 
-    public DoubleClickDetector(long intervalMillis, ClickListener clickListener) {
+    public DoubleClickDetector(long intervalMillis, OnClickListener onClickListener) {
         this.intervalMillis = intervalMillis;
         this.lastClick = System.currentTimeMillis();
-        this.clickListener = clickListener;
+        this.onClickListener = onClickListener;
     }
 
     public DoubleClickDetector(long intervalMillis) {
         this(intervalMillis, null);
     }
 
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     public void onClick() {
-        if (clickListener != null) {
+        if (onClickListener != null) {
             if (System.currentTimeMillis() > lastClick + intervalMillis) {
-                clickListener.onFirstClick();
+                onClickListener.onSingleClick();
             } else {
-                clickListener.onSecondClick();
+                onClickListener.onDoubleClick();
             }
         }
         lastClick = System.currentTimeMillis();
     }
 
-    public interface ClickListener {
+    public interface OnClickListener {
 
-        void onFirstClick();
+        void onSingleClick();
 
-        void onSecondClick();
+        void onDoubleClick();
     }
 }

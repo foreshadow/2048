@@ -31,10 +31,10 @@ public class NewGameActivity extends Activity {
 
         LinearLayout NewGameSize = new LinearLayout(this);
         NewGameSize.setOrientation(LinearLayout.VERTICAL);
-        TextView sizeSeting = new TextView(this);
-        sizeSeting.setText("游戏规模");
-        sizeSeting.setGravity(Gravity.CENTER);
-        sizeSeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        TextView sizeSetting = new TextView(this);
+        sizeSetting.setText("游戏规模");
+        sizeSetting.setGravity(Gravity.CENTER);
+        sizeSetting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
 
 
         final Button size4 = new Button(this);
@@ -92,15 +92,15 @@ public class NewGameActivity extends Activity {
         sizeBar.addView(size4);
         sizeBar.addView(size5);
         sizeBar.addView(size6);
-        NewGameSize.addView(sizeSeting);
+        NewGameSize.addView(sizeSetting);
         NewGameSize.addView(sizeBar);
 
         LinearLayout NewGameShow = new LinearLayout(this);
         NewGameShow.setOrientation(LinearLayout.VERTICAL);
-        TextView showSeting = new TextView(this);
-        showSeting.setText("文字显示");
-        showSeting.setGravity(Gravity.CENTER);
-        showSeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        TextView showSetting = new TextView(this);
+        showSetting.setText("文字显示");
+        showSetting.setGravity(Gravity.CENTER);
+        showSetting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
         final Button dynasty = new Button(this);
         dynasty.setText("朝代版");
         final Button academic = new Button(this);
@@ -155,16 +155,16 @@ public class NewGameActivity extends Activity {
         showBar.addView(number);
         showBar.addView(dynasty);
         showBar.addView(academic);
-        NewGameShow.addView(showSeting);
+        NewGameShow.addView(showSetting);
         NewGameShow.addView(showBar);
 
         LinearLayout NewGameSound = new LinearLayout(this);
         NewGameSound.setOrientation(LinearLayout.VERTICAL);
-        final TextView soundSeting = new TextView(this);
-        soundSeting.setText("音效    关");
+        final TextView soundSetting = new TextView(this);
+        soundSetting.setText("音效    关");
 
-        soundSeting.setGravity(Gravity.CENTER);
-        soundSeting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        soundSetting.setGravity(Gravity.CENTER);
+        soundSetting.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
         final Button simple = new Button(this);
         simple.setText("精简版");
         final Button happy = new Button(this);
@@ -173,20 +173,20 @@ public class NewGameActivity extends Activity {
         lol.setText("lol版");
         final Button dota = new Button(this);
         dota.setText("dota版");
-        Setting.Sound.enabled=false;
+        Setting.Runtime.Sound.enabled = false;
 
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 3) {
-                    Setting.Sound.enabled = false;
-                    soundSeting.setText("音效    关");
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 3) {
+                    Setting.Runtime.Sound.enabled = false;
+                    soundSetting.setText("音效    关");
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
-                    soundSeting.setText("音效    开");
-                    Setting.Sound.SOUND_PACK = 3;
+                    Setting.Runtime.Sound.enabled = true;
+                    soundSetting.setText("音效    开");
+                    Setting.Runtime.Sound.SOUND_PACK = 3;
                     simple.setTextColor(Color.BLUE);
                     simple.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -196,22 +196,22 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 2) {
-                    Setting.Sound.enabled = false;
-                    soundSeting.setText("音效    关");
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 2) {
+                    Setting.Runtime.Sound.enabled = false;
+                    soundSetting.setText("音效    关");
                     happy.setTextColor(Color.BLACK);
                     happy.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
-                    soundSeting.setText("音效    开");
-                    Setting.Sound.SOUND_PACK = 2;
+                    Setting.Runtime.Sound.enabled = true;
+                    soundSetting.setText("音效    开");
+                    Setting.Runtime.Sound.SOUND_PACK = 2;
                     happy.setTextColor(Color.BLUE);
                     happy.getPaint().setFakeBoldText(true);
                     simple.setTextColor(Color.BLACK);
@@ -221,22 +221,22 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         dota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 0) {
-                    Setting.Sound.enabled = false;
-                    soundSeting.setText("音效    关");
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 0) {
+                    Setting.Runtime.Sound.enabled = false;
+                    soundSetting.setText("音效    关");
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
-                    soundSeting.setText("音效    开");
-                    Setting.Sound.SOUND_PACK = 0;
+                    Setting.Runtime.Sound.enabled = true;
+                    soundSetting.setText("音效    开");
+                    Setting.Runtime.Sound.SOUND_PACK = 0;
                     dota.setTextColor(Color.BLUE);
                     dota.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -246,22 +246,22 @@ public class NewGameActivity extends Activity {
                     simple.setTextColor(Color.BLACK);
                     simple.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
         lol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Setting.Sound.enabled && Setting.Sound.SOUND_PACK == 1) {
-                    Setting.Sound.enabled = false;
-                    soundSeting.setText("音效    关");
+                if (Setting.Runtime.Sound.enabled && Setting.Runtime.Sound.SOUND_PACK == 1) {
+                    Setting.Runtime.Sound.enabled = false;
+                    soundSetting.setText("音效    关");
                     lol.setTextColor(Color.BLACK);
                     lol.getPaint().setFakeBoldText(false);
                 } else {
-                    Setting.Sound.enabled = true;
-                    soundSeting.setText("音效    开");
-                    Setting.Sound.SOUND_PACK = 1;
+                    Setting.Runtime.Sound.enabled = true;
+                    soundSetting.setText("音效    开");
+                    Setting.Runtime.Sound.SOUND_PACK = 1;
                     lol.setTextColor(Color.BLUE);
                     lol.getPaint().setFakeBoldText(true);
                     happy.setTextColor(Color.BLACK);
@@ -271,7 +271,7 @@ public class NewGameActivity extends Activity {
                     dota.setTextColor(Color.BLACK);
                     dota.getPaint().setFakeBoldText(false);
                 }
-                Setting.mySoundManager.setSoundType();
+                Setting.Runtime.soundManager.setSoundType();
             }
         });
 
@@ -290,7 +290,7 @@ public class NewGameActivity extends Activity {
         soundBar2.addView(lol);
         soundBar2.addView(dota);
         soundBar2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        NewGameSound.addView(soundSeting);
+        NewGameSound.addView(soundSetting);
         NewGameSound.addView(soundBar1);
         NewGameSound.addView(soundBar2);
         Button makeSure = new Button(this);
