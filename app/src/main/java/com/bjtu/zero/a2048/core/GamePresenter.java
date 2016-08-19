@@ -572,6 +572,13 @@ public class GamePresenter implements Serializable {
     }
 
     /**
+     * 刷新。
+     */
+    public void refresh() {
+        gameLayout.refresh();
+    }
+
+    /**
      * 返回游戏是否结束
      *
      * @return GameModel中最后一个状态的棋盘是否不能再做有效操作

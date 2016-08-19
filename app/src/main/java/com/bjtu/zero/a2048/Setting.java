@@ -92,5 +92,4 @@ public class Setting {
             public static int SOUND_PACK = 1;
         }
     }
-
 }
