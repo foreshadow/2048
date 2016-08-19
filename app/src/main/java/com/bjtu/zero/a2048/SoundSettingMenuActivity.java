@@ -303,6 +303,7 @@ public class SoundSettingMenuActivity extends Activity {
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Setting.Runtime.gamePresenter.refresh();
                 finish();
             }
         });

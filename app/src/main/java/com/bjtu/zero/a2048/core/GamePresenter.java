@@ -1,12 +1,15 @@
 package com.bjtu.zero.a2048.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.animation.Animation;
 
+import com.bjtu.zero.a2048.GameOverActivity;
+import com.bjtu.zero.a2048.MainActivity;
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
@@ -521,6 +524,7 @@ public class GamePresenter implements Serializable {
                     Log.e("ANIMATION", "onEnd");
                     gameLayout.setBoard(gameModel.lastBoard());
                     spawnBlock();
+                    gameOverJudge();
                     animationInProgress = false;
                 }
 
@@ -594,6 +598,8 @@ public class GamePresenter implements Serializable {
      */
     private void gameOverJudge() {
         if (isGameOver()) {
+            Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
+            MainActivity.instance.startActivity(intent);
             // TODO: 2016/7/24
         }
 

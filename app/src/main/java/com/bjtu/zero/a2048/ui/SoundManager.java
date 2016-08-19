@@ -124,7 +124,7 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
      * @param mergeNum 本次操作同时合并的方块的对数
      */
     public void playProcess(int maxRank, int mergeNum) {
-        Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
+        //Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
         if (Setting.Runtime.Sound.enabled) {
             switch (Setting.Runtime.Sound.SOUND_PACK) {
                 case 3:
@@ -144,7 +144,7 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
                     break;
 
                 default:
-                    Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
+                   // Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
                     if (maxRank >= 2 && isFirstBlood) {
                         soundPool.play(firstBlood[Setting.Runtime.Sound.SOUND_PACK], 1, 1, 0, 0, 1);
                         isFirstBlood = false;

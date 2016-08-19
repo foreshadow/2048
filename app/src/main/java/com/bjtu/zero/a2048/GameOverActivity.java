@@ -38,7 +38,7 @@ public class GameOverActivity extends Activity {
         setTheme(R.style.Transparent);
         setContentView(R.layout.activity_game_over);
         Button newGameButton = (Button) findViewById(R.id.newGameButton);
-        newGameButton.setText(" 新游戏 ");
+        newGameButton.setText(" 主菜单 ");
         TextView gameOverShow = (TextView) this.findViewById(R.id.textView2);
         if (Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_CLASSICAL) {
             gameOverShow.setText("游戏结束!");
@@ -54,9 +54,11 @@ public class GameOverActivity extends Activity {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GameOverActivity.this, NewGameActivity.class);
+                //Intent intent = new Intent(GameOverActivity.this, NewGameActivity.class);
+                MainActivity.instance.finish();
+                Intent intent = new Intent(GameOverActivity.this, Main2Activity.class);
                 finish();
-                startActivity(intent);
+               // startActivity(intent);
             }
         });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
