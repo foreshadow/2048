@@ -13,6 +13,7 @@ import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.core.Block;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class BlockView extends View implements Serializable {
 
@@ -40,7 +41,7 @@ public class BlockView extends View implements Serializable {
         } else {
             rank = block.getRank();
         }
-        refitText(String.valueOf(Setting.UI.SCORE_LIST[rank]));
+        refitText(String.valueOf(Setting.Runtime.STRING_LIST[rank]));
         painter.setTextSize(fontSize);
         painter.setTextAlign(Paint.Align.CENTER);
 
@@ -52,14 +53,18 @@ public class BlockView extends View implements Serializable {
      * the text box is the specified width.
      */
     private void refitText(String text) {
-        int textWidth = (int) (wid * 1.5);
+        int textWidth = (int) (wid * 1.4);
         Log.e("bbbbb", "wid=" + String.valueOf(textWidth));
         Log.e("bbbbb", "l=" + text.length());
+        int l = text.length();
+        if(Setting.Runtime.STRING_LIST != Setting.UI.STRING_LIST_CLASSICAL)
+            l *= 1.8;
+        Log.e("bbbbb", String.valueOf(text.length()));
         int minTextSize = Setting.UI.BLOCK_FONT_SIZE_MIN;
         int maxTextSize = Setting.UI.BLOCK_FONT_SIZE;
         if (textWidth > 0) {
             int trySize = maxTextSize;
-            while ((trySize > minTextSize) && trySize * text.length() >= textWidth) {
+            while ((trySize > minTextSize) && trySize * l >= textWidth ) {
                 trySize -= 1;
                 if (trySize <= minTextSize) {
                     trySize = minTextSize;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.text.Layout;
 import android.util.Log;
 import android.view.animation.Animation;
 
@@ -34,12 +35,12 @@ public class GamePresenter implements Serializable {
 
     private static final int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private static final String name = "game";
-    private final int size;
+    public int size;
     private boolean animationInProgress;
     private Context context;
-    private GameModel gameModel;
-    private GameLayout gameLayout;
-    private ScoreBoardLayout scoreBoardLayout;
+    public GameModel gameModel;
+    public GameLayout gameLayout;
+    public ScoreBoardLayout scoreBoardLayout;
 
     /**
      * 该函数仅在测试时使用。
@@ -88,7 +89,7 @@ public class GamePresenter implements Serializable {
         ObjectOutputStream oos = null;
         try {
             Log.e("aaaaa", "write");
-            fos = getContext().openFileOutput(String.format("%s%s.txt", name, String.valueOf(size)), Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput("test.txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111");
             oos.writeObject(gameModel);
@@ -147,13 +148,20 @@ public class GamePresenter implements Serializable {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
-            Log.e("aaaaa", "write " + i);
+            fos = getContext().openFileOutput(String.format("size%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            Log.e("aaaaa", "write111 " + i);
+            oos.writeObject(size);
+            fos.close();
+
             fos = getContext().openFileOutput(String.format("save%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111 " + i);
             oos.writeObject(gameModel);
             Log.e("aaaaa", "write ok " + i);
             fos.close();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -186,7 +194,7 @@ public class GamePresenter implements Serializable {
             oos.writeObject(gameModel.lastStatus().getScore());
             Log.e("aaaaa", "write ok " + i);
             fos.close();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             String date = format.format(new java.util.Date());
             fos = getContext().openFileOutput(String.format("time%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
@@ -212,12 +220,19 @@ public class GamePresenter implements Serializable {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
+            fis = getContext().openFileInput(String.format("size%s.txt", String.valueOf(i)));
+            ois = new ObjectInputStream(fis);
+            size  = (int)ois.readObject();
+            Setting.Runtime.BOARD_SIZE = size;
+
             fis = getContext().openFileInput(String.format("save%s.txt", String.valueOf(i)));
             Log.e("aaaaa", "read111 " + i);
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read222 " + i);
             gameModel = ((GameModel) ois.readObject());
+
             Log.e("aaaaa", "read ok " + i);
+            gameLayout.setSize(size);
             gameLayout.setBoard(gameModel.lastBoard());
             scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
 
@@ -592,6 +607,8 @@ public class GamePresenter implements Serializable {
 
     }
 
+    //public GameLayout
+
     /**
      * 得到绑定的GameModel
      *
@@ -599,6 +616,10 @@ public class GamePresenter implements Serializable {
      */
     public GameModel getGameModel() {
         return gameModel;
+    }
+
+    public void setGameModel(GameModel g){
+        gameModel = g;
     }
 
     /**
