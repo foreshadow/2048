@@ -186,7 +186,7 @@ public class GamePresenter implements Serializable {
             oos.writeObject(gameModel.lastStatus().getScore());
             Log.e("aaaaa", "write ok " + i);
             fos.close();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             String date = format.format(new java.util.Date());
             fos = getContext().openFileOutput(String.format("time%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);

@@ -298,6 +298,7 @@ public class NewGameActivity extends Activity {
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if(MainActivity.instance!=null) MainActivity.instance.finish();
                 Intent intent = new Intent(NewGameActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

@@ -33,6 +33,7 @@ public class MainActivity extends Activity
     private UndoButton undoButton;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
+    public static MainActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,8 @@ public class MainActivity extends Activity
         topButtonLayout.addView(SettingButton);
         linearLayout.addView(topButtonLayout);
 
-
         setContentView(linearLayout);
+        instance = this;
         Setting.Runtime.gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
         gameLayout.setOnTouchListener(this);
@@ -129,6 +130,7 @@ public class MainActivity extends Activity
             } else if (dy < dx && dy < -dx) {
                 Setting.Runtime.gamePresenter.slideUp();
             }
+            //判断游戏结束
             if (Setting.Runtime.gamePresenter.isGameOver()) {
                 Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
                 startActivity(intent);
