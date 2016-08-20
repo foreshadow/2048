@@ -193,6 +193,7 @@ public class MainActivity extends Activity
             Log.e("aaaaa", "read222");
             Setting.Runtime.gamePresenter.gameModel = ((GameModel) ois.readObject());
             Log.e("aaaaa", "read ok");
+
             //设置棋盘
             Setting.Runtime.gamePresenter.gameLayout.setBoard(Setting.Runtime.gamePresenter.gameModel.lastBoard());
             //设置分数
