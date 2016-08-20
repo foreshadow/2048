@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
-import android.text.Layout;
 import android.util.Log;
 import android.view.animation.Animation;
 
@@ -250,7 +249,6 @@ public class GamePresenter implements Serializable {
     }
 
     /**
-     * // TODO: 2016/8/17 Lazy_sheep
      *
      * @param direction
      * @return

@@ -14,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 用户在游戏进行过程中对音效、文字显示更改的菜单
+ * @author Lazy_sheep
+ */
+
 public class SoundSettingMenuActivity extends Activity {
 
     @Override
@@ -58,6 +63,10 @@ public class SoundSettingMenuActivity extends Activity {
             dynasty.setTextColor(Color.BLUE);
             dynasty.getPaint().setFakeBoldText(true);
         }
+
+        /**
+         * “经典版”文字选择按钮按下后的响应事件
+         */
         number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +80,9 @@ public class SoundSettingMenuActivity extends Activity {
             }
         });
 
+        /**
+         * “学历版”文字选择按钮按下后的响应事件
+         */
         academic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +96,10 @@ public class SoundSettingMenuActivity extends Activity {
             }
         });
 
+
+        /**
+         * “朝代版”文字选择按钮按下后的响应事件
+         */
         dynasty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +128,9 @@ public class SoundSettingMenuActivity extends Activity {
         final Button dota = new Button(this);
         dota.setText("dota版");
 
+        /**
+         * “精简版”音效按钮按下后的响应事件
+         */
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +156,10 @@ public class SoundSettingMenuActivity extends Activity {
             }
         });
 
+
+        /**
+         * “开心消消乐”音效按钮按下后的响应事件
+         */
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +185,10 @@ public class SoundSettingMenuActivity extends Activity {
             }
         });
 
+
+        /**
+         * “dota版”音效按钮按下后的响应事件
+         */
         dota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,6 +214,10 @@ public class SoundSettingMenuActivity extends Activity {
             }
         });
 
+
+        /**
+         * “lol版”音效按钮按下后的响应事件
+         */
         lol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,6 +299,9 @@ public class SoundSettingMenuActivity extends Activity {
         saveBar.addView(save2);
         saveBar.addView(save3);
 
+        /**
+         * “存档1”按钮按下后的响应事件，将当前游戏状态保存至存档1
+         */
         save1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -279,6 +313,10 @@ public class SoundSettingMenuActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "已存入存档1", Toast.LENGTH_SHORT).show();
             }
         });
+
+        /**
+         * “存档2”按钮按下后的响应事件，将当前游戏状态保存至存档2
+         */
         save2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,6 +328,10 @@ public class SoundSettingMenuActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "已存入存档2", Toast.LENGTH_SHORT).show();
             }
         });
+
+        /**
+         * “存档3”按钮按下后的响应事件，将当前游戏状态保存至存档3
+         */
         save3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -305,6 +347,10 @@ public class SoundSettingMenuActivity extends Activity {
         TextView blank = new TextView(this);
         blank.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
         final Button makeSure = new Button(this);
+
+        /**
+         * “确定”按钮按下后的响应事件。更新棋盘状态，关闭此Activity
+         */
         makeSure.setText("确定");
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
