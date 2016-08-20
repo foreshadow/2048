@@ -59,7 +59,6 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         vertical1.addView(textView1);
         scoreView = new TextView(context);
         setScore(currentScore);
-        //scoreView.setText(String.valueOf(currentScore));
         scoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         scoreView.setGravity(Gravity.CENTER);
         vertical1.addView(scoreView);
@@ -70,6 +69,7 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         vertical2.addView(textView2);
         highScoreView = new TextView(context);
 
+        //序列化读取最高分
         String a = sp.getString(KEY, "0");
         Log.e("aaaaa", a);
         setHighScore(Integer.parseInt(a));
@@ -79,6 +79,12 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         vertical2.addView(highScoreView);
     }
 
+    /**
+     * 动态调整文本的字体大小
+     *
+     * @param text  需要显示的文本
+     * @return
+     */
     private int refitText(String text) {
         int textWidth = (int) (600. / Setting.Runtime.BOARD_SIZE * 0.75);
         Log.e("ccccc", "wid=" + String.valueOf(textWidth));
@@ -100,11 +106,17 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         return maxTextSize;
     }
 
+    /**
+     * 设置分数
+     *
+     * @param score 当前分数
+     */
     public void setScore(int score) {
         currentScore = score;
         int size = refitText(String.valueOf(score));
         scoreView.setTextSize(size);
         scoreView.setText(String.valueOf(currentScore));
+        //如果当前分数高于最高分，需要设置最高分
         if (score > highestScore) {
             setHighScore(score);
         }
@@ -112,6 +124,11 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         Log.e("aaaaa", "high " + highestScore);
     }
 
+    /**
+     * 设置最高分
+     *
+     * @param highScore
+     */
     public void setHighScore(int highScore) {
         String loadedScoreString = sp.getString(KEY, "0");
         int loadedScore = Integer.parseInt(loadedScoreString);
@@ -123,6 +140,7 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         int size = refitText(String.valueOf(highScore));
         highScoreView.setTextSize(size);
         highScoreView.setText(String.valueOf(highScore));
+        //序列化存入最高分
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(KEY, String.valueOf(highScore));
         editor.apply();

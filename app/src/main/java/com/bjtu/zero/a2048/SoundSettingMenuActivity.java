@@ -272,7 +272,9 @@ public class SoundSettingMenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                //将棋盘信息写入存档1
                 Setting.Runtime.gamePresenter.writee(1);
+                //将棋盘内容写入存档1
                 Setting.Runtime.gamePresenter.write(1);
                 Toast.makeText(getApplicationContext(), "已存入存档1", Toast.LENGTH_SHORT).show();
             }
@@ -281,7 +283,9 @@ public class SoundSettingMenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                //将棋盘信息写入存档2
                 Setting.Runtime.gamePresenter.writee(2);
+                //将棋盘内容写入存档2
                 Setting.Runtime.gamePresenter.write(2);
                 Toast.makeText(getApplicationContext(), "已存入存档2", Toast.LENGTH_SHORT).show();
             }
@@ -290,7 +294,9 @@ public class SoundSettingMenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Log.e("UI", "undo clicked");
+                //将棋盘信息写入存档3
                 Setting.Runtime.gamePresenter.writee(3);
+                //将棋盘内容写入存档3
                 Setting.Runtime.gamePresenter.write(3);
                 Toast.makeText(getApplicationContext(), "已存入存档3", Toast.LENGTH_SHORT).show();
             }

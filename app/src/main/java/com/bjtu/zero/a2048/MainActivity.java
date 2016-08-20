@@ -178,7 +178,9 @@ public class MainActivity extends Activity
 
     }
 
-
+    /**
+     * 读取上次游戏时的存档
+     */
     public void read() {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
@@ -190,7 +192,9 @@ public class MainActivity extends Activity
             Log.e("aaaaa", "read222");
             Setting.Runtime.gamePresenter.gameModel = ((GameModel) ois.readObject());
             Log.e("aaaaa", "read ok");
+            //设置棋盘
             Setting.Runtime.gamePresenter.gameLayout.setBoard(Setting.Runtime.gamePresenter.gameModel.lastBoard());
+            //设置分数
             Setting.Runtime.gamePresenter.scoreBoardLayout.setScore(Setting.Runtime.gamePresenter.gameModel.lastStatus().getScore());
 
         } catch (Exception e) {
@@ -209,45 +213,28 @@ public class MainActivity extends Activity
         }
     }
 
-    /*
-    public void read() {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        Log.e("aaaaa", "read");
-        try {
-            fis = openFileInput("%game.txt");
-            Log.e("aaaaa", "read111");
-            ois = new ObjectInputStream(fis);
-            Log.e("aaaaa", "read222");
-            Setting.Runtime.gamePresenter = ((GamePresenter) ois.readObject());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-                if (ois != null) {
-                    ois.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    */
 
+    /**
+     * 读取存档i
+     *
+     * @param i 表示第i个存档。
+     *          i = 1,2,3
+     */
     public void read(int i) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
+            //读取棋盘大小
             fis = openFileInput(String.format("size%s.txt", String.valueOf(i)));
             ois = new ObjectInputStream(fis);
             int size  = (int)ois.readObject();
             Log.e("aaaaa", "read  " + i + " size "  + size);
+            //设置棋盘大小
             Setting.Runtime.BOARD_SIZE = size;
             Setting.Runtime.gamePresenter.size = size;
+            Setting.Runtime.gamePresenter.gameLayout.setSize(size);
 
+            //读取分数
             fis = openFileInput(String.format("save%s.txt", String.valueOf(i)));
             Log.e("aaaaa", "read111 " + i);
             ois = new ObjectInputStream(fis);
@@ -255,10 +242,11 @@ public class MainActivity extends Activity
             Setting.Runtime.gamePresenter.setGameModel((GameModel) ois.readObject());
 
             Log.e("aaaaa", "read ok " + i);
-            Setting.Runtime.gamePresenter.gameLayout.setSize(size);
             //Point windowSize = new Point();x = windowSize.x;
             //Setting.Runtime.gamePresenter.gameLayout.f(x,x,size);
+            //设置棋盘
             Setting.Runtime.gamePresenter.gameLayout.setBoard(Setting.Runtime.gamePresenter.gameModel.lastBoard());
+            //设置分数
             Setting.Runtime.gamePresenter.scoreBoardLayout.setScore(Setting.Runtime.gamePresenter.gameModel.lastStatus().getScore());
             //Setting.Runtime.gamePresenter.gameLayout.refresh();
 

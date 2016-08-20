@@ -75,34 +75,51 @@ public class Main2Activity extends Activity implements
         doubleClickDetector = new DoubleClickDetector(Setting.UI.DOUBLE_HIT_INTERVAL, this);
     }
 
+    /**
+     * 由子界面返回时刷新ListView
+     *
+     * @param requestCode  确认返回的数据是从哪个Activity返回的
+     * @param resultCode  整数resultCode是由子Activity通过其setResult()方法返回
+     * @param intent  一个Intent对象，带有返回的数据
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Log.e("eeeee", "result");
         adapter.notifyDataSetChanged();
-
     }
 
+    /**
+     * 读取第i个存档
+     *
+     * @param i 代表第i个存档。i = 1,2,3
+     */
     public void read(int i) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
+            //保存棋盘的缩略图
             fis = openFileInput("image" + String.valueOf(i) + ".txt");
             Log.e("aaaaa", "read image 111 " + i);
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read image 222 " + i);
             bitmaps[i] = BitmapFactory.decodeStream(fis);
             fis.close();
+
+            //保存分数
             fis = openFileInput("score" + String.valueOf(i) + ".txt");
             ois = new ObjectInputStream(fis);
             int score = ((int) ois.readObject());
             scores[i] = String.valueOf(score);
             Log.e("aaaaa", "read ok " + i);
             fis.close();
+
+            //保存当前时间
             fis = openFileInput("time" + String.valueOf(i) + ".txt");
             ois = new ObjectInputStream(fis);
             String date = ((String) ois.readObject());
             times[i] = date;
             fis.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             //这里是读取文件产生异常
@@ -126,6 +143,13 @@ public class Main2Activity extends Activity implements
         }
     }
 
+    /**
+     * 二次退出确认
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -145,7 +169,9 @@ public class Main2Activity extends Activity implements
         finish();
     }
 
-    //适配器
+    /**
+     * ListView的适配器
+     */
     class MyAdapter extends BaseAdapter {
 
         //要显示多少条数据
@@ -180,6 +206,8 @@ public class Main2Activity extends Activity implements
             imageView.setImageResource(R.mipmap.ic_launcher);
             textView.setText(texts[i]);
             textView.setTextSize(30);
+
+            //第三四五行为存档，需要显示分数和时间
             if (i > 1) {
                 read(i - 1);
                 imageView.setImageBitmap(bitmaps[i - 1]);
