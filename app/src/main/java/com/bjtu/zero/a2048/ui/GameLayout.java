@@ -18,14 +18,20 @@ import com.bjtu.zero.a2048.core.GamePresenter;
 
 import java.io.Serializable;
 
+/**
+ * 主要游戏界面。
+ * 管理BlockView的显示。
+ *
+ * @author Infinity
+ */
 public class GameLayout extends FrameLayout implements Serializable {
 
-    private int size;
-    private BlockView[][] viewGrid;
     public int blockWidth;
     public int blockHeight;
     public int[][] centerX;
     public int[][] centerY;
+    private int size;
+    private BlockView[][] viewGrid;
 
     public GameLayout(Context context) throws NoSuchMethodException {
         super(context);
@@ -39,13 +45,13 @@ public class GameLayout extends FrameLayout implements Serializable {
     public GameLayout(Context context, int width, int height, GamePresenter gamePresenter, int size) {
         super(context);
         this.size = size;
-        Log.e("sssss"," " + 1);
+        Log.e("sssss", " " + 1);
         viewGrid = new BlockView[size][size];
-        Log.e("sssss"," " + 2);
+        Log.e("sssss", " " + 2);
         setLayoutParams(new LayoutParams(width, height));
-        Log.e("sssss"," " + 3);
+        Log.e("sssss", " " + 3);
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
-        Log.e("sssss"," " + 4);
+        Log.e("sssss", " " + 4);
         int boardWidth = width - boarder * 2;
         int boardHeight = height - boarder * 2;
         blockWidth = boardWidth / size;
@@ -67,16 +73,16 @@ public class GameLayout extends FrameLayout implements Serializable {
     }
 
 
-    public void f(int width, int height, int size){
+    public void f(int width, int height, int size) {
         removeAllViews();
         //removeAllViewsInLayout();
-        Log.e("sssss"," " + 1);
+        Log.e("sssss", " " + 1);
         viewGrid = new BlockView[size][size];
-        Log.e("sssss"," " + 2);
+        Log.e("sssss", " " + 2);
         setLayoutParams(new LayoutParams(width, height));
-        Log.e("sssss"," " + 3);
+        Log.e("sssss", " " + 3);
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
-        Log.e("sssss"," " + 4);
+        Log.e("sssss", " " + 4);
         int boardWidth = width - boarder * 2;
         int boardHeight = height - boarder * 2;
         blockWidth = boardWidth / size;
@@ -180,25 +186,23 @@ public class GameLayout extends FrameLayout implements Serializable {
         animationSet.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
         for (BlockChangeListItem item : list) {
             Point p = findCoordinate(item.block);
-            if (p == null) {
-                continue;
+            if (p != null) {
+                int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
+                int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
+                Animation animation = new TranslateAnimation(0, toX, 0, toY);
+                animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
+                if (animationListener != null) {
+                    animation.setAnimationListener(animationListener);
+                    animationListener = null;
+                }
+                viewGrid[p.y][p.x].setAnimation(animation);
+                animationSet.addAnimation(animation);
+                Log.e("ANIMATION",
+                        "Block r=" + item.block.getRank()
+                                + ", lPos (" + p.y + ", " + p.x + ")"
+                                + "->(" + item.toX + ", " + item.toY + "), "
+                );
             }
-            // TODO
-            int toX = centerX[item.toY][item.toX] - centerX[p.x][p.y];
-            int toY = centerY[item.toY][item.toX] - centerY[p.x][p.y];
-            Animation animation = new TranslateAnimation(0, toX, 0, toY);
-            animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
-            if (animationListener != null) {
-                animation.setAnimationListener(animationListener);
-                animationListener = null;
-            }
-            viewGrid[p.y][p.x].setAnimation(animation);
-            animationSet.addAnimation(animation);
-            Log.e("ANIMATION",
-                    "Block r=" + item.block.getRank()
-                            + ", lPos (" + p.y + ", " + p.x + ")"
-                            + "->(" + item.toX + ", " + item.toY + "), "
-            );
         }
         animationSet.start();
     }
@@ -206,14 +210,16 @@ public class GameLayout extends FrameLayout implements Serializable {
     public void playSpawn(int i, int j, Block block) {
         setBlock(i, j, block, false);
         Point p = findCoordinate(block);
-        Animation animation = new ScaleAnimation(
-                Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
-                Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
-                Animation.ABSOLUTE, centerX[p.x][p.y],
-                Animation.ABSOLUTE, centerY[p.x][p.y]
-        );
-        animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
-        viewGrid[i][j].startAnimation(animation);
-        viewGrid[i][j].setVisible();
+        if (p != null) {
+            Animation animation = new ScaleAnimation(
+                    Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
+                    Setting.UI.BLOCK_SPAWN_SCALE_FROM_PERCENT, 1f,
+                    Animation.ABSOLUTE, centerX[p.x][p.y],
+                    Animation.ABSOLUTE, centerY[p.x][p.y]
+            );
+            animation.setDuration(Setting.Runtime.ANIMATION_DURATION_MILLISECONDS);
+            viewGrid[i][j].startAnimation(animation);
+            viewGrid[i][j].setVisible();
+        }
     }
 }
