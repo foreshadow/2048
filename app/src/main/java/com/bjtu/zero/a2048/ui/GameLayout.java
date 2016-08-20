@@ -169,6 +169,7 @@ public class GameLayout extends FrameLayout implements Serializable {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j] != null) {
                     viewGrid[i][j].setGeometry(centerX[i][j], centerY[i][j], blockWidth, blockHeight);
+                    viewGrid[i][j].invalidate();
                 }
             }
         }

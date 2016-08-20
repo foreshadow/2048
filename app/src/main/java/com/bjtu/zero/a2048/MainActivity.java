@@ -38,7 +38,8 @@ public class MainActivity extends Activity
     private UndoButton undoButton;
     private GestureDetector gestureDetector;
     private long exitTime = 0;
-    int x;
+    public static  MainActivity  instance=null;
+    public int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class MainActivity extends Activity
 
 
         setContentView(linearLayout);
+        instance=this;
         Setting.Runtime.gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
         gameLayout.setOnTouchListener(this);
@@ -108,6 +110,10 @@ public class MainActivity extends Activity
         }
         Setting.Runtime.FILE_ID = 0;
         undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
+        if(Setting.Runtime.gamePresenter.isGameOver()){
+           Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
+           MainActivity.instance.startActivity(intent);
+        }
     }
 
     @Override
@@ -137,10 +143,10 @@ public class MainActivity extends Activity
             } else if (dy < dx && dy < -dx) {
                 Setting.Runtime.gamePresenter.slideUp();
             }
-            if (Setting.Runtime.gamePresenter.isGameOver()) {
-                Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
-                startActivity(intent);
-            }
+ //           if (Setting.Runtime.gamePresenter.isGameOver()) {
+ //               Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
+ //               startActivity(intent);
+ //           }
             undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
             return true;
         }

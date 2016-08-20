@@ -29,6 +29,74 @@ public class SoundSettingMenuActivity extends Activity {
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
         title.setGravity(Gravity.CENTER);
         title.getPaint().setFakeBoldText(true);
+
+        final TextView showView = new TextView(this);
+        showView.setGravity(Gravity.CENTER);
+        showView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        showView.getPaint().setFakeBoldText(true);
+        showView.setText("文      字");
+        LinearLayout showBar = new LinearLayout(this);
+        showBar.setOrientation(LinearLayout.HORIZONTAL);
+        final Button dynasty = new Button(this);
+        dynasty.setText("朝代版");
+        final Button academic = new Button(this);
+        academic.setText("学历版");
+        final Button number = new Button(this);
+        number.setText("经典版");
+        showBar.addView(number);
+        showBar.addView(dynasty);
+        showBar.addView(academic);
+        if(Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_CLASSICAL){
+            number.setTextColor(Color.BLUE);
+            number.getPaint().setFakeBoldText(true);
+        }
+        else if(Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_ACADEMIC){
+            academic.setTextColor(Color.BLUE);
+            academic.getPaint().setFakeBoldText(true);
+        }
+        else {
+            dynasty.setTextColor(Color.BLUE);
+            dynasty.getPaint().setFakeBoldText(true);
+        }
+        number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_CLASSICAL;
+                number.setTextColor(Color.BLUE);
+                number.getPaint().setFakeBoldText(true);
+                dynasty.setTextColor(Color.BLACK);
+                dynasty.getPaint().setFakeBoldText(false);
+                academic.setTextColor(Color.BLACK);
+                academic.getPaint().setFakeBoldText(false);
+            }
+        });
+
+        academic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_ACADEMIC;
+                academic.setTextColor(Color.BLUE);
+                academic.getPaint().setFakeBoldText(true);
+                dynasty.setTextColor(Color.BLACK);
+                dynasty.getPaint().setFakeBoldText(false);
+                number.setTextColor(Color.BLACK);
+                number.getPaint().setFakeBoldText(false);
+            }
+        });
+
+        dynasty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_DYNASTY;
+                dynasty.setTextColor(Color.BLUE);
+                dynasty.getPaint().setFakeBoldText(true);
+                academic.setTextColor(Color.BLACK);
+                academic.getPaint().setFakeBoldText(false);
+                number.setTextColor(Color.BLACK);
+                number.getPaint().setFakeBoldText(false);
+            }
+        });
+
         LinearLayout SoundSetting = new LinearLayout(this);
         SoundSetting.setOrientation(LinearLayout.VERTICAL);
         final TextView soundSeting = new TextView(this);
@@ -235,10 +303,13 @@ public class SoundSettingMenuActivity extends Activity {
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Setting.Runtime.gamePresenter.refresh();
                 finish();
             }
         });
         SoundSettingLayout.addView(title);
+        SoundSettingLayout.addView(showView);
+        SoundSettingLayout.addView(showBar);
         SoundSettingLayout.addView(soundSeting);
         SoundSettingLayout.addView(soundBar1);
         SoundSettingLayout.addView(soundBar2);

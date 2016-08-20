@@ -1,6 +1,7 @@
 package com.bjtu.zero.a2048.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -8,6 +9,8 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.animation.Animation;
 
+import com.bjtu.zero.a2048.GameOverActivity;
+import com.bjtu.zero.a2048.MainActivity;
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
@@ -150,18 +153,16 @@ public class GamePresenter implements Serializable {
         try {
             fos = getContext().openFileOutput(String.format("size%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
-            Log.e("aaaaa", "write111 " + i);
             oos.writeObject(size);
             fos.close();
 
+            Log.e("aaaaa", "write " + i);
             fos = getContext().openFileOutput(String.format("save%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111 " + i);
             oos.writeObject(gameModel);
             Log.e("aaaaa", "write ok " + i);
             fos.close();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -536,6 +537,7 @@ public class GamePresenter implements Serializable {
                     Log.e("ANIMATION", "onEnd");
                     gameLayout.setBoard(gameModel.lastBoard());
                     spawnBlock();
+                    gameOverJudge();
                     animationInProgress = false;
                 }
 
@@ -587,6 +589,13 @@ public class GamePresenter implements Serializable {
     }
 
     /**
+     * 刷新。
+     */
+    public void refresh() {
+        gameLayout.refresh();
+    }
+
+    /**
      * 返回游戏是否结束
      *
      * @return GameModel中最后一个状态的棋盘是否不能再做有效操作
@@ -602,6 +611,8 @@ public class GamePresenter implements Serializable {
      */
     private void gameOverJudge() {
         if (isGameOver()) {
+            Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
+            MainActivity.instance.startActivity(intent);
             // TODO: 2016/7/24
         }
 
