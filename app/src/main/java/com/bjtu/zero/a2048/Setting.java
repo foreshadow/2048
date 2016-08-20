@@ -16,6 +16,7 @@ public class Setting {
                 "512", "1024", "2048", "4096",
                 "8192", "16384", "32768", "65536",
         };
+
         public static final String[] STRING_LIST_ACADEMIC = new String[]{
                 "",
                 "幼儿园", "一年级", "二年级", "三年级",
@@ -88,7 +89,7 @@ public class Setting {
         public static class Sound {
 
             //0 dota版 ； 1 lol版 ； 2  开心消消乐版 ； 3 简单版
-            public static boolean enabled = true;
+            public static boolean enabled = false;
             public static int SOUND_PACK = 1;
         }
     }

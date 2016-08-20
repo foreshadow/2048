@@ -21,12 +21,11 @@ import java.io.Serializable;
 public class GameLayout extends FrameLayout implements Serializable {
 
     private int size;
-    private GamePresenter gamePresenter;
     private BlockView[][] viewGrid;
-    private int blockWidth;
-    private int blockHeight;
-    private int[][] centerX;
-    private int[][] centerY;
+    public int blockWidth;
+    public int blockHeight;
+    public int[][] centerX;
+    public int[][] centerY;
 
     public GameLayout(Context context) throws NoSuchMethodException {
         super(context);
@@ -40,10 +39,44 @@ public class GameLayout extends FrameLayout implements Serializable {
     public GameLayout(Context context, int width, int height, GamePresenter gamePresenter, int size) {
         super(context);
         this.size = size;
-        this.gamePresenter = gamePresenter;
+        Log.e("sssss"," " + 1);
         viewGrid = new BlockView[size][size];
+        Log.e("sssss"," " + 2);
         setLayoutParams(new LayoutParams(width, height));
+        Log.e("sssss"," " + 3);
         int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
+        Log.e("sssss"," " + 4);
+        int boardWidth = width - boarder * 2;
+        int boardHeight = height - boarder * 2;
+        blockWidth = boardWidth / size;
+        blockHeight = boardHeight / size;
+        centerX = new int[size][size];
+        centerY = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                centerX[i][j] = boarder + blockWidth * i + blockWidth / 2;
+                centerY[i][j] = boarder + blockHeight * j + blockHeight / 2;
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                addView(new BlockView(getContext(), new Block(),
+                        centerX[i][j], centerY[i][j], blockWidth, blockHeight));
+            }
+        }
+    }
+
+
+    public void f(int width, int height, int size){
+        removeAllViews();
+        //removeAllViewsInLayout();
+        Log.e("sssss"," " + 1);
+        viewGrid = new BlockView[size][size];
+        Log.e("sssss"," " + 2);
+        setLayoutParams(new LayoutParams(width, height));
+        Log.e("sssss"," " + 3);
+        int boarder = (int) (width * Setting.UI.BOARD_BOARDER_PERCENT);
+        Log.e("sssss"," " + 4);
         int boardWidth = width - boarder * 2;
         int boardHeight = height - boarder * 2;
         blockWidth = boardWidth / size;
@@ -136,6 +169,7 @@ public class GameLayout extends FrameLayout implements Serializable {
             for (int j = 0; j < size; j++) {
                 if (viewGrid[i][j] != null) {
                     viewGrid[i][j].setGeometry(centerX[i][j], centerY[i][j], blockWidth, blockHeight);
+                    viewGrid[i][j].invalidate();
                 }
             }
         }

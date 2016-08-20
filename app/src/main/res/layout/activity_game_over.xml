@@ -13,19 +13,18 @@
         android:id="@+id/newGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="133dp"
         android:text=" 新游戏 "
-        android:textSize="32dp"/>
+        android:textSize="32dp"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="78dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/newGameButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="91dp"
         android:text="游戏结束！"
-        android:textSize="56dp"/>
+        android:textSize="56dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

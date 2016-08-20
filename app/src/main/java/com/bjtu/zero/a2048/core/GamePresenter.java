@@ -1,12 +1,16 @@
 package com.bjtu.zero.a2048.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.text.Layout;
 import android.util.Log;
 import android.view.animation.Animation;
 
+import com.bjtu.zero.a2048.GameOverActivity;
+import com.bjtu.zero.a2048.MainActivity;
 import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
@@ -34,12 +38,12 @@ public class GamePresenter implements Serializable {
 
     private static final int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private static final String name = "game";
-    private final int size;
+    public int size;
     private boolean animationInProgress;
     private Context context;
-    private GameModel gameModel;
-    private GameLayout gameLayout;
-    private ScoreBoardLayout scoreBoardLayout;
+    public GameModel gameModel;
+    public GameLayout gameLayout;
+    public ScoreBoardLayout scoreBoardLayout;
 
     /**
      * 该函数仅在测试时使用。
@@ -82,13 +86,15 @@ public class GamePresenter implements Serializable {
 
     /**
      * // TODO: 2016/8/17 brioso
+     * 存入当前棋盘
      */
     public void write() {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
+            //存入gameModel
             Log.e("aaaaa", "write");
-            fos = getContext().openFileOutput(String.format("%s%s.txt", name, String.valueOf(size)), Context.MODE_PRIVATE);
+            fos = getContext().openFileOutput("test.txt", Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             Log.e("aaaaa", "write111");
             oos.writeObject(gameModel);
@@ -110,43 +116,24 @@ public class GamePresenter implements Serializable {
         }
     }
 
+
     /**
-     * // TODO: 2016/8/17 brioso
+     * 将当前棋盘内容存入存档i
+     *
+     * @param i  表示第i个存档。
+     *           i = 1,2,3
      */
-    public void read() {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        Log.e("aaaaa", "read");
-        try {
-            fis = getContext().openFileInput(String.format("%s%s.txt", name, String.valueOf(size)));
-            Log.e("aaaaa", "read111");
-            ois = new ObjectInputStream(fis);
-            Log.e("aaaaa", "read222");
-            gameModel = ((GameModel) ois.readObject());
-            Log.e("aaaaa", "read ok");
-            gameLayout.setBoard(gameModel.lastBoard());
-            getScoreBoardLayout().setScore(gameModel.lastStatus().getScore());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-                if (ois != null) {
-                    ois.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void write(int i) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
+            //存入棋盘大小
+            fos = getContext().openFileOutput(String.format("size%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(size);
+            fos.close();
+
+            //存入棋盘
             Log.e("aaaaa", "write " + i);
             fos = getContext().openFileOutput(String.format("save%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
@@ -170,10 +157,17 @@ public class GamePresenter implements Serializable {
         }
     }
 
+    /**
+     * 将棋盘的信息存入存档i
+     *
+     * @param i  表示第i个存档。
+     *           i = 1,2,3
+     */
     public void writee(int i) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
+            //保存棋盘的缩略图
             Log.e("aaaaa", "write " + i);
             fos = getContext().openFileOutput(String.format("image%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
@@ -181,12 +175,16 @@ public class GamePresenter implements Serializable {
             Bitmap thumbnail = gameModel.lastStatus().thumbnail();
             oos.writeObject(thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, fos));
             fos.close();
+
+            //保存棋盘的分数
             fos = getContext().openFileOutput(String.format("score%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(gameModel.lastStatus().getScore());
             Log.e("aaaaa", "write ok " + i);
             fos.close();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+
+            //保存创建存档时日期
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             String date = format.format(new java.util.Date());
             fos = getContext().openFileOutput(String.format("time%s.txt", String.valueOf(i)), Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
@@ -208,34 +206,6 @@ public class GamePresenter implements Serializable {
         }
     }
 
-    public void read(int i) {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-            fis = getContext().openFileInput(String.format("save%s.txt", String.valueOf(i)));
-            Log.e("aaaaa", "read111 " + i);
-            ois = new ObjectInputStream(fis);
-            Log.e("aaaaa", "read222 " + i);
-            gameModel = ((GameModel) ois.readObject());
-            Log.e("aaaaa", "read ok " + i);
-            gameLayout.setBoard(gameModel.lastBoard());
-            scoreBoardLayout.setScore(gameModel.lastStatus().getScore());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-                if (ois != null) {
-                    ois.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     /**
      * 开始游戏。
@@ -521,6 +491,7 @@ public class GamePresenter implements Serializable {
                     Log.e("ANIMATION", "onEnd");
                     gameLayout.setBoard(gameModel.lastBoard());
                     spawnBlock();
+                    gameOverJudge();
                     animationInProgress = false;
                 }
 
@@ -572,6 +543,13 @@ public class GamePresenter implements Serializable {
     }
 
     /**
+     * 刷新。
+     */
+    public void refresh() {
+        gameLayout.refresh();
+    }
+
+    /**
      * 返回游戏是否结束
      *
      * @return GameModel中最后一个状态的棋盘是否不能再做有效操作
@@ -587,10 +565,14 @@ public class GamePresenter implements Serializable {
      */
     private void gameOverJudge() {
         if (isGameOver()) {
+            Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
+            MainActivity.instance.startActivity(intent);
             // TODO: 2016/7/24
         }
 
     }
+
+    //public GameLayout
 
     /**
      * 得到绑定的GameModel
@@ -599,6 +581,10 @@ public class GamePresenter implements Serializable {
      */
     public GameModel getGameModel() {
         return gameModel;
+    }
+
+    public void setGameModel(GameModel g){
+        gameModel = g;
     }
 
     /**
