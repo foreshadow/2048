@@ -13,7 +13,6 @@ import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.core.Block;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class BlockView extends View implements Serializable {
 
@@ -50,7 +49,7 @@ public class BlockView extends View implements Serializable {
 
     /**
      * Re size the font so the specified text fits in the text box * assuming
-     * the text box is the specified width.
+     * the text box is the specified length.
      */
     private void refitText(String text) {
         int textWidth = (int) (wid * 1.4);

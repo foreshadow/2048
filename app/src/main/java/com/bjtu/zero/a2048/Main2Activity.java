@@ -78,9 +78,9 @@ public class Main2Activity extends Activity implements
     /**
      * 由子界面返回时刷新ListView
      *
-     * @param requestCode  确认返回的数据是从哪个Activity返回的
+     * @param requestCode 确认返回的数据是从哪个Activity返回的
      * @param resultCode  整数resultCode是由子Activity通过其setResult()方法返回
-     * @param intent  一个Intent对象，带有返回的数据
+     * @param intent      一个Intent对象，带有返回的数据
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -98,7 +98,7 @@ public class Main2Activity extends Activity implements
         ObjectInputStream ois = null;
         try {
             //保存棋盘的缩略图
-            fis = openFileInput("image" + String.valueOf(i) + ".txt");
+            fis = openFileInput(String.format("image%s.txt", String.valueOf(i)));
             Log.e("aaaaa", "read image 111 " + i);
             ois = new ObjectInputStream(fis);
             Log.e("aaaaa", "read image 222 " + i);
@@ -106,7 +106,7 @@ public class Main2Activity extends Activity implements
             fis.close();
 
             //保存分数
-            fis = openFileInput("score" + String.valueOf(i) + ".txt");
+            fis = openFileInput(String.format("score%s.txt", String.valueOf(i)));
             ois = new ObjectInputStream(fis);
             int score = ((int) ois.readObject());
             scores[i] = String.valueOf(score);
@@ -114,7 +114,7 @@ public class Main2Activity extends Activity implements
             fis.close();
 
             //保存当前时间
-            fis = openFileInput("time" + String.valueOf(i) + ".txt");
+            fis = openFileInput(String.format("time%s.txt", String.valueOf(i)));
             ois = new ObjectInputStream(fis);
             String date = ((String) ois.readObject());
             times[i] = date;
@@ -122,34 +122,20 @@ public class Main2Activity extends Activity implements
 
         } catch (Exception e) {
             e.printStackTrace();
-            //这里是读取文件产生异常
         } finally {
-            if (fis != null) {
-                try {
+            try {
+                if (fis != null) {
                     fis.close();
-                } catch (IOException e) {
-                    //fis流关闭异常
-                    e.printStackTrace();
                 }
-            }
-            if (ois != null) {
-                try {
+                if (ois != null) {
                     ois.close();
-                } catch (IOException e) {
-                    //ois流关闭异常
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    /**
-     * 二次退出确认
-     *
-     * @param keyCode
-     * @param event
-     * @return
-     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -159,6 +145,9 @@ public class Main2Activity extends Activity implements
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * 二次退出确认
+     */
     @Override
     public void onSingleClick() {
         Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -211,8 +200,12 @@ public class Main2Activity extends Activity implements
             if (i > 1) {
                 read(i - 1);
                 imageView.setImageBitmap(bitmaps[i - 1]);
-                textView.setText(String.format("%s  分数：%s\n%s", texts[i], scores[i - 1], times[i - 1]));
-                textView.setTextSize(25);
+                textView.setText(
+                        String.format("%s%15s\n%s", texts[i], String.format(
+                                "%s %s", getString(R.string.score), scores[i - 1]
+                        ), times[i - 1])
+                );
+                textView.setTextSize(24);
             }
             //3.返回到ListView显示
             return root;

@@ -5,6 +5,12 @@ import android.widget.Button;
 
 import java.io.Serializable;
 
+/**
+ * 开挂按钮。最后没有使用。
+ *
+ * @author Infinity
+ */
+
 public class AutoButton extends Button implements Serializable {
 
     private static final String text = "Auto";

@@ -36,7 +36,7 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
         setMinimumHeight(300);
         setGravity(Gravity.CENTER);
         textView = new TextView(context);
-        textView.setText("2048");
+        textView.setText(R.string.title);
         ImageView imageView = new ImageView(context);  //创建ImageView
         imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));  //image的布局方式
         imageView.setImageResource(R.drawable.show);  //设置ImageView呈现的图片
@@ -82,8 +82,8 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
     /**
      * 动态调整文本的字体大小
      *
-     * @param text  需要显示的文本
-     * @return
+     * @param text 需要显示的文本
+     * @return 文本大小
      */
     private int refitText(String text) {
         int textWidth = (int) (600. / Setting.Runtime.BOARD_SIZE * 0.75);
@@ -127,7 +127,7 @@ public class ScoreBoardLayout extends LinearLayout implements Serializable {
     /**
      * 设置最高分
      *
-     * @param highScore
+     * @param highScore 最高分
      */
     public void setHighScore(int highScore) {
         String loadedScoreString = sp.getString(KEY, "0");

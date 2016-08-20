@@ -16,9 +16,9 @@ import android.widget.Toast;
 
 /**
  * 用户在游戏进行过程中对音效、文字显示更改的菜单
+ *
  * @author Lazy_sheep
  */
-
 public class SoundSettingMenuActivity extends Activity {
 
     @Override
@@ -51,15 +51,13 @@ public class SoundSettingMenuActivity extends Activity {
         showBar.addView(number);
         showBar.addView(dynasty);
         showBar.addView(academic);
-        if(Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_CLASSICAL){
+        if (Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_CLASSICAL) {
             number.setTextColor(Color.BLUE);
             number.getPaint().setFakeBoldText(true);
-        }
-        else if(Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_ACADEMIC){
+        } else if (Setting.Runtime.STRING_LIST == Setting.UI.STRING_LIST_ACADEMIC) {
             academic.setTextColor(Color.BLUE);
             academic.getPaint().setFakeBoldText(true);
-        }
-        else {
+        } else {
             dynasty.setTextColor(Color.BLUE);
             dynasty.getPaint().setFakeBoldText(true);
         }
