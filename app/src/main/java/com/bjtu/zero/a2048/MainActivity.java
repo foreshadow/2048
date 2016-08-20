@@ -43,6 +43,7 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("gao","build a MainActivity");
         super.onCreate(savedInstanceState);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -265,5 +266,4 @@ public class MainActivity extends Activity
             }
         }
     }
-
 }

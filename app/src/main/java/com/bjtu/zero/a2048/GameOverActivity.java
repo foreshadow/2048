@@ -16,6 +16,12 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+/**
+ * 当游戏结束时出现的Activity
+ * 背景为半透明灰色，修改res/values/color.xml中的transparent_background即可更改此Activity的透明度和颜色
+ * @author Lazy_sheep
+ */
+
 public class GameOverActivity extends Activity {
 
     /**
@@ -24,10 +30,6 @@ public class GameOverActivity extends Activity {
      */
     private GoogleApiClient client;
 
-    /**
-     * 更改次界面的透明度和颜色color.xml <color name="transparent_background">#50FCFCFC</color>
-     * 前两位是透明度 00 到99 ，后六位是背景的RGB值
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class GameOverActivity extends Activity {
                 MainActivity.instance.finish();
                 Intent intent = new Intent(GameOverActivity.this, Main2Activity.class);
                 finish();
-                startActivity(intent);
+               // startActivity(intent);
             }
         });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -106,6 +108,13 @@ public class GameOverActivity extends Activity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+    /**
+     * 改变返回按钮的响应事件。当弹出次Activity后，按手机返回键无效
+     * @param keyCode  int: The value in event.getKeyCode().
+     * @param event KeyEvent: Description of the key event.
+     * @return  按下返回键时不执行任何操作，返回false
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

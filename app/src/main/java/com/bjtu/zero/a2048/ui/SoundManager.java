@@ -11,6 +11,14 @@ import com.bjtu.zero.a2048.Setting;
 
 import java.io.Serializable;
 
+/**
+ * 音效播放器
+ * 继承AsyncTask，打开本app后即开始在后台加载音频文件
+ * 用SoundPool来播放滑动音效，音效共分四种类型
+ *
+ * @author Lazy_sheep
+ */
+
 public class SoundManager extends AsyncTask<Void, Void, Void> implements Serializable {
 
     private final Context context;
@@ -26,6 +34,10 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
     private int happyMove, simpleMerge, simpleMove;
     private long lastDoubleKillTime = 0;
 
+    /**
+     * SoundManager的构造函数
+     * @param context  传入SoundManager使用的上下文
+     */
     public SoundManager(Context context) {
         this.context = context;
         Log.e("gao", "build Successfully");
@@ -35,6 +47,9 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
         firstBlood = new int[4];
     }
 
+    /**
+     * 根据用户的选择改变音效类型
+     */
     public void setSoundType() {
         if (Setting.Runtime.Sound.enabled) {
             switch (Setting.Runtime.Sound.SOUND_PACK) {
@@ -61,6 +76,11 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
         isFirstBlood = true;
     }
 
+    /**
+     * 本函数自动调用，在后台加载声音文件。请勿手动调用
+     * @param voids
+     * @return null
+     */
     @Override
     protected Void doInBackground(Void... voids) {
         happySoundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
@@ -124,6 +144,7 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
      * @param mergeNum 本次操作同时合并的方块的对数
      */
     public void playProcess(int maxRank, int mergeNum) {
+        //Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
         if (Setting.Runtime.Sound.enabled) {
             switch (Setting.Runtime.Sound.SOUND_PACK) {
                 case 3:
@@ -143,6 +164,7 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
                     break;
 
                 default:
+                   // Log.e("gao",((Integer)(Setting.Runtime.Sound.SOUND_PACK)).toString());
                     if (maxRank >= 2 && isFirstBlood) {
                         soundPool.play(firstBlood[Setting.Runtime.Sound.SOUND_PACK], 1, 1, 0, 0, 1);
                         isFirstBlood = false;
@@ -163,132 +185,4 @@ public class SoundManager extends AsyncTask<Void, Void, Void> implements Seriali
         }
     }
 }
-
-
-//public class SoundManager {
-//
-//    private boolean isFirstBlood;
-//    private SoundPool soundPool;
-//    private int[] rank;
-//    private int mergeCount[];
-//    private int firstBlood;
-//    private int move, merge;
-//    private long lastDoubleKillTime = 0;
-//
-//    public SoundManager() {
-//        isFirstBlood = true;
-//        rank = new int[17];
-//        mergeCount = new int[6];
-//    }
-//
-//    /**
-//     * 清空游戏中的音效记录
-//     */
-//    public void clear() {
-//        isFirstBlood = true;
-//    }
-//
-//    /**
-//     * 在游戏开始前加载音频文件
-//     * @param context  音效播放的上下文
-//     */
-//    public void load(Context context) {
-//        soundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
-//        if (Setting.Sound.SOUND_PACK >= 2) {
-//            isFirstBlood = false;
-//        }
-//        switch (Setting.Sound.SOUND_PACK) {
-//            case 0: //dota
-//                firstBlood = soundPool.load(context, R.raw.dotafirstblood, 1);
-//                rank[4] = soundPool.load(context, R.raw.dotakillingspree, 1); //16 三杀
-//                rank[5] = soundPool.load(context, R.raw.dotadominating, 1);
-//                rank[6] = soundPool.load(context, R.raw.dotamegakill, 1);
-//                rank[7] = soundPool.load(context, R.raw.dotaunstoppable, 1);
-//                rank[8] = soundPool.load(context, R.raw.dotawhickedsick, 1);
-//                rank[9] = soundPool.load(context, R.raw.dotamonsterkill, 1);
-//                rank[10] = soundPool.load(context, R.raw.dotagdlike, 1);
-//                rank[11] = soundPool.load(context, R.raw.dotaholyshit, 1);
-//
-//                mergeCount[2] = soundPool.load(context, R.raw.dotadoublekill, 1);
-//                mergeCount[3] = soundPool.load(context, R.raw.dotatriplekill, 1);
-//                mergeCount[4] = soundPool.load(context, R.raw.dotaultrakill, 1);
-//                mergeCount[5] = soundPool.load(context, R.raw.dotarampage, 1);
-//
-//                break;
-//            case 1://lol
-//
-//                firstBlood = soundPool.load(context, R.raw.lolfirstblood, 1);
-//                rank[4] = soundPool.load(context, R.raw.lolkillingspree, 1); //16 三杀
-//                rank[5] = soundPool.load(context, R.raw.lolrampage, 1);
-//                rank[6] = soundPool.load(context, R.raw.lolunstopped, 1);
-//                rank[7] = soundPool.load(context, R.raw.loldominating, 1);
-//                rank[8] = soundPool.load(context, R.raw.lolgodlike, 1);
-//                rank[9] = soundPool.load(context, R.raw.lollegendary, 1);
-//                rank[10] = soundPool.load(context, R.raw.lolshutdown, 1);
-//                rank[11] = soundPool.load(context, R.raw.lolshutdown, 1);
-//
-//                mergeCount[2] = soundPool.load(context, R.raw.loldoublekill, 1);
-//                mergeCount[3] = soundPool.load(context, R.raw.loltriplekill, 1);
-//                mergeCount[4] = soundPool.load(context, R.raw.lolquatrekill, 1);
-//                mergeCount[5] = soundPool.load(context, R.raw.lolpentakill, 1);
-//                break;
-//
-//            case 2://happy
-//                rank[3] = soundPool.load(context, R.raw.happygood, 1);
-//                rank[4] = soundPool.load(context, R.raw.happygreat, 1);
-//                rank[5] = soundPool.load(context, R.raw.happygreat, 1);
-//                rank[6] = soundPool.load(context, R.raw.happyexcellent, 1);
-//                rank[7] = soundPool.load(context, R.raw.happyexcellent, 1);
-//                rank[8] = soundPool.load(context, R.raw.happyamazing, 1);
-//                rank[9] = soundPool.load(context, R.raw.happyamazing, 1);
-//                rank[10] = soundPool.load(context, R.raw.happyunbelieveable, 1);
-//                rank[11] = soundPool.load(context, R.raw.happyunbelieveable, 1);
-//                move  = soundPool.load(context, R.raw.happymove, 1);
-//                break ;
-//
-//            default: //simple
-//                move  = soundPool.load(context, R.raw.simplemove, 1);
-//                merge  = soundPool.load(context, R.raw.simplemerge , 1);
-//        }
-//    }
-//
-//    /**
-//     * 对用户的有效操作播放音效
-//     * @param maxRank  本次操作产生的方块的的最大rank
-//     * @param mergeNum  本次操作同时合并的方块的对数
-//     */
-//    public void playProcess(int maxRank, int mergeNum) {
-//        if (Setting.Sound.enabled) {
-//            switch (Setting.Sound.SOUND_PACK) {
-//                case 3:
-//                    if(maxRank>1)
-//                        soundPool.play(merge, 1, 1, 0, 0, 1);
-//                    else
-//                        soundPool.play(move, 1, 1, 0, 0, 1);
-//                    break ;
-//
-//                case 2:
-//                    if(maxRank<3)
-//                        soundPool.play(move, 1, 1, 0, 0, 1);
-//                    else
-//                        soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-//                    break ;
-//
-//                default:
-//                    if (maxRank >= 2 && isFirstBlood) {
-//                        soundPool.play(firstBlood, 1, 1, 0, 0, 1);
-//                        isFirstBlood = false;
-//                    }
-//                    if (maxRank >= 7)
-//                        soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-//                    else if (mergeNum >= 2&& System.currentTimeMillis()-lastDoubleKillTime > 2000){
-//                        soundPool.play(mergeCount[Math.min(mergeNum, 5)], 1, 1, 0, 0, 1);
-//                        lastDoubleKillTime = System.currentTimeMillis();
-//                    }
-//                    else if(maxRank >= 4)
-//                        soundPool.play(rank[Math.min(maxRank, 11)], 1, 1, 0, 0, 1);
-//            }
-//        }
-//    }
-//}
 
