@@ -14,10 +14,8 @@ import com.bjtu.zero.a2048.Setting;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -38,11 +36,11 @@ public class GamePresenter implements Serializable {
     private static final int[][] increment = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     private static final String name = "game";
     public int size;
-    private boolean animationInProgress;
-    private Context context;
     public GameModel gameModel;
     public GameLayout gameLayout;
     public ScoreBoardLayout scoreBoardLayout;
+    private boolean animationInProgress;
+    private Context context;
 
     /**
      * 该函数仅在测试时使用。
@@ -84,7 +82,6 @@ public class GamePresenter implements Serializable {
     }
 
     /**
-     * // TODO: 2016/8/17 brioso
      * 存入当前棋盘
      */
     public void write() {
@@ -119,8 +116,8 @@ public class GamePresenter implements Serializable {
     /**
      * 将当前棋盘内容存入存档i
      *
-     * @param i  表示第i个存档。
-     *           i = 1,2,3
+     * @param i 表示第i个存档。
+     *          i = 1,2,3
      */
     public void write(int i) {
         FileOutputStream fos = null;
@@ -159,8 +156,8 @@ public class GamePresenter implements Serializable {
     /**
      * 将棋盘的信息存入存档i
      *
-     * @param i  表示第i个存档。
-     *           i = 1,2,3
+     * @param i 表示第i个存档。
+     *          i = 1,2,3
      */
     public void writee(int i) {
         FileOutputStream fos = null;
@@ -249,7 +246,6 @@ public class GamePresenter implements Serializable {
     }
 
     /**
-     *
      * @param direction
      * @return
      */
@@ -563,9 +559,8 @@ public class GamePresenter implements Serializable {
      */
     private void gameOverJudge() {
         if (isGameOver()) {
-            Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
+            Intent intent = new Intent(MainActivity.instance, GameOverActivity.class);
             MainActivity.instance.startActivity(intent);
-            // TODO: 2016/7/24
         }
 
     }
@@ -581,7 +576,7 @@ public class GamePresenter implements Serializable {
         return gameModel;
     }
 
-    public void setGameModel(GameModel g){
+    public void setGameModel(GameModel g) {
         gameModel = g;
     }
 
@@ -622,7 +617,7 @@ public class GamePresenter implements Serializable {
     }
 
     /**
-     * 更新分数。// TODO: 2016/8/17 brioso
+     * 更新分数。
      */
     private class AnotherTask extends AsyncTask<String, Void, String> {
 

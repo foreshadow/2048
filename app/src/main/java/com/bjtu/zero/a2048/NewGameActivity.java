@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 /**
  * 用户开始新游戏前对本局游戏的规格、音效、文字显示进行设置的菜单
+ *
  * @author Lazy_sheep
  */
 

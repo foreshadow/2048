@@ -1,9 +1,7 @@
 package com.bjtu.zero.a2048;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,36 +12,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.bjtu.zero.a2048.core.Block;
 import com.bjtu.zero.a2048.core.GameModel;
 import com.bjtu.zero.a2048.core.GamePresenter;
-import com.bjtu.zero.a2048.ui.BlockView;
 import com.bjtu.zero.a2048.ui.GameLayout;
 import com.bjtu.zero.a2048.ui.ScoreBoardLayout;
 import com.bjtu.zero.a2048.ui.UndoButton;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
+/**
+ * 主界面。
+ *
+ * @author brioso read
+ * @author Infinity 其他
+ */
 public class MainActivity extends Activity
         implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener {
 
+    public static MainActivity instance = null;
     private UndoButton undoButton;
     private GestureDetector gestureDetector;
-    private long exitTime = 0;
-    public static  MainActivity  instance=null;
-    public int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("gao","build a MainActivity");
+        Log.e("gao", "build a MainActivity");
         super.onCreate(savedInstanceState);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -54,10 +50,13 @@ public class MainActivity extends Activity
         Setting.Runtime.gamePresenter = new GamePresenter(Setting.Runtime.BOARD_SIZE);
         Setting.Runtime.gamePresenter.setScoreBoard(scoreBoardLayout);
         Setting.Runtime.gamePresenter.setContext(linearLayout.getContext());
-        GameLayout gameLayout = new GameLayout(linearLayout.getContext(),
-                windowSize.x, windowSize.x, Setting.Runtime.gamePresenter);
-        x = windowSize.x;
-        // deliberately...... ^
+        Setting.Runtime.boardLength = windowSize.x;
+        GameLayout gameLayout = new GameLayout(
+                linearLayout.getContext(),
+                Setting.Runtime.boardLength,
+                Setting.Runtime.boardLength,
+                Setting.Runtime.gamePresenter
+        );
         linearLayout.addView(gameLayout);
         LinearLayout topButtonLayout = new LinearLayout(linearLayout.getContext());
         topButtonLayout.setMinimumHeight(200);
@@ -73,7 +72,7 @@ public class MainActivity extends Activity
         });
 
         Button SettingButton = new Button(topButtonLayout.getContext());
-        SettingButton.setText("菜单");
+        SettingButton.setText(R.string.menu);
         SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +88,7 @@ public class MainActivity extends Activity
 
 
         setContentView(linearLayout);
-        instance=this;
+        instance = this;
         Setting.Runtime.gamePresenter.setGameLayout(gameLayout);
         gestureDetector = new GestureDetector(gameLayout.getContext(), this);
         gameLayout.setOnTouchListener(this);
@@ -111,9 +110,9 @@ public class MainActivity extends Activity
         }
         Setting.Runtime.FILE_ID = 0;
         undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
-        if(Setting.Runtime.gamePresenter.isGameOver()){
-           Intent intent =new Intent(MainActivity.instance, GameOverActivity.class);
-           MainActivity.instance.startActivity(intent);
+        if (Setting.Runtime.gamePresenter.isGameOver()) {
+            Intent intent = new Intent(MainActivity.instance, GameOverActivity.class);
+            MainActivity.instance.startActivity(intent);
         }
     }
 
@@ -132,7 +131,7 @@ public class MainActivity extends Activity
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float vx, float vy) {
         double dx = motionEvent1.getX() - motionEvent.getX();
         double dy = motionEvent1.getY() - motionEvent.getY();
-        Log.e("UIOPERATION", String.format("FLING d=(%f, %f) v=(%f, %f)", dx, dy, vx, vy));
+        Log.e("UI", String.format("FLING d=(%f, %f) v=(%f, %f)", dx, dy, vx, vy));
         if (Math.sqrt(dx * dx + dy * dy) > Setting.UI.MINIMUM_MOVING_DISTANCE_ON_FLING
                 && Math.sqrt(vx * vx + vy * vy) > Setting.UI.MINIMUM_MOVING_VELOCITY_ON_FLING) {
             if (dx > dy && dx > -dy) {
@@ -144,10 +143,6 @@ public class MainActivity extends Activity
             } else if (dy < dx && dy < -dx) {
                 Setting.Runtime.gamePresenter.slideUp();
             }
- //           if (Setting.Runtime.gamePresenter.isGameOver()) {
- //               Intent intent = new Intent(MainActivity.this, GameOverActivity.class);
- //               startActivity(intent);
- //           }
             undoButton.update(Setting.Runtime.gamePresenter.getGameModel().historySize());
             return true;
         }
@@ -218,8 +213,7 @@ public class MainActivity extends Activity
     /**
      * 读取存档i
      *
-     * @param i 表示第i个存档。
-     *          i = 1,2,3
+     * @param i 表示第i个存档。 i = 1,2,3
      */
     public void read(int i) {
         FileInputStream fis = null;
@@ -228,8 +222,8 @@ public class MainActivity extends Activity
             //读取棋盘大小
             fis = openFileInput(String.format("size%s.txt", String.valueOf(i)));
             ois = new ObjectInputStream(fis);
-            int size  = (int)ois.readObject();
-            Log.e("aaaaa", "read  " + i + " size "  + size);
+            int size = (int) ois.readObject();
+            Log.e("aaaaa", "read  " + i + " size " + size);
             //设置棋盘大小
             Setting.Runtime.BOARD_SIZE = size;
             Setting.Runtime.gamePresenter.size = size;
@@ -243,8 +237,8 @@ public class MainActivity extends Activity
             Setting.Runtime.gamePresenter.setGameModel((GameModel) ois.readObject());
 
             Log.e("aaaaa", "read ok " + i);
-            //Point windowSize = new Point();x = windowSize.x;
-            //Setting.Runtime.gamePresenter.gameLayout.f(x,x,size);
+            //Point windowSize = new Point();length = windowSize.length;
+            //Setting.Runtime.gamePresenter.gameLayout.f(length,length,size);
             //设置棋盘
             Setting.Runtime.gamePresenter.gameLayout.setBoard(Setting.Runtime.gamePresenter.gameModel.lastBoard());
             //设置分数

@@ -2,6 +2,11 @@ package com.bjtu.zero.a2048.ui;
 
 import java.io.Serializable;
 
+/**
+ * 连击判定器
+ *
+ * @author Infinity
+ */
 public class DoubleClickDetector implements Serializable {
 
     private final long intervalMillis;

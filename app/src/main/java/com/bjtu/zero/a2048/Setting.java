@@ -72,7 +72,7 @@ public class Setting {
     public static class Game {
 
         public static final int DEFAULT_BOARD_SIZE = 4;
-        public static final int HISTORY_SIZE = 21;
+        public static final int HISTORY_SIZE = 2;
         public static final double RANK_2_PROBABILITY = 0.1;
     }
 
@@ -85,6 +85,7 @@ public class Setting {
         public static int FILE_ID = 0;
         public static SoundManager soundManager;
         public static GamePresenter gamePresenter;
+        public static int boardLength;
 
         public static class Sound {
 

@@ -17,16 +17,15 @@
         </activity>
         <activity
             android:name=".NewGameActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <meta-data android:name="com.google.android.gms.version" />
-
-        <activity android:name=".MainActivity" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity android:name=".MainActivity"/>
         <activity
             android:name=".SoundSettingMenuActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
         <activity
             android:name=".GameOverActivity"
-            android:theme="@style/Transparent"></activity>
+            android:theme="@style/Transparent">
+        </activity>
     </application>
 
 </manifest>
