@@ -42,6 +42,7 @@ public class GameOverActivity extends Activity {
         }
         gameOverShow.setTextColor(Color.WHITE);
         newGameButton.setTextColor(Color.WHITE);
+        newGameButton.setBackgroundColor(Color.BLACK);
         gameOverShow.getPaint().setFakeBoldText(true);
         newGameButton.getPaint().setFakeBoldText(true);
         newGameButton.setOnClickListener(new View.OnClickListener() {
