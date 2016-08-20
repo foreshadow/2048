@@ -16,6 +16,7 @@ public class Setting {
                 "512", "1024", "2048", "4096",
                 "8192", "16384", "32768", "65536",
         };
+
         public static final String[] STRING_LIST_ACADEMIC = new String[]{
                 "",
                 "幼儿园", "一年级", "二年级", "三年级",
