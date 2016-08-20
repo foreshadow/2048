@@ -13,6 +13,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * 用户开始新游戏前对本局游戏的规格、音效、文字显示进行设置的菜单
+ * @author Lazy_sheep
+ */
+
 public class NewGameActivity extends Activity {
 
     @Override
@@ -49,6 +54,9 @@ public class NewGameActivity extends Activity {
         size4.getPaint().setFakeBoldText(true);
         Setting.Runtime.BOARD_SIZE = 4;
 
+        /**
+         * "4×4"规模按钮按下后的响应事件
+         */
         size4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +70,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * "5×5"规模按钮按下后的响应事件
+         */
         size5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +86,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * "6×6"规模按钮按下后的响应事件
+         */
         size6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +125,9 @@ public class NewGameActivity extends Activity {
         number.getPaint().setFakeBoldText(true);
         Setting.Runtime.STRING_LIST = Setting.UI.STRING_LIST_CLASSICAL;
 
+        /**
+         * “经典版”文字选择按钮按下后的响应事件
+         */
         number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +141,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * “学历版”文字选择按钮按下后的响应事件
+         */
         academic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +157,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * “朝代版”文字选择按钮按下后的响应事件
+         */
         dynasty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +198,9 @@ public class NewGameActivity extends Activity {
         dota.setText("dota版");
         Setting.Runtime.Sound.enabled = false;
 
+        /**
+         * “精简版”音效按钮按下后的响应事件
+         */
         simple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +226,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * “开心消消乐”音效按钮按下后的响应事件
+         */
         happy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,6 +254,9 @@ public class NewGameActivity extends Activity {
             }
         });
 
+        /**
+         * “dota版”音效按钮按下后的响应事件
+         */
         dota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +282,10 @@ public class NewGameActivity extends Activity {
             }
         });
 
+
+        /**
+         * “lol版”音效按钮按下后的响应事件
+         */
         lol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -295,6 +331,11 @@ public class NewGameActivity extends Activity {
         NewGameSound.addView(soundBar2);
         Button makeSure = new Button(this);
         makeSure.setText("确定");
+
+        /**
+         * “确定”按钮按下后的响应事件
+         *  保存用户设置，并开始新游戏
+         */
         makeSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
